@@ -13,7 +13,6 @@
 // limitations under the License.
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
-using UdonSharpEditor;
 using UnityEditor;
 
 namespace VRCTools.World.Editor.SynchronizedValues {
@@ -38,12 +37,6 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       base.OnEnable();
 
       this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-    }
-
-    public override void OnInspectorGUI() {
-      if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(this.target)) return;
-
-      base.OnInspectorGUI();
     }
 
     protected override void RenderInspectorGUI() {
