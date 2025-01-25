@@ -48,6 +48,7 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
           "Invalid or unspecified synchronized value reference.\n\n" +
           "This component will disable itself upon startup.",
           MessageType.Warning);
+      EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Advanced Settings", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._enableMapping);
