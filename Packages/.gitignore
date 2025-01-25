@@ -1,4 +1,6 @@
 /*/
-!com.vrchat.core.*
 
+!com.vrchat.core.*
 !io.vrctools.world
+
+com.vrchat.core.vpm-resolver
