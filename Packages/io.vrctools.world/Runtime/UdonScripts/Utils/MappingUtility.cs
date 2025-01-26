@@ -11,18 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace VRCTools.World.Utils {
   /// <summary>
-  /// Provides a set of utility functions for the purposes of managing 1:1 mappings of arrays within Udon scripts.
+  ///   Provides a set of utility functions for the purposes of managing 1:1 mappings of arrays within Udon scripts.
   /// </summary>
   internal static class MappingUtility {
-    
     /// <summary>
-    /// Verifies that a set of associated arrays exhibit the same length.
+    ///   Verifies that a set of associated arrays exhibit the same length.
     /// </summary>
     /// <param name="a">an array</param>
     /// <param name="b">an array</param>

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using VRCTools.World.Editor.Abstractions;
 using UnityEditor;
+using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 using VRCTools.World.LocalValues.UI;
 

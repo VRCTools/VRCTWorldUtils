@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using VRCTools.World.Abstractions;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.World.Abstractions;
 
 namespace VRCTools.World.LocalValues.UI {
   /// <summary>

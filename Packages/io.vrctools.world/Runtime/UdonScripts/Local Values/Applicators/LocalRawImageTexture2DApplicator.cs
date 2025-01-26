@@ -34,13 +34,11 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
 
       this._image = this.GetComponent<RawImage>();
-      
+
       this.localValue._RegisterHandler(LocalTexture2D.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
-    public void _OnStateUpdated() {
-      this._image.texture = this.localValue.State;
-    }
+    public void _OnStateUpdated() { this._image.texture = this.localValue.State; }
   }
 }

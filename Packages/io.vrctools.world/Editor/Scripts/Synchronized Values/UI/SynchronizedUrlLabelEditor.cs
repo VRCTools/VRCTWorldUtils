@@ -11,9 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues.UI;
-using UnityEditor;
 
 namespace VRCTools.World.Editor.SynchronizedValues.UI {
   [CustomEditor(typeof(SynchronizedUrlLabel))]

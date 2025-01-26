@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System;
 using System.Linq;
 using UnityEditor;
@@ -19,11 +20,10 @@ using UnityEngine;
 
 namespace VRCTools.World.Editor.Utils {
   /// <summary>
-  /// Provides an abstraction around <see cref="ReorderableList"/> which permits the creation of lists based upon
-  /// multiple properties within a given object.
-  ///
-  /// This implementation is primarily needed due to Udon's lack of support for nested serialized objects which would
-  /// otherwise be used to provide this functionality.
+  ///   Provides an abstraction around <see cref="ReorderableList" /> which permits the creation of lists based upon
+  ///   multiple properties within a given object.
+  ///   This implementation is primarily needed due to Udon's lack of support for nested serialized objects which would
+  ///   otherwise be used to provide this functionality.
   /// </summary>
   internal class MultiPropertyList {
     private static readonly Color ODD_BACKGROUND_COLOR = new(0, 0, 0, 0.1f);

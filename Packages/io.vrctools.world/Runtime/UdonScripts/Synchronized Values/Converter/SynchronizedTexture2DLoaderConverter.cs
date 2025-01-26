@@ -14,10 +14,8 @@
 
 using UdonSharp;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VRC.SDK3.Image;
 using VRC.SDKBase;
-using VRC.Udon;
 using VRC.Udon.Common.Interfaces;
 using VRCTools.World.SynchronizedValues;
 
@@ -25,7 +23,6 @@ namespace VRCTools.World.LocalValues.Converters {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Converter/Synchronized Texture2D Loader Converter")]
   public class SynchronizedTexture2DLoaderConverter : UdonSharpBehaviour {
-    [FormerlySerializedAs("localUrl")]
     public SynchronizedUrl synchronizedUrl;
 
     public LocalTexture2D localTexture2D;
@@ -40,11 +37,11 @@ namespace VRCTools.World.LocalValues.Converters {
     public Texture2D invalidUrlErrorTexture;
 
     public float retryPeriod = 2f;
+    private bool _downloadQueued;
 
     private VRCImageDownloader _imageDownloader;
 
     private bool _loading;
-    private bool _downloadQueued;
 
     private float _retryTimer = -1;
 
@@ -68,14 +65,10 @@ namespace VRCTools.World.LocalValues.Converters {
     }
 
     private void Update() {
-      if (this._retryTimer <= 0) {
-        return;
-      }
+      if (this._retryTimer <= 0) return;
 
       this._retryTimer -= Time.deltaTime;
-      if (this._retryTimer > 0) {
-        return;
-      }
+      if (this._retryTimer > 0) return;
 
       this._OnStateUpdated();
     }
@@ -83,18 +76,12 @@ namespace VRCTools.World.LocalValues.Converters {
     private void OnDestroy() {
       // before we destroy the image downloader, we'll swap the texture to the configured default as the texture should
       // be destroyed as a result of the image downloader being destroyed
-      if (Utilities.IsValid(this.localTexture2D)) {
-        this.localTexture2D.State = this.defaultTexture;
-      }
+      if (Utilities.IsValid(this.localTexture2D)) this.localTexture2D.State = this.defaultTexture;
 
       // dispose of our image downloader instance if it was allocated on script startup
-      if (Utilities.IsValid(this._imageDownloader)) {
-        this._imageDownloader.Dispose();
-      }
+      if (Utilities.IsValid(this._imageDownloader)) this._imageDownloader.Dispose();
 
-      if (!Utilities.IsValid(this.synchronizedUrl)) {
-        return;
-      }
+      if (!Utilities.IsValid(this.synchronizedUrl)) return;
 
       this.synchronizedUrl._UnregisterHandler(this);
     }
@@ -118,9 +105,7 @@ namespace VRCTools.World.LocalValues.Converters {
       }
 
       var texture = this.loadingTexture;
-      if (texture != null) {
-        this.localTexture2D.State = texture;
-      }
+      if (texture != null) this.localTexture2D.State = texture;
 
       this._imageDownloader.DownloadImage(url, null, (IUdonEventReceiver)this);
     }
@@ -155,9 +140,7 @@ namespace VRCTools.World.LocalValues.Converters {
           break;
       }
 
-      if (texture == null) {
-        texture = this.errorTexture;
-      }
+      if (texture == null) texture = this.errorTexture;
 
       this.localTexture2D.State = texture;
 
@@ -173,9 +156,7 @@ namespace VRCTools.World.LocalValues.Converters {
       this._loading = false;
       this._retryTimer = -1;
 
-      if (!this._downloadQueued) {
-        return;
-      }
+      if (!this._downloadQueued) return;
 
       Debug.Log("[Texture2D Loader Converter] Dispatching queued image download", this);
       this._downloadQueued = false;

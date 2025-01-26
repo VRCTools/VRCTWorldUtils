@@ -11,22 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Editor.Abstractions;
-using VRCTools.World.SynchronizedValues.UI;
+
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.SynchronizedValues.UI;
 
 namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
   [CustomEditor(typeof(SynchronizedObjectToggleApplicator))]
   public class SynchronizedObjectToggleApplicatorEditor : AbstractCustomUdonEditor {
+    private SerializedProperty _invert;
     private SerializedProperty _synchronizedValue;
 
-    private SerializedProperty _targets;
-
-    private SerializedProperty _invert;
-
     private ReorderableList _targetList;
+
+    private SerializedProperty _targets;
 
     private void OnEnable() {
       this._synchronizedValue
@@ -63,9 +63,7 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
       return EditorGUI.GetPropertyHeight(element);
     }
 
-    private void _OnDrawHeader(Rect rect) {
-      EditorGUI.LabelField(rect, "Targets", EditorStyles.boldLabel);
-    }
+    private void _OnDrawHeader(Rect rect) { EditorGUI.LabelField(rect, "Targets", EditorStyles.boldLabel); }
 
     private void _OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
       var element = this._targets.GetArrayElementAtIndex(index);
