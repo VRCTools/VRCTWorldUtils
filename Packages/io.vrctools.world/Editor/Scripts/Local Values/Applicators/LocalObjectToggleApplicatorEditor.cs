@@ -22,26 +22,14 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
   using Applicator = LocalObjectToggleApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class LocalObjectToggleApplicatorEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _invert;
+  public class LocalObjectToggleApplicatorEditor : AbstractObjectToggleApplicatorEditor {
     private SerializedProperty _localValue;
 
-    private ReorderableList _targetList;
-
-    private SerializedProperty _targets;
-
-    private void OnEnable() {
+    protected override void OnEnable() {
       this._localValue
         = this.serializedObject.FindProperty(nameof(Applicator.localValue));
 
-      this._targets = this.serializedObject.FindProperty(nameof(Applicator.targets));
-
-      this._invert = this.serializedObject.FindProperty(nameof(Applicator.invert));
-
-      this._targetList = new ReorderableList(this.serializedObject, this._targets, true, true, true, true);
-      this._targetList.drawHeaderCallback = this._OnDrawHeader;
-      this._targetList.elementHeightCallback = this._CalculateElementHeight;
-      this._targetList.drawElementCallback = this._OnDrawElement;
+      base.OnEnable();
     }
 
     protected override void RenderInspectorGUI() {
@@ -54,22 +42,7 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
       EditorGUILayout.Space(20);
 
-      this._targetList.DoLayoutList();
-
-      EditorGUILayout.LabelField("Advanced Settings");
-      EditorGUILayout.PropertyField(this._invert);
-    }
-
-    private float _CalculateElementHeight(int index) {
-      var element = this._targets.GetArrayElementAtIndex(index);
-      return EditorGUI.GetPropertyHeight(element);
-    }
-
-    private void _OnDrawHeader(Rect rect) { EditorGUI.LabelField(rect, "Targets", EditorStyles.boldLabel); }
-
-    private void _OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
-      var element = this._targets.GetArrayElementAtIndex(index);
-      EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), element);
+      base.RenderInspectorGUI();
     }
   }
 }

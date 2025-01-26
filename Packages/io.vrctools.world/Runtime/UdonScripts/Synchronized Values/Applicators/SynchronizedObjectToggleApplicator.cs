@@ -15,16 +15,15 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.World.Abstractions;
 
 namespace VRCTools.World.SynchronizedValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Object Toggle Applicator")]
-  public class SynchronizedObjectToggleApplicator : UdonSharpBehaviour {
+  public class SynchronizedObjectToggleApplicator : AbstractObjectToggleApplicator {
     public SynchronizedBoolean synchronizedValue;
 
-    public bool invert;
-
-    public GameObject[] targets;
+    protected override bool State => this.synchronizedValue.State;
 
     private void Start() {
       if (!Utilities.IsValid(this.synchronizedValue)) {
@@ -36,16 +35,6 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this.synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this,
         nameof(this._OnStateUpdated));
       this._OnStateUpdated();
-    }
-
-    public void _OnStateUpdated() {
-      var active = this.synchronizedValue.State ^ this.invert;
-
-      foreach (var target in this.targets) {
-        if (!Utilities.IsValid(target)) continue;
-
-        target.SetActive(active);
-      }
     }
   }
 }

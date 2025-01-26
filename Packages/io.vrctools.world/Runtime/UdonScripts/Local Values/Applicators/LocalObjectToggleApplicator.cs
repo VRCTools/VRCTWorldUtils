@@ -15,16 +15,15 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.World.Abstractions;
 
 namespace VRCTools.World.LocalValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Applicators/Local Object Toggle Applicator")]
-  public class LocalObjectToggleApplicator : UdonSharpBehaviour {
+  public class LocalObjectToggleApplicator : AbstractObjectToggleApplicator {
     public LocalBoolean localValue;
 
-    public bool invert;
-
-    public GameObject[] targets;
+    protected override bool State => this.localValue.State;
 
     private void Start() {
       if (!Utilities.IsValid(this.localValue)) {
@@ -35,16 +34,6 @@ namespace VRCTools.World.LocalValues.Applicators {
 
       this.localValue._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
       this._OnStateUpdated();
-    }
-
-    public void _OnStateUpdated() {
-      var active = this.localValue.State ^ this.invert;
-
-      foreach (var target in this.targets) {
-        if (!Utilities.IsValid(target)) continue;
-
-        target.SetActive(active);
-      }
     }
   }
 }
