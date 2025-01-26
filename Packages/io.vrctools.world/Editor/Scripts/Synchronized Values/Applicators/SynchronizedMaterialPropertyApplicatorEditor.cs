@@ -16,7 +16,7 @@ using UnityEditor;
 using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
-using VRCTools.World.SynchronizedValues.UI;
+using VRCTools.World.SynchronizedValues.Applicators;
 
 namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
   using Applicator = SynchronizedMaterialPropertyApplicator;
