@@ -55,7 +55,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
     private int[] _synchronizedIntParameterIds;
     private int[] _synchronizedVectorParameterIds;
 
-    public void Start() {
+    private void Start() {
       if (this.useMaterialBlock) {
         if (!Utilities.IsValid(this.targetRenderer)) {
           Debug.LogError("[Synchronized Material Property Applicator] Renderer is invalid - Disabled");
