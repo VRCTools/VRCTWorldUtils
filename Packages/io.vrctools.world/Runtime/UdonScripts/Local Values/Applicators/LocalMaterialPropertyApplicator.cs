@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -125,6 +126,44 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
 
       this.SendCustomEventDelayedFrames(nameof(this._RefreshAllParameters), 1);
+    }
+
+    private void OnDestroy() {
+      foreach (var value in this.localBooleans) {
+        if (!Utilities.IsValid(value)) continue;
+
+        value._UnregisterHandler(this);
+      }
+
+      foreach (var value in this.localColors) {
+        if (!Utilities.IsValid(value)) continue;
+
+        value._UnregisterHandler(this);
+      }
+
+      foreach (var value in this.localFloats) {
+        if (!Utilities.IsValid(value)) continue;
+
+        value._UnregisterHandler(this);
+      }
+
+      foreach (var value in this.localInts) {
+        if (!Utilities.IsValid(value)) continue;
+
+        value._UnregisterHandler(this);
+      }
+
+      foreach (var value in this.localTextures) {
+        if (!Utilities.IsValid(value)) continue;
+
+        value._UnregisterHandler(this);
+      }
+
+      foreach (var value in this.localVectors) {
+        if (!Utilities.IsValid(value)) continue;
+
+        value._UnregisterHandler(this);
+      }
     }
 
     private static int[] _ResolveParameterIds(string[] parameterNames) {
