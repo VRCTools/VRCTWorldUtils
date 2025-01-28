@@ -62,7 +62,7 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
     private void OnEnable() {
       this._material = this.serializedObject.FindProperty(nameof(Applicator.material));
-      this._useMaterialBlock = this.serializedObject.FindProperty(nameof(Applicator.useMaterialBlock));
+      this._useMaterialBlock = this.serializedObject.FindProperty(nameof(Applicator.usePropertyBlock));
       this._targetRenderer = this.serializedObject.FindProperty(nameof(Applicator.targetRenderer));
 
       this._localBooleans = this.serializedObject.FindProperty(nameof(Applicator.localBooleans));
