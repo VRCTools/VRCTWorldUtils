@@ -60,5 +60,9 @@ namespace VRCTools.World.LocalValues {
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
+
+    public void _Clear() {
+      this.State = VRCUrl.Empty;
+    }
   }
 }
