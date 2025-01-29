@@ -129,10 +129,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 3816198941695997762}
-  behaviours:
-  - {fileID: 0}
-  eventNames:
-  - _TeleportTo
+  behaviours: []
+  eventNames: []
 --- !u!114 &3816198941695997762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactTextPlacement: {fileID: 0}
-  interactText: Teleport
+  interactText: Use
   interactTextGO: {fileID: 0}
   proximity: 2
   SynchronizePosition: 0
