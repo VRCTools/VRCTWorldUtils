@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEditor;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Event;
 
 namespace VRCTools.World.Player {
   /// <summary>
@@ -23,8 +24,13 @@ namespace VRCTools.World.Player {
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Player/Teleport Target")]
-  public class PlayerTeleportTarget : UdonSharpBehaviour {
+  public class PlayerTeleportTarget : AbstractEventEmitter {
+    public const int EVENT_TELEPORTED_TO = 0;
+    public const int EVENT_COUNT = 1;
+    
     public Transform target;
+
+    public override int EventCount => EVENT_COUNT;
 
     public void _TeleportTo() {
       var localPlayer = Networking.LocalPlayer;
@@ -34,6 +40,7 @@ namespace VRCTools.World.Player {
       }
 
       localPlayer.TeleportTo(t.position, t.rotation);
+      this._EmitEvent(EVENT_TELEPORTED_TO);
     }
 
     #if UNITY_EDITOR && !COMPILER_UDONSHARP
