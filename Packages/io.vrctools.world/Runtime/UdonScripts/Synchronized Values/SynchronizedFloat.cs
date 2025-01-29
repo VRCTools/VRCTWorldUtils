@@ -116,13 +116,9 @@ namespace VRCTools.World.SynchronizedValues {
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
-    public void _IncrementBy(float delta) { this.State += delta; }
-
-    public void _DecrementBy(float delta) { this.State -= delta; }
-
-    public void _MultiplyBy(float factor) { this.State *= factor; }
-
-    public void _DivideBy(float divisor) { this.State /= divisor; }
+    public void _Zero() {
+      this.State = 0;
+    }
 
     public override void OnDeserialization() {
       base.OnDeserialization();
