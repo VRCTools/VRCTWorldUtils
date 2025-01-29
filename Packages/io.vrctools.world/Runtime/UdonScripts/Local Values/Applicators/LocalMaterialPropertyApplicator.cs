@@ -170,7 +170,15 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     private static int[] _ResolveParameterIds(string[] parameterNames) {
       var parameterIds = new int[parameterNames.Length];
-      for (var i = 0; i < parameterNames.Length; i++) parameterIds[i] = VRCShader.PropertyToID(parameterNames[i]);
+      for (var i = 0; i < parameterNames.Length; i++) {
+        var parameterName = parameterNames[i];
+        if (string.IsNullOrEmpty(parameterName)) {
+          parameterIds[i] = -1;
+          continue;
+        }
+        
+        parameterIds[i] = VRCShader.PropertyToID(parameterNames[i]);
+      }
 
       return parameterIds;
     }
@@ -199,6 +207,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       this.targetRenderer.GetPropertyBlock(this._materialPropertyBlock);
     }
 
+    private static bool _ValidateParameter(UdonSharpBehaviour behaviour, int parameterId) {
+      return Utilities.IsValid(parameterId) && parameterId != -1;
+    }
+
     private void _ApplyMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
@@ -215,6 +227,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localBooleans.Length; i++) {
         var value = this.localBooleans[i];
         var parameterId = this._localBooleanParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -234,6 +247,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localColors.Length; ++i) {
         var value = this.localColors[i];
         var parameterId = this._localColorParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -253,6 +267,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localFloats.Length; ++i) {
         var value = this.localFloats[i];
         var parameterId = this._localFloatParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -272,6 +287,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localInts.Length; ++i) {
         var value = this.localInts[i];
         var parameterId = this._localIntParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -293,6 +309,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localTextures.Length; ++i) {
         var value = this.localTextures[i];
         var parameterId = this._localTextureParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
         
         if (this.usePropertyBlock)
@@ -312,6 +329,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localVectors.Length; ++i) {
         var value = this.localVectors[i];
         var parameterId = this._localVectorParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
