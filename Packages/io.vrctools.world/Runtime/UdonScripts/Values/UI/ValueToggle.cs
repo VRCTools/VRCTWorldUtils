@@ -16,12 +16,18 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.World.LocalValues;
+using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
-namespace VRCTools.World.SynchronizedValues.UI {
-  [RequireComponent(typeof(Toggle))]
+namespace VRCTools.World.Values.UI {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-  [AddComponentMenu("Synchronized Values/UI/Synchronized Toggle")]
-  public class SynchronizedToggle : UdonSharpBehaviour {
+  [RequireComponent(typeof(Toggle))]
+  [AddComponentMenu("Values/UI/Value Toggle")]
+  public class ValueToggle : UdonSharpBehaviour {
+    public ValueType source;
+    public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 
     public bool invert;
@@ -30,29 +36,33 @@ namespace VRCTools.World.SynchronizedValues.UI {
     private bool _updating;
 
     private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized Toggle] Synchronized value is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+        Debug.LogError("[Value Toggle] Boolean value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
 
       this._toggle = this.GetComponent<Toggle>();
 
-      this.synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this,
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
         nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
     private void OnDestroy() {
-      if (!Utilities.IsValid(this.synchronizedValue)) return;
+      if (Utilities.IsValid(this.localValue)) {
+        this.localValue._UnregisterHandler(this);
+      }
 
-      this.synchronizedValue._UnregisterHandler(this);
+      if (Utilities.IsValid(this.synchronizedValue)) {
+        this.synchronizedValue._UnregisterHandler(this);
+      }
     }
 
     public void _OnStateUpdated() {
       this._updating = true;
       {
-        this._toggle.isOn = this.synchronizedValue.State ^ this.invert;
+        this._toggle.isOn = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue) ^ this.invert;
       }
       this._updating = false;
     }
@@ -60,7 +70,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
     public void _OnValueChanged() {
       if (this._updating) return;
 
-      this.synchronizedValue.State = this._toggle.isOn ^ this.invert;
+      ValueUtility.SetValue(this.source, this.localValue, this.synchronizedValue, this._toggle.isOn ^ this.invert);
     }
   }
 }

@@ -17866,6 +17866,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 520055620302671683, guid: 18970b7713e3013478dbb1ef5f60ae59,
         type: 3}
+    - target: {fileID: 3423456137998153352, guid: 18970b7713e3013478dbb1ef5f60ae59,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4872470764452548625, guid: 18970b7713e3013478dbb1ef5f60ae59,
         type: 3}
       propertyPath: m_Pivot.x
@@ -19148,6 +19153,17 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 6433075260794802947, guid: 0c3599c88b2283446a2536baae752245,
+        type: 3}
+    - target: {fileID: 8966762011314095064, guid: 0c3599c88b2283446a2536baae752245,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 263443355}
+    - target: {fileID: 8966762011314095064, guid: 0c3599c88b2283446a2536baae752245,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8966762011314095064, guid: 0c3599c88b2283446a2536baae752245,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
