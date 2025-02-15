@@ -66,7 +66,7 @@ namespace VRCTools.World.Values.UI {
     }
 
     private void _UpdateColor(Color color) {
-      this.localValue.State = color;
+      ValueUtility.SetValue(this.source, this.localValue, this.synchronizedValue, color);
 
       if (Utilities.IsValid(this.crosshair))
         this.crosshair.color = color;
@@ -82,7 +82,7 @@ namespace VRCTools.World.Values.UI {
     public void _OnStateUpdated() {
       this._updating = true;
       {
-        var color = this.localValue.State;
+        var color = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
 
         // Note: UdonSharp does not understand "out _" syntax - we need this useless variable here
         Color.RGBToHSV(color, out var h, out var s, out var v);
