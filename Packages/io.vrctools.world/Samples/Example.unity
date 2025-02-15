@@ -15455,6 +15455,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 827ff731e29a3144398404bd49224e0c,
         type: 2}
+    - target: {fileID: 8123697813697875850, guid: 26e6dc3ea7e293545859b3850e97bfd4,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8264099480968432301, guid: 26e6dc3ea7e293545859b3850e97bfd4,
         type: 3}
       propertyPath: m_Name
@@ -19009,6 +19014,17 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 4651949582522952662, guid: 3e5d0544623f3d942989fb5fb5d93f81,
+        type: 3}
+    - target: {fileID: 6238325832543197198, guid: 3e5d0544623f3d942989fb5fb5d93f81,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 1796881856}
+    - target: {fileID: 6238325832543197198, guid: 3e5d0544623f3d942989fb5fb5d93f81,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6238325832543197198, guid: 3e5d0544623f3d942989fb5fb5d93f81,
         type: 3}
     - target: {fileID: 6961858510797304346, guid: 3e5d0544623f3d942989fb5fb5d93f81,
         type: 3}
