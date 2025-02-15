@@ -18,10 +18,10 @@ using VRC.SDKBase;
 using VRCTools.Event;
 
 namespace VRCTools.World.LocalValues {
-    /// <summary>
-    ///   Encapsulates a local URL value.
-    /// </summary>
-    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
+  /// <summary>
+  ///   Encapsulates a local URL value.
+  /// </summary>
+  [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local URL")]
   public class LocalUrl : AbstractEventEmitter {
     public const int EVENT_STATE_UPDATED = 0;
@@ -61,8 +61,6 @@ namespace VRCTools.World.LocalValues {
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
-    public void _Clear() {
-      this.State = VRCUrl.Empty;
-    }
+    public void _Clear() { this.State = VRCUrl.Empty; }
   }
 }

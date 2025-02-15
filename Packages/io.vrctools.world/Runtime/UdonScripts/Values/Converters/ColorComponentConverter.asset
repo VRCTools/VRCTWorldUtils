@@ -230,7 +230,7 @@ MonoBehaviour:
       Data: 13|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: VRCTools.World.Values.Converters.ValueSource, VRCTools.World
+      Data: VRCTools.World.Values.ValueSource, VRCTools.World
     - Name: 
       Entry: 8
       Data: 

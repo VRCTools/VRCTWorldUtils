@@ -25,11 +25,10 @@ namespace VRCTools.World.Editor.Player {
 
     protected override void RenderInspectorGUI() {
       EditorGUILayout.PropertyField(this._target);
-      if (this._target.objectReferenceValue == null) {
+      if (this._target.objectReferenceValue == null)
         EditorGUILayout.HelpBox(
           "No target has been assigned - Teleport target will match the position and rotation of this game object.",
           MessageType.Info);
-      }
     }
   }
 }

@@ -16,34 +16,34 @@ using UnityEditor;
 using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
 namespace VRCTools.World.Editor.Values.Converters {
   [CustomEditor(typeof(ColorComponentConverter))]
   public class ColorComponentConverterEditor : AbstractCustomUdonEditor {
-    public SerializedProperty _useSynchronizedTarget;
-    public SerializedProperty _localTarget;
-    public SerializedProperty _synchronizedTarget;
-
-    public SerializedProperty _redSource;
-    public SerializedProperty _staticRedValue;
-    public SerializedProperty _localRedValue;
-    public SerializedProperty _synchronizedRedValue;
-
-    public SerializedProperty _greenSource;
-    public SerializedProperty _staticGreenValue;
-    public SerializedProperty _localGreenValue;
-    public SerializedProperty _synchronizedGreenValue;
+    public SerializedProperty _alphaSource;
 
     public SerializedProperty _blueSource;
-    public SerializedProperty _staticBlueValue;
-    public SerializedProperty _localBlueValue;
-    public SerializedProperty _synchronizedBlueValue;
 
-    public SerializedProperty _alphaSource;
-    public SerializedProperty _staticAlphaValue;
+    public SerializedProperty _greenSource;
     public SerializedProperty _localAlphaValue;
+    public SerializedProperty _localBlueValue;
+    public SerializedProperty _localGreenValue;
+    public SerializedProperty _localRedValue;
+    public SerializedProperty _localTarget;
+
+    public SerializedProperty _redSource;
+    public SerializedProperty _staticAlphaValue;
+    public SerializedProperty _staticBlueValue;
+    public SerializedProperty _staticGreenValue;
+    public SerializedProperty _staticRedValue;
     public SerializedProperty _synchronizedAlphaValue;
+    public SerializedProperty _synchronizedBlueValue;
+    public SerializedProperty _synchronizedGreenValue;
+    public SerializedProperty _synchronizedRedValue;
+    public SerializedProperty _synchronizedTarget;
+    public SerializedProperty _useSynchronizedTarget;
 
     private void OnEnable() {
       this._useSynchronizedTarget
@@ -83,10 +83,9 @@ namespace VRCTools.World.Editor.Values.Converters {
 
       var useSynchronizedTarget = this._useSynchronizedTarget.boolValue;
       if ((useSynchronizedTarget && !Utilities.IsValid(this._synchronizedTarget.objectReferenceValue)) ||
-          (!useSynchronizedTarget && !Utilities.IsValid(this._localTarget.objectReferenceValue))) {
+          (!useSynchronizedTarget && !Utilities.IsValid(this._localTarget.objectReferenceValue)))
         EditorGUILayout.HelpBox("Target value is invalid or unset - Component will be disabled on start",
           MessageType.Error);
-      }
 
       EditorGUILayout.Space(20);
 
@@ -128,9 +127,8 @@ namespace VRCTools.World.Editor.Values.Converters {
       }
 
       EditorGUILayout.PropertyField(property, new GUIContent("Source"));
-      if (s != ValueSource.STATIC && !Utilities.IsValid(property.objectReferenceValue)) {
+      if (s != ValueSource.STATIC && !Utilities.IsValid(property.objectReferenceValue))
         EditorGUILayout.HelpBox("Source value is invalid or unset - Component will be set to zero", MessageType.Error);
-      }
     }
   }
 }

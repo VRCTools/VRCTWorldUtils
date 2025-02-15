@@ -20,35 +20,22 @@ using VRCTools.Event;
 
 namespace VRCTools.World.Player {
   /// <summary>
-  /// Provides a teleport target to which a local player may be teleported when triggered.
+  ///   Provides a teleport target to which a local player may be teleported when triggered.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Player/Teleport Target")]
   public class PlayerTeleportTarget : AbstractEventEmitter {
     public const int EVENT_TELEPORTED_TO = 0;
     public const int EVENT_COUNT = 1;
-    
+
     public Transform target;
 
     public override int EventCount => EVENT_COUNT;
 
-    public void _TeleportTo() {
-      var localPlayer = Networking.LocalPlayer;
-      var t = this.target;
-      if (!Utilities.IsValid(t)) {
-        t = this.transform;
-      }
-
-      localPlayer.TeleportTo(t.position, t.rotation);
-      this._EmitEvent(EVENT_TELEPORTED_TO);
-    }
-
     #if UNITY_EDITOR && !COMPILER_UDONSHARP
     private void OnDrawGizmos() {
       var t = this.target;
-      if (!Utilities.IsValid(t)) {
-        t = this.transform;
-      }
+      if (!Utilities.IsValid(t)) t = this.transform;
 
       Handles.color = Color.blue;
       Handles.DrawWireDisc(t.position, t.up, .25f);
@@ -57,5 +44,14 @@ namespace VRCTools.World.Player {
       Gizmos.DrawLine(t.position, t.position + t.forward * .5f);
     }
     #endif
+
+    public void _TeleportTo() {
+      var localPlayer = Networking.LocalPlayer;
+      var t = this.target;
+      if (!Utilities.IsValid(t)) t = this.transform;
+
+      localPlayer.TeleportTo(t.position, t.rotation);
+      this._EmitEvent(EVENT_TELEPORTED_TO);
+    }
   }
 }

@@ -18,11 +18,11 @@ using VRCTools.World.Editor.Abstractions;
 
 namespace VRCTools.World.Editor.Values.Presets {
   public abstract class AbstractPresetEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _useSynchronizedTarget;
     private SerializedProperty _localTarget;
-    private SerializedProperty _synchronizedTarget;
 
     private SerializedProperty _preset;
+    private SerializedProperty _synchronizedTarget;
+    private SerializedProperty _useSynchronizedTarget;
 
     private void OnEnable() {
       // typically we use nameof to not cause too much trouble during refactors - this is an exception since all presets

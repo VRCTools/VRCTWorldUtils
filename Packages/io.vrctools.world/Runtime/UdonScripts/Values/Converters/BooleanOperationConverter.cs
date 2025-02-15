@@ -103,11 +103,10 @@ namespace VRCTools.World.Values.Converters {
           break;
       }
 
-      if (this.useSynchronizedTarget) {
+      if (this.useSynchronizedTarget)
         this.synchronizedTarget.State = newValue;
-      } else {
+      else
         this.localTarget.State = newValue;
-      }
     }
 
     private bool _GetValue(

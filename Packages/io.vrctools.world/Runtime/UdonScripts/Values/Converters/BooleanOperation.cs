@@ -6,6 +6,6 @@
     XOR = 3,
     NAND = 4,
     NOR = 5,
-    XNOR = 6,
+    XNOR = 6
   }
 }

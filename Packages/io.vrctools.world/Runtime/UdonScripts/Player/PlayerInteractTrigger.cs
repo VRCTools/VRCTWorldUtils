@@ -20,7 +20,7 @@ using VRCTools.World.Utils;
 
 namespace VRCTools.World.Player {
   /// <summary>
-  /// Invokes a number of handlers when an object is interacted with by a player.
+  ///   Invokes a number of handlers when an object is interacted with by a player.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Player/Player Interact Trigger")]
@@ -41,9 +41,7 @@ namespace VRCTools.World.Player {
       for (var i = 0; i < this.behaviours.Length; i++) {
         var behaviour = this.behaviours[i];
         var eventName = this.eventNames[i];
-        if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) {
-          continue;
-        }
+        if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) continue;
 
         behaviour.SendCustomEvent(eventName);
       }

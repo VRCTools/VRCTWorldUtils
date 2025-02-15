@@ -17,10 +17,10 @@ using UnityEngine;
 using VRCTools.Event;
 
 namespace VRCTools.World.LocalValues {
-    /// <summary>
-    ///   Encapsulates a local boolean value.
-    /// </summary>
-    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
+  /// <summary>
+  ///   Encapsulates a local boolean value.
+  /// </summary>
+  [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Boolean")]
   public class LocalBoolean : AbstractEventEmitter {
     public const int EVENT_STATE_UPDATED = 0;

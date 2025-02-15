@@ -16,26 +16,27 @@ using UnityEditor;
 using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
 namespace VRCTools.World.Editor.Values.Converters {
   [CustomEditor(typeof(BooleanOperationConverter))]
   public class BooleanOperationConverterEditor : AbstractCustomUdonEditor {
-    public SerializedProperty _useSynchronizedTarget;
+    public SerializedProperty _localAlphaValue;
+    public SerializedProperty _localBetaValue;
     public SerializedProperty _localTarget;
-    public SerializedProperty _synchronizedTarget;
 
     public SerializedProperty _operation;
 
     public SerializedProperty _sourceAlpha;
-    public SerializedProperty _staticAlphaValue;
-    public SerializedProperty _localAlphaValue;
-    public SerializedProperty _synchronizedAlphaValue;
 
     public SerializedProperty _sourceBeta;
+    public SerializedProperty _staticAlphaValue;
     public SerializedProperty _staticBetaValue;
-    public SerializedProperty _localBetaValue;
+    public SerializedProperty _synchronizedAlphaValue;
     public SerializedProperty _synchronizedBetaValue;
+    public SerializedProperty _synchronizedTarget;
+    public SerializedProperty _useSynchronizedTarget;
 
     private void OnEnable() {
       this._useSynchronizedTarget
@@ -65,10 +66,9 @@ namespace VRCTools.World.Editor.Values.Converters {
       var useSynchronizedTarget = this._useSynchronizedTarget.boolValue;
       EditorGUILayout.PropertyField(useSynchronizedTarget ? this._synchronizedTarget : this._localTarget);
       if ((useSynchronizedTarget && !Utilities.IsValid(this._synchronizedTarget.objectReferenceValue)) ||
-          (!useSynchronizedTarget && !Utilities.IsValid(this._localTarget.objectReferenceValue))) {
+          (!useSynchronizedTarget && !Utilities.IsValid(this._localTarget.objectReferenceValue)))
         EditorGUILayout.HelpBox("Target value is invalid or unset - Component will be disabled on start",
           MessageType.Error);
-      }
 
       EditorGUILayout.PropertyField(this._operation);
       EditorGUILayout.Space(20);
@@ -107,9 +107,8 @@ namespace VRCTools.World.Editor.Values.Converters {
       }
 
       EditorGUILayout.PropertyField(property, new GUIContent("Source"));
-      if (s != ValueSource.STATIC && !Utilities.IsValid(property.objectReferenceValue)) {
+      if (s != ValueSource.STATIC && !Utilities.IsValid(property.objectReferenceValue))
         EditorGUILayout.HelpBox("Source value is invalid or unset - Component will be set to false", MessageType.Error);
-      }
     }
   }
 }

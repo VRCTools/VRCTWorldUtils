@@ -39,13 +39,13 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
     private SerializedProperty _localIntParameters;
     private SerializedProperty _localInts;
 
-    private MultiPropertyList _localVectorList;
-    private SerializedProperty _localVectorParameters;
-    private SerializedProperty _localVectors;
-
     private MultiPropertyList _localTextureList;
     private SerializedProperty _localTextureParameters;
     private SerializedProperty _localTextures;
+
+    private MultiPropertyList _localVectorList;
+    private SerializedProperty _localVectorParameters;
+    private SerializedProperty _localVectors;
 
     private SerializedProperty _material;
     private SerializedProperty _targetRenderer;

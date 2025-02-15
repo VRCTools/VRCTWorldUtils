@@ -14,15 +14,14 @@
 
 using UdonSharp;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VRC.SDKBase;
 using VRCTools.Event;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.Player {
   /// <summary>
-  /// Provides a generic trigger volume capable of invoking another script when a player enters (or leaves) a given
-  /// volume.
+  ///   Provides a generic trigger volume capable of invoking another script when a player enters (or leaves) a given
+  ///   volume.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(Collider))]
@@ -44,7 +43,7 @@ namespace VRCTools.World.Player {
     public override int EventCount => EVENT_COUNT;
 
     /// <summary>
-    /// Retrieves the last player which has interacted with this trigger volume.
+    ///   Retrieves the last player which has interacted with this trigger volume.
     /// </summary>
     public VRCPlayerApi LastPlayer { get; private set; }
 
@@ -56,18 +55,14 @@ namespace VRCTools.World.Player {
 
     public override void OnPlayerTriggerEnter(VRCPlayerApi player) {
       var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
-      if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) {
-        return;
-      }
+      if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
 
       this.LastPlayer = player;
 
       for (var i = 0; i < this.enterBehaviours.Length; i++) {
         var behaviour = this.enterBehaviours[i];
         var eventName = this.enterBehaviorEventNames[i];
-        if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) {
-          continue;
-        }
+        if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) continue;
 
         behaviour.SendCustomEvent(eventName);
       }
@@ -77,18 +72,14 @@ namespace VRCTools.World.Player {
 
     public override void OnPlayerTriggerExit(VRCPlayerApi player) {
       var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
-      if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) {
-        return;
-      }
+      if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
 
       this.LastPlayer = player;
 
       for (var i = 0; i < this.exitBehaviours.Length; i++) {
         var behaviour = this.exitBehaviours[i];
         var eventName = this.exitBehaviorEventNames[i];
-        if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) {
-          continue;
-        }
+        if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) continue;
 
         behaviour.SendCustomEvent(eventName);
       }

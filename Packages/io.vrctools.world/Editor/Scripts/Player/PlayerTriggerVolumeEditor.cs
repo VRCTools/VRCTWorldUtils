@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using UnityEditor;
 using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
@@ -22,15 +21,14 @@ using VRCTools.World.Player;
 namespace VRCTools.World.Editor.Player {
   [CustomEditor(typeof(PlayerTriggerVolume))]
   public class PlayerTriggerVolumeEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _enterBehaviours;
-    private SerializedProperty _enterBehaviourEventNames;
+    private SerializedProperty _acceptedPlayerTypes;
     private MultiPropertyList _enterBehaviorList;
+    private SerializedProperty _enterBehaviourEventNames;
+    private SerializedProperty _enterBehaviours;
+    private MultiPropertyList _exitBehaviorList;
+    private SerializedProperty _exitBehaviourEventNames;
 
     private SerializedProperty _exitBehaviours;
-    private SerializedProperty _exitBehaviourEventNames;
-    private MultiPropertyList _exitBehaviorList;
-
-    private SerializedProperty _acceptedPlayerTypes;
 
     private void OnEnable() {
       this._enterBehaviours = this.serializedObject.FindProperty(nameof(PlayerTriggerVolume.enterBehaviours));
@@ -66,7 +64,7 @@ namespace VRCTools.World.Editor.Player {
       this._enterBehaviorList.DoLayout();
       this._exitBehaviorList.DoLayout();
       EditorGUILayout.Space(20);
-      
+
       EditorGUILayout.LabelField("Advanced Settings", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._acceptedPlayerTypes);
     }

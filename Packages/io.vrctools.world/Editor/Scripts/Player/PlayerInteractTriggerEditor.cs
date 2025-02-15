@@ -22,8 +22,8 @@ namespace VRCTools.World.Editor.Player {
   [CustomEditor(typeof(PlayerInteractTrigger))]
   public class PlayerInteractTriggerEditor : AbstractCustomUdonEditor {
     private SerializedProperty _behaviours;
-    private SerializedProperty _eventNames;
     private MultiPropertyList _behavioursList;
+    private SerializedProperty _eventNames;
 
     private void OnEnable() {
       this._behaviours = this.serializedObject.FindProperty(nameof(PlayerInteractTrigger.behaviours));

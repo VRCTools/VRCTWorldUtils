@@ -71,9 +71,7 @@ namespace VRCTools.World.SynchronizedValues {
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
-    public void _Clear() {
-      this.State = "";
-    }
+    public void _Clear() { this.State = ""; }
 
     public override void OnDeserialization() {
       base.OnDeserialization();

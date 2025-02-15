@@ -33,6 +33,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
 
     [FormerlySerializedAs("useMaterialBlock")]
     public bool usePropertyBlock;
+
     public Renderer targetRenderer;
 
     public SynchronizedBoolean[] synchronizedBooleans;
@@ -160,12 +161,12 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       var parameterIds = new int[parameterNames.Length];
       for (var i = 0; i < parameterNames.Length; i++) {
         var parameterName = parameterNames[i];
-        
+
         if (string.IsNullOrEmpty(parameterName)) {
           parameterIds[i] = -1;
           continue;
         }
-        
+
         parameterIds[i] = VRCShader.PropertyToID(parameterName);
       }
 

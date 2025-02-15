@@ -20,13 +20,9 @@ namespace VRCTools.World.Player {
     public const int ALL = 3;
 
     public static bool HasFlag(int value, int mask) {
-      if (mask == ALL) {
-        return value != 0;
-      }
+      if (mask == ALL) return value != 0;
 
-      if (mask == NONE) {
-        return value == 0;
-      }
+      if (mask == NONE) return value == 0;
 
       return (value & mask) != 0;
     }

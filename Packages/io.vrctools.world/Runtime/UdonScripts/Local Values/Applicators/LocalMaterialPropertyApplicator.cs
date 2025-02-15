@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,6 +26,7 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     [FormerlySerializedAs("useMaterialBlock")]
     public bool usePropertyBlock;
+
     public Renderer targetRenderer;
 
     public LocalBoolean[] localBooleans;
@@ -117,7 +117,7 @@ namespace VRCTools.World.LocalValues.Applicators {
 
       foreach (var value in this.localTextures) {
         if (!Utilities.IsValid(value)) continue;
-        
+
         value._RegisterHandler(LocalTexture2D.EVENT_STATE_UPDATED, this, nameof(this._OnTextureStateUpdated));
       }
 
@@ -176,7 +176,7 @@ namespace VRCTools.World.LocalValues.Applicators {
           parameterIds[i] = -1;
           continue;
         }
-        
+
         parameterIds[i] = VRCShader.PropertyToID(parameterNames[i]);
       }
 
@@ -299,9 +299,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyMaterialBlock();
     }
 
-    public void _OnTextureStateUpdated() {
-      this._ApplyUpdatedTextureState(false);
-    }
+    public void _OnTextureStateUpdated() { this._ApplyUpdatedTextureState(false); }
 
     private void _ApplyUpdatedTextureState(bool force) {
       this._EnsureMaterialBlock();
@@ -311,13 +309,13 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localTextureParameterIds[i];
         if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
-        
+
         if (this.usePropertyBlock)
           this._materialPropertyBlock.SetTexture(parameterId, value.State);
         else
           this.material.SetTexture(parameterId, value.State);
       }
-      
+
       this._ApplyMaterialBlock();
     }
 
