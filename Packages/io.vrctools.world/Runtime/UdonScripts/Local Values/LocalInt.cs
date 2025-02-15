@@ -83,5 +83,13 @@ namespace VRCTools.World.LocalValues {
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
+
+    public void _Zero() {
+      this.State = 0;
+    }
+
+    public void _Increment() { this.State++; }
+
+    public void _Decrement() { this.State--; }
   }
 }
