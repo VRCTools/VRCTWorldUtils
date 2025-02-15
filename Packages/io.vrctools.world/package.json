@@ -1,6 +1,6 @@
 {
   "name": "io.vrctools.world",
-  "displayName": "VRCTools World Utilities",
+  "displayName": "VRCTools - World Utilities",
   "version": "0.1.0",
   "unity": "2022.3",
   "description": "Provides various simple scripts for use within worlds.",
