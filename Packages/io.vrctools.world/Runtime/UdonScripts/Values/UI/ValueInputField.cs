@@ -16,41 +16,46 @@ using TMPro;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.World.LocalValues;
+using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
+namespace VRCTools.World.Values.UI {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TMP_InputField))]
-  [AddComponentMenu("Synchronized Values/UI/Synchronized Input Field")]
-  public class SynchronizedInputField : UdonSharpBehaviour {
+  [AddComponentMenu("Values/UI/Value Input Field")]
+  public class ValueInputField : UdonSharpBehaviour {
+    public ValueType source;
+    public LocalString localValue;
     public SynchronizedString synchronizedValue;
 
     private TMP_InputField _inputField;
     private bool _updating;
 
     private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized Input Field] Synchronized value is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+        Debug.LogError("[Input Field] String value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
 
       this._inputField = this.GetComponent<TMP_InputField>();
 
-      this.synchronizedValue._RegisterHandler(SynchronizedString.EVENT_STATE_UPDATED, this,
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
         nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
     private void OnDestroy() {
-      if (!Utilities.IsValid(this.synchronizedValue)) return;
+      if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
 
-      this.synchronizedValue._UnregisterHandler(this);
+      if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
     public void _OnStateUpdated() {
       this._updating = true;
       {
-        this._inputField.text = this.synchronizedValue.State;
+        this._inputField.text = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
       }
       this._updating = false;
     }
@@ -58,7 +63,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
     public void _OnValueChanged() {
       if (this._updating) return;
 
-      this.synchronizedValue.State = this._inputField.text;
+      ValueUtility.SetValue(this.source, this.localValue, this.synchronizedValue, this._inputField.text);
     }
   }
 }

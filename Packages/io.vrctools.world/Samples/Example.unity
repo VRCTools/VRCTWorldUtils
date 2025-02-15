@@ -16577,6 +16577,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Input Field
       objectReference: {fileID: 0}
+    - target: {fileID: 7747411519230282394, guid: e046e727e65fc444ebd1be30a0e3a901,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 754475204}
+    - target: {fileID: 7747411519230282394, guid: e046e727e65fc444ebd1be30a0e3a901,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7747411519230282394, guid: e046e727e65fc444ebd1be30a0e3a901,
+        type: 3}
     - target: {fileID: 7904250220133440433, guid: e046e727e65fc444ebd1be30a0e3a901,
         type: 3}
       propertyPath: synchronizedValue
