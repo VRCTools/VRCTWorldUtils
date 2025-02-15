@@ -59,7 +59,7 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
 
     private void OnEnable() {
       this._material = this.serializedObject.FindProperty(nameof(Applicator.material));
-      this._useMaterialBlock = this.serializedObject.FindProperty(nameof(Applicator.useMaterialBlock));
+      this._useMaterialBlock = this.serializedObject.FindProperty(nameof(Applicator.usePropertyBlock));
       this._targetRenderer = this.serializedObject.FindProperty(nameof(Applicator.targetRenderer));
 
       this._synchronizedBooleans = this.serializedObject.FindProperty(nameof(Applicator.synchronizedBooleans));

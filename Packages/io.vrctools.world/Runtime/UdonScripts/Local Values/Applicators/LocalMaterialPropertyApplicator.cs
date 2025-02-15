@@ -15,6 +15,7 @@
 using System;
 using UdonSharp;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VRC.SDKBase;
 using VRCTools.World.Utils;
 
@@ -24,7 +25,8 @@ namespace VRCTools.World.LocalValues.Applicators {
   public class LocalMaterialPropertyApplicator : UdonSharpBehaviour {
     public Material material;
 
-    public bool useMaterialBlock;
+    [FormerlySerializedAs("useMaterialBlock")]
+    public bool usePropertyBlock;
     public Renderer targetRenderer;
 
     public LocalBoolean[] localBooleans;
@@ -55,7 +57,7 @@ namespace VRCTools.World.LocalValues.Applicators {
     private MaterialPropertyBlock _materialPropertyBlock;
 
     private void Start() {
-      if (this.useMaterialBlock) {
+      if (this.usePropertyBlock) {
         if (!Utilities.IsValid(this.targetRenderer)) {
           Debug.LogError("[Local Material Property Applicator] Renderer is invalid - Disabled");
           this.enabled = false;
@@ -185,7 +187,7 @@ namespace VRCTools.World.LocalValues.Applicators {
     private void _EnsureMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
-      if (!this.useMaterialBlock) return;
+      if (!this.usePropertyBlock) return;
 
       // allocation of material property blocks in Start() used to cause Unity to crash in some circumstances thus
       // requiring this delayed allocation
@@ -200,7 +202,7 @@ namespace VRCTools.World.LocalValues.Applicators {
     private void _ApplyMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
-      if (!this.useMaterialBlock) return;
+      if (!this.usePropertyBlock) return;
 
       this.targetRenderer.SetPropertyBlock(this._materialPropertyBlock);
     }
@@ -215,7 +217,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localBooleanParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.useMaterialBlock)
+        if (this.usePropertyBlock)
           this._materialPropertyBlock.SetInt(parameterId, value.State ? 1 : 0);
         else
           this.material.SetInt(parameterId, value.State ? 1 : 0);
@@ -234,7 +236,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localColorParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.useMaterialBlock)
+        if (this.usePropertyBlock)
           this._materialPropertyBlock.SetColor(parameterId, value.State);
         else
           this.material.SetColor(parameterId, value.State);
@@ -253,7 +255,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localFloatParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.useMaterialBlock)
+        if (this.usePropertyBlock)
           this._materialPropertyBlock.SetFloat(parameterId, value.State);
         else
           this.material.SetFloat(parameterId, value.State);
@@ -272,7 +274,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localIntParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.useMaterialBlock)
+        if (this.usePropertyBlock)
           this._materialPropertyBlock.SetInt(parameterId, value.State);
         else
           this.material.SetInt(parameterId, value.State);
@@ -293,7 +295,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localTextureParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
         
-        if (this.useMaterialBlock)
+        if (this.usePropertyBlock)
           this._materialPropertyBlock.SetTexture(parameterId, value.State);
         else
           this.material.SetTexture(parameterId, value.State);
@@ -312,7 +314,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         var parameterId = this._localVectorParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.useMaterialBlock)
+        if (this.usePropertyBlock)
           this._materialPropertyBlock.SetVector(parameterId, value.State);
         else
           this.material.SetVector(parameterId, value.State);
