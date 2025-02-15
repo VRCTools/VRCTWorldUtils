@@ -14,6 +14,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Values.Converters;
 
@@ -79,6 +80,14 @@ namespace Editor.Scripts.Values.Converters {
       EditorGUILayout.PropertyField(this._useSynchronizedTarget);
       EditorGUILayout.PropertyField(
         this._useSynchronizedTarget.boolValue ? this._synchronizedTarget : this._localTarget);
+
+      var useSynchronizedTarget = this._useSynchronizedTarget.boolValue;
+      if ((useSynchronizedTarget && !Utilities.IsValid(this._synchronizedTarget.objectReferenceValue)) ||
+          (!useSynchronizedTarget && !Utilities.IsValid(this._localTarget.objectReferenceValue))) {
+        EditorGUILayout.HelpBox("Target value is invalid or unset - Component will be disabled on start",
+          MessageType.Error);
+      }
+
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Red Channel", EditorStyles.boldLabel);
@@ -116,6 +125,9 @@ namespace Editor.Scripts.Values.Converters {
       }
 
       EditorGUILayout.PropertyField(property, new GUIContent("Source"));
+      if (s != ValueSource.STATIC && !Utilities.IsValid(property.objectReferenceValue)) {
+        EditorGUILayout.HelpBox("Source value is invalid or unset - Component will be set to zero", MessageType.Error);
+      }
     }
   }
 }
