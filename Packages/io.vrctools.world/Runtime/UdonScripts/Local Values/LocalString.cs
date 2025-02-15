@@ -46,6 +46,8 @@ namespace VRCTools.World.LocalValues {
       get => this._state;
       set {
         if (this._state == value) return;
+        
+        this._state = value;
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
     }
