@@ -15438,6 +15438,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 21683999}
     m_Modifications:
+    - target: {fileID: 1975291049368413165, guid: 26e6dc3ea7e293545859b3850e97bfd4,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 263443355}
+    - target: {fileID: 1975291049368413165, guid: 26e6dc3ea7e293545859b3850e97bfd4,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1975291049368413165, guid: 26e6dc3ea7e293545859b3850e97bfd4,
+        type: 3}
     - target: {fileID: 7924520984173687637, guid: 26e6dc3ea7e293545859b3850e97bfd4,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -19037,6 +19048,11 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 35630e38b4e5ffb40b44ec5348b4333f, type: 2}
+    - target: {fileID: 2851154988622244208, guid: 0c3599c88b2283446a2536baae752245,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3981738645549292172, guid: 0c3599c88b2283446a2536baae752245,
         type: 3}
       propertyPath: m_Pivot.x

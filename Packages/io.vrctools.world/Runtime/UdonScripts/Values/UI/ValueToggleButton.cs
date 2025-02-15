@@ -16,15 +16,17 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.World.LocalValues;
+using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
-  /// <summary>
-  ///   Provides an implementation of a toggle button using a synchronized boolean value.
-  /// </summary>
-  [RequireComponent(typeof(Image))]
+namespace VRCTools.World.Values.UI {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-  [AddComponentMenu("Synchronized Values/UI/Synchronized Toggle Button")]
-  public class SynchronizedToggleButton : UdonSharpBehaviour {
+  [RequireComponent(typeof(Image))]
+  [AddComponentMenu("Values/UI/Value Toggle Button")]
+  public class ValueToggleButton : UdonSharpBehaviour {
+    public ValueType source;
+    public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 
     public Color activeColor = Color.white;
@@ -35,29 +37,34 @@ namespace VRCTools.World.SynchronizedValues.UI {
     private Image _image;
 
     private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized Toggle Button] Synchronized value is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+        Debug.LogError("[Value Toggle Button] Boolean value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
 
       this._image = this.GetComponent<Image>();
 
-      this.synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this,
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
         nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
     private void OnDestroy() {
-      if (!Utilities.IsValid(this.synchronizedValue)) return;
+      if (Utilities.IsValid(this.localValue)) {
+        this.localValue._UnregisterHandler(this);
+      }
 
-      this.synchronizedValue._UnregisterHandler(this);
+      if (Utilities.IsValid(this.synchronizedValue)) {
+        this.synchronizedValue._UnregisterHandler(this);
+      }
     }
 
     public void _OnStateUpdated() {
-      this._image.color = this.synchronizedValue.State != this.invert ? this.activeColor : this.inactiveColor;
+      var state = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
+      this._image.color = state != this.invert ? this.activeColor : this.inactiveColor;
     }
 
-    public void _Toggle() { this.synchronizedValue._Toggle(); }
+    public void _Toggle() { ValueUtility.ToggleValue(this.source, this.localValue, this.synchronizedValue); }
   }
 }

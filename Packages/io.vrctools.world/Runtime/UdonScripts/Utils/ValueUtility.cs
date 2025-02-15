@@ -143,6 +143,17 @@ namespace VRCTools.World.Utils {
       }
     }
 
+    public static void ToggleValue(ValueType type, LocalBoolean localValue, SynchronizedBoolean synchronizedValue) {
+      switch (type) {
+        case ValueType.LOCAL:
+          localValue._Toggle();
+          break;
+        case ValueType.SYNCHRONIZED:
+          synchronizedValue._Toggle();
+          break;
+      }
+    }
+
     public static void RegisterUpdateHandler(
       ValueSource source,
       LocalColor localValue,
