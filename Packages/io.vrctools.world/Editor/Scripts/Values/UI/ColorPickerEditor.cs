@@ -1,0 +1,57 @@
+﻿// Copyright 2025 .start <https://dotstart.tv>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using UnityEditor;
+using UnityEngine;
+using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Editor.Utils;
+using VRCTools.World.Values.UI;
+
+namespace VRCTools.World.Editor.Values.UI {
+  [CustomEditor(typeof(ColorPicker))]
+  public class ColorPickerEditor : AbstractCustomUdonEditor {
+    private SerializedProperty _crosshair;
+    private SerializedProperty _cursor;
+    private SerializedProperty _localValue;
+    private SerializedProperty _source;
+    private SerializedProperty _synchronizedValue;
+
+    protected override string HelpText =>
+      "Provides a visual color picker which may be used to adjust local color values within your world on the " +
+      "fly.\n\n" +
+      "This script is expected to be paired with a LocalColor component.";
+
+    private void OnEnable() {
+      this._source = this.serializedObject.FindProperty(nameof(ColorPicker.source));
+      this._localValue = this.serializedObject.FindProperty(nameof(ColorPicker.localValue));
+      this._synchronizedValue = this.serializedObject.FindProperty(nameof(ColorPicker.synchronizedValue));
+
+      this._cursor = this.serializedObject.FindProperty(nameof(ColorPicker.cursor));
+      this._crosshair = this.serializedObject.FindProperty(nameof(ColorPicker.crosshair));
+    }
+
+    protected override void RenderInspectorGUI() {
+      ValueEditorUtility.DrawSourceProperty(new GUIContent("Source"), this._source, this._localValue,
+        this._synchronizedValue,
+        "Invalid or unspecified local value reference.\n\n" +
+        "This component will disable itself upon startup.");
+
+      EditorGUILayout.Space(20);
+
+      EditorGUILayout.LabelField("UI Elements", EditorStyles.boldLabel);
+      EditorGUILayout.PropertyField(this._cursor);
+      EditorGUILayout.PropertyField(this._crosshair);
+    }
+  }
+}

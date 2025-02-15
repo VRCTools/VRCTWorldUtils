@@ -14,51 +14,69 @@
 
 using UdonSharp;
 using UnityEngine;
+using UnityEngine.UI;
 using VRC.SDKBase;
-using VRCTools.World.Abstractions;
+using VRCTools.World.Internal;
+using VRCTools.World.LocalValues;
+using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
-namespace VRCTools.World.LocalValues.UI {
+namespace VRCTools.World.Values.UI {
   /// <summary>
   ///   Provides a color picker component which may be paired with a <see cref="LocalColor" /> component in order
   ///   to permit dynamic color changes.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/UI/Local Color Picker")]
-  public class LocalColorPicker : AbstractColorPicker {
+  public class ColorPicker : UdonSharpBehaviour {
+    public ValueType source;
     public LocalColor localValue;
+    public SynchronizedColor synchronizedValue;
+
+    public ColorPickerCursor cursor;
+    public RawImage crosshair;
 
     private bool _updating;
 
-    protected override void Start() {
-      if (!Utilities.IsValid(this.localValue)) {
+    private void Start() {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
         Debug.LogError("[Color Picker] Invalid local value reference - Disabled");
         this.enabled = false;
         return;
       }
 
-      this.localValue._RegisterHandler(LocalColor.EVENT_STATE_UPDATED, this,
+      if (!Utilities.IsValid(this.cursor)) {
+        Debug.LogError("[Color Picker] Invalid cursor reference - Disabled");
+        this.enabled = false;
+        return;
+      }
+
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
         nameof(this._OnStateUpdated));
 
-      base.Start();
+      this.cursor._RegisterHandler(ColorPickerCursor.EVENT_POSITION_UPDATED, this, nameof(this._OnPositionUpdated));
     }
 
-    protected override void OnDestroy() {
-      base.OnDestroy();
+    private void OnDestroy() {
+      if (Utilities.IsValid(this.cursor)) this.cursor._UnregisterHandler(this);
 
-      if (!Utilities.IsValid(this.localValue)) return;
+      if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
 
-      this.localValue._UnregisterHandler(this);
+      if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
-    protected override void _UpdateColor(Color color) {
+    private void _UpdateColor(Color color) {
       this.localValue.State = color;
-      base._UpdateColor(color);
+
+      if (Utilities.IsValid(this.crosshair))
+        this.crosshair.color = color;
     }
 
-    public override void _OnPositionUpdated() {
+    public void _OnPositionUpdated() {
       if (this._updating) return;
 
-      base._OnPositionUpdated();
+      var pos = this.cursor.Position;
+      this._UpdateColor(Color.HSVToRGB(pos.x, 1, pos.y));
     }
 
     public void _OnStateUpdated() {

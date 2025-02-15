@@ -3230,7 +3230,7 @@ MonoBehaviour:
   SynchronizePosition: 0
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
-  _syncMethod: 0
+  _syncMethod: 1
   serializedProgramAsset: {fileID: 11400000, guid: bea0c622060145441816cc8ce1712e3b,
     type: 2}
   programSource: {fileID: 11400000, guid: 46720b8fb3e2e2249835b064e4943aa2, type: 2}
@@ -11173,7 +11173,7 @@ MonoBehaviour:
   SynchronizePosition: 0
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
-  _syncMethod: 0
+  _syncMethod: 1
   serializedProgramAsset: {fileID: 11400000, guid: facba7cfe6451324b9484b9cbfa599e2,
     type: 2}
   programSource: {fileID: 11400000, guid: 9918891992e479b438e7508012e9bf52, type: 2}
@@ -15381,6 +15381,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7998095256729101642, guid: 5febb495a184de8459dfdd36a395e055,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555056257435537881, guid: 5febb495a184de8459dfdd36a395e055,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 689711376}
+    - target: {fileID: 8555056257435537881, guid: 5febb495a184de8459dfdd36a395e055,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8555056257435537881, guid: 5febb495a184de8459dfdd36a395e055,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
