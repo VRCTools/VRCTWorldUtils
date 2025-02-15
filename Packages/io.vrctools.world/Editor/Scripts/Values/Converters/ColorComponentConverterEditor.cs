@@ -18,7 +18,7 @@ using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Values.Converters;
 
-namespace Editor.Scripts.Values.Converters {
+namespace VRCTools.World.Editor.Values.Converters {
   [CustomEditor(typeof(ColorComponentConverter))]
   public class ColorComponentConverterEditor : AbstractCustomUdonEditor {
     public SerializedProperty _useSynchronizedTarget;
