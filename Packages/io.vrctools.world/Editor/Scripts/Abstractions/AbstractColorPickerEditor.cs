@@ -11,8 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Abstractions;
+
 using UnityEditor;
+using VRCTools.World.Abstractions;
 
 namespace VRCTools.World.Editor.Abstractions {
   public abstract class AbstractColorPickerEditor : AbstractCustomUdonEditor {

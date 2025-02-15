@@ -11,23 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.Event;
+
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDK3.Components;
 using VRC.SDKBase;
+using VRCTools.Event;
 
 namespace VRCTools.World.Internal {
   /// <summary>
-  /// Implements a simple cursor for use within color picker components.
-  ///
-  /// This script practically permits the placement of a 3D pickup on a 2D surface within the bounds of the color
-  /// picker and will emit update events as the object is picked up and released in order to update the color picker
-  /// with its new value.
-  ///
-  /// Note that the pickup on which this script is placed should not be synchronized. All synchronization is implemented
-  /// through the actual color picker component.
+  ///   Implements a simple cursor for use within color picker components.
+  ///   This script practically permits the placement of a 3D pickup on a 2D surface within the bounds of the color
+  ///   picker and will emit update events as the object is picked up and released in order to update the color picker
+  ///   with its new value.
+  ///   Note that the pickup on which this script is placed should not be synchronized. All synchronization is implemented
+  ///   through the actual color picker component.
   /// </summary>
   [RequireComponent(typeof(VRCPickup))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]

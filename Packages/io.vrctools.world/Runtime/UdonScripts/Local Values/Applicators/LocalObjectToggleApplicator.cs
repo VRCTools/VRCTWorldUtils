@@ -41,9 +41,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       var active = this.localValue.State ^ this.invert;
 
       foreach (var target in this.targets) {
-        if (!Utilities.IsValid(target)) {
-          continue;
-        }
+        if (!Utilities.IsValid(target)) continue;
 
         target.SetActive(active);
       }

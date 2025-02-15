@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using UdonSharp;
 using UnityEngine;
 using VRCTools.Event;
@@ -46,7 +47,7 @@ namespace VRCTools.World.LocalValues {
       get => this._state;
       set {
         if (this._state == value) return;
-        
+
         this._state = value;
         this._EmitEvent(EVENT_STATE_UPDATED);
       }

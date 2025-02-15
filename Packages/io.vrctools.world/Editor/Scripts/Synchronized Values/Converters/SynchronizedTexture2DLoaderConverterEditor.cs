@@ -7,21 +7,21 @@ namespace VRCTools.World.Editor.SynchronizedValues.Converters {
 
   [CustomEditor(typeof(Converter))]
   public class SynchronizedTexture2DLoaderConverterEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _localUrl;
-    private SerializedProperty _localTexture2D;
+    private SerializedProperty _accessDeniedErrorTexture;
 
     private SerializedProperty _defaultTexture;
-    private SerializedProperty _loadingTexture;
-    private SerializedProperty _errorTexture;
-    private SerializedProperty _accessDeniedErrorTexture;
     private SerializedProperty _downloadErrorTexture;
-    private SerializedProperty _invalidErrorTexture;
-    private SerializedProperty _tooManyRequestsErrorTexture;
-    private SerializedProperty _invalidUrlErrorTexture;
-
-    private SerializedProperty _retryPeriod;
 
     private bool _errorFoldout;
+    private SerializedProperty _errorTexture;
+    private SerializedProperty _invalidErrorTexture;
+    private SerializedProperty _invalidUrlErrorTexture;
+    private SerializedProperty _loadingTexture;
+    private SerializedProperty _localTexture2D;
+    private SerializedProperty _localUrl;
+
+    private SerializedProperty _retryPeriod;
+    private SerializedProperty _tooManyRequestsErrorTexture;
 
     protected override string HelpText =>
       "Retrieves images from a web server based on a synchronized url value.\n\n" +

@@ -11,12 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using UdonSharpEditor;
 
 namespace VRCTools.World.Editor.Abstractions {
   /// <summary>
-  /// Provides a specialized variation of the abstract custom editor implementation which includes Udon related UI
-  /// elements by default.
+  ///   Provides a specialized variation of the abstract custom editor implementation which includes Udon related UI
+  ///   elements by default.
   /// </summary>
   public abstract class AbstractCustomUdonEditor : AbstractCustomEditor {
     public override void OnInspectorGUI() {

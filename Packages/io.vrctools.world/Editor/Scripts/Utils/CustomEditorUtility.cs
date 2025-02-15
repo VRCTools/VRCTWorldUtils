@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using System.Linq;
 using UdonSharp;
 using UdonSharpEditor;
@@ -24,7 +25,7 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace VRCTools.World.Editor.Utils {
   /// <summary>
-  /// Provides various simple functions for use within custom editor implementations.
+  ///   Provides various simple functions for use within custom editor implementations.
   /// </summary>
   internal static class CustomEditorUtility {
     /// <summary>

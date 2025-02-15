@@ -11,15 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Internal;
+
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.World.Internal;
 
 namespace VRCTools.World.Abstractions {
   /// <summary>
-  /// Provides a basis for a generic color picker component.
+  ///   Provides a basis for a generic color picker component.
   /// </summary>
   public abstract class AbstractColorPicker : UdonSharpBehaviour {
     public ColorPickerCursor cursor;

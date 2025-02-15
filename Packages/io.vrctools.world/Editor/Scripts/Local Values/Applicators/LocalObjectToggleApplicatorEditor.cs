@@ -23,13 +23,12 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
   [CustomEditor(typeof(Applicator))]
   public class LocalObjectToggleApplicatorEditor : AbstractCustomUdonEditor {
+    private SerializedProperty _invert;
     private SerializedProperty _localValue;
 
-    private SerializedProperty _targets;
-
-    private SerializedProperty _invert;
-
     private ReorderableList _targetList;
+
+    private SerializedProperty _targets;
 
     private void OnEnable() {
       this._localValue

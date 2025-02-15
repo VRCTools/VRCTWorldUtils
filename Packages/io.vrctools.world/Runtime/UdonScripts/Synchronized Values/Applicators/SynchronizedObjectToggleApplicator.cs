@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -31,8 +32,9 @@ namespace VRCTools.World.SynchronizedValues.UI {
         this.enabled = false;
         return;
       }
-      
-      this.synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
+
+      this.synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this,
+        nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
@@ -40,10 +42,8 @@ namespace VRCTools.World.SynchronizedValues.UI {
       var active = this.synchronizedValue.State ^ this.invert;
 
       foreach (var target in this.targets) {
-        if (!Utilities.IsValid(target)) {
-          continue;
-        }
-        
+        if (!Utilities.IsValid(target)) continue;
+
         target.SetActive(active);
       }
     }

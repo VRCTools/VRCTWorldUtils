@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using VRCTools.World.Editor.Abstractions;
 using UnityEditor;
 using UnityEngine;
+using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.LocalValues.UI;
@@ -23,10 +23,10 @@ namespace VRCTools.World.Editor.LocalValues.UI {
   [CustomEditor(typeof(LocalIntLabel))]
   public class LocalIntLabelEditor : AbstractCustomUdonEditor {
     private SerializedProperty _enableMapping;
+    private SerializedProperty _localValue;
     private SerializedProperty _mappingLowerBound;
     private SerializedProperty _mappingUpperBound;
     private SerializedProperty _multiplier;
-    private SerializedProperty _localValue;
 
     protected override string HelpText =>
       "Displays the value of a local int.\n\n" +

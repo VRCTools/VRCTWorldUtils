@@ -11,13 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Editor.Abstractions;
+
 using UnityEditor;
+using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 
 namespace VRCTools.World.Editor.LocalValues {
   using Value = LocalBoolean;
-  
+
   [CustomEditor(typeof(Value))]
   public class LocalBooleanEditor : AbstractCustomUdonEditor {
     private SerializedProperty _defaultValue;
@@ -34,9 +35,7 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For material replacements use LocalMaterialPropertyApplicator\n" +
       "Additional compatible scripts may be available within this package.";
 
-    private void OnEnable() {
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-    }
+    private void OnEnable() { this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue)); }
 
     protected override void RenderInspectorGUI() {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);

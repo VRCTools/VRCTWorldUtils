@@ -41,13 +41,13 @@ namespace VRCTools.World.LocalValues.Applicators {
     public LocalVector3[] localVectors;
     public string[] localVectorParameters;
 
-    private MaterialPropertyBlock _materialPropertyBlock;
-
     private int[] _localBooleanParameterIds;
     private int[] _localColorParameterIds;
     private int[] _localFloatParameterIds;
     private int[] _localIntParameterIds;
     private int[] _localVectorParameterIds;
+
+    private MaterialPropertyBlock _materialPropertyBlock;
 
     private void Start() {
       if (this.useMaterialBlock) {
@@ -129,7 +129,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyUpdatedIntState(true);
       this._ApplyUpdatedVectorState(true);
     }
-    
+
     private void _EnsureMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP

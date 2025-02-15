@@ -11,10 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Editor.Abstractions;
-using VRCTools.World.SynchronizedValues;
+
 using UnityEditor;
 using UnityEngine;
+using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.SynchronizedValues;
 
 namespace VRCTools.World.Editor.SynchronizedValues {
   using Value = SynchronizedFloat;

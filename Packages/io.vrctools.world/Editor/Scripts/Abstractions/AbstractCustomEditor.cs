@@ -11,13 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Editor.Utils;
+
 using UnityEditor;
 using UnityEngine;
+using VRCTools.World.Editor.Utils;
 
 namespace VRCTools.World.Editor.Abstractions {
   /// <summary>
-  /// Provides a base implementation for custom editors within the assembly.
+  ///   Provides a base implementation for custom editors within the assembly.
   /// </summary>
   public abstract class AbstractCustomEditor : UnityEditor.Editor {
     private bool _helpFoldout;

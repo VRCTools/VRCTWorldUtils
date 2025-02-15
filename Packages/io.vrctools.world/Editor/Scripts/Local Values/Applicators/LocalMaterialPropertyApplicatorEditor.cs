@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using VRCTools.World.Editor.Abstractions;
-using VRCTools.World.Editor.Utils;
-using VRCTools.World.LocalValues.UI;
 using UnityEditor;
 using UnityEngine;
+using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues.Applicators;
 
 namespace VRCTools.World.Editor.LocalValues.Applicators {
@@ -24,8 +23,6 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
   [CustomEditor(typeof(Applicator))]
   public class LocalMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _material;
-
     private MultiPropertyList _localBooleanList;
     private SerializedProperty _localBooleanParameters;
 
@@ -46,6 +43,7 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
     private SerializedProperty _localVectorParameters;
 
     private SerializedProperty _localVectors;
+    private SerializedProperty _material;
     private SerializedProperty _targetRenderer;
     private SerializedProperty _useMaterialBlock;
 

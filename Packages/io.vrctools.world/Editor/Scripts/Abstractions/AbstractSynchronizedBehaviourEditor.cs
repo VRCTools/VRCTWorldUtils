@@ -11,15 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using VRCTools.World.Abstractions;
-using VRCTools.World.Editor.Utils;
+
 using UnityEditor;
 using UnityEngine;
+using VRCTools.World.Abstractions;
+using VRCTools.World.Editor.Utils;
 
 namespace VRCTools.World.Editor.Abstractions {
   /// <summary>
-  /// Provides a specialized extension to the custom Udon editor which handles the fields and functionality provide
-  /// within <see cref="AbstractSynchronizedBehaviour"/>.
+  ///   Provides a specialized extension to the custom Udon editor which handles the fields and functionality provide
+  ///   within <see cref="AbstractSynchronizedBehaviour" />.
   /// </summary>
   public abstract class AbstractSynchronizedBehaviourEditor : AbstractCustomUdonEditor {
     private bool _advancedFoldout;

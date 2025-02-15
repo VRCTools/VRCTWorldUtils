@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -21,43 +22,43 @@ namespace VRCTools.World.LocalValues {
     ///   Encapsulates a local URL value.
     /// </summary>
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    [AddComponentMenu("Local Values/Local URL")]
-    public class LocalUrl : AbstractEventEmitter {
-        public const int EVENT_STATE_UPDATED = 0;
-        public const int EVENT_COUNT = 1;
+  [AddComponentMenu("Local Values/Local URL")]
+  public class LocalUrl : AbstractEventEmitter {
+    public const int EVENT_STATE_UPDATED = 0;
+    public const int EVENT_COUNT = 1;
 
-        /// <summary>
-        ///   Identifies the value with which this local URL will be initialized.
-        /// </summary>
-        public VRCUrl defaultValue = VRCUrl.Empty;
+    /// <summary>
+    ///   Identifies the value with which this local URL will be initialized.
+    /// </summary>
+    public VRCUrl defaultValue = VRCUrl.Empty;
 
-        /// <summary>
-        ///   Stores the actual local state.
-        /// </summary>
-        private VRCUrl _state = VRCUrl.Empty;
+    /// <summary>
+    ///   Stores the actual local state.
+    /// </summary>
+    private VRCUrl _state = VRCUrl.Empty;
 
-        public override int EventCount => EVENT_COUNT;
+    public override int EventCount => EVENT_COUNT;
 
-        /// <summary>
-        ///   Retrieves or updates the local state.
-        ///   When setting the value, event emission will only take place if the new value differs from the current
-        ///   value. Otherwise, the operation effectively acts as a noop.
-        /// </summary>
-        public VRCUrl State {
-            get => this._state;
-            set {
-                if (this._state.Equals(value)) return;
+    /// <summary>
+    ///   Retrieves or updates the local state.
+    ///   When setting the value, event emission will only take place if the new value differs from the current
+    ///   value. Otherwise, the operation effectively acts as a noop.
+    /// </summary>
+    public VRCUrl State {
+      get => this._state;
+      set {
+        if (this._state.Equals(value)) return;
 
-                this._state = value ?? VRCUrl.Empty;
-                
-                this._EmitEvent(EVENT_STATE_UPDATED);
-            }
-        }
+        this._state = value ?? VRCUrl.Empty;
 
-        private void Start() {
-            this._state = this.defaultValue ?? VRCUrl.Empty;
-
-            this._EmitEvent(EVENT_STATE_UPDATED);
-        }
+        this._EmitEvent(EVENT_STATE_UPDATED);
+      }
     }
+
+    private void Start() {
+      this._state = this.defaultValue ?? VRCUrl.Empty;
+
+      this._EmitEvent(EVENT_STATE_UPDATED);
+    }
+  }
 }
