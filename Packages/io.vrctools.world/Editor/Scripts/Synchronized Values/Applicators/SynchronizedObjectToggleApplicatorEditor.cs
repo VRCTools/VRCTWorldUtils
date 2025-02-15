@@ -15,31 +15,20 @@
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using VRCTools.World.Abstractions;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues.Applicators;
 
 namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
   [CustomEditor(typeof(SynchronizedObjectToggleApplicator))]
-  public class SynchronizedObjectToggleApplicatorEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _invert;
+  public class SynchronizedObjectToggleApplicatorEditor : AbstractObjectToggleApplicatorEditor {
     private SerializedProperty _synchronizedValue;
 
-    private ReorderableList _targetList;
-
-    private SerializedProperty _targets;
-
-    private void OnEnable() {
+    protected override void OnEnable() {
       this._synchronizedValue
         = this.serializedObject.FindProperty(nameof(SynchronizedObjectToggleApplicator.synchronizedValue));
 
-      this._targets = this.serializedObject.FindProperty(nameof(SynchronizedObjectToggleApplicator.targets));
-
-      this._invert = this.serializedObject.FindProperty(nameof(SynchronizedObjectToggleApplicator.invert));
-
-      this._targetList = new ReorderableList(this.serializedObject, this._targets, true, true, true, true);
-      this._targetList.drawHeaderCallback = this._OnDrawHeader;
-      this._targetList.elementHeightCallback = this._CalculateElementHeight;
-      this._targetList.drawElementCallback = this._OnDrawElement;
+      base.OnEnable();
     }
 
     protected override void RenderInspectorGUI() {
@@ -52,22 +41,7 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
 
       EditorGUILayout.Space(20);
 
-      this._targetList.DoLayoutList();
-
-      EditorGUILayout.LabelField("Advanced Settings");
-      EditorGUILayout.PropertyField(this._invert);
-    }
-
-    private float _CalculateElementHeight(int index) {
-      var element = this._targets.GetArrayElementAtIndex(index);
-      return EditorGUI.GetPropertyHeight(element);
-    }
-
-    private void _OnDrawHeader(Rect rect) { EditorGUI.LabelField(rect, "Targets", EditorStyles.boldLabel); }
-
-    private void _OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
-      var element = this._targets.GetArrayElementAtIndex(index);
-      EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), element);
+      base.RenderInspectorGUI();
     }
   }
 }
