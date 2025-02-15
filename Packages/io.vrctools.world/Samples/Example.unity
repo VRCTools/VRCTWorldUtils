@@ -14681,6 +14681,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: URL Label
       objectReference: {fileID: 0}
+    - target: {fileID: 1738106726821459431, guid: 384c068586878994b86216c8bf37fc45,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 1796881856}
+    - target: {fileID: 1738106726821459431, guid: 384c068586878994b86216c8bf37fc45,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1738106726821459431, guid: 384c068586878994b86216c8bf37fc45,
+        type: 3}
     - target: {fileID: 5949739072517916484, guid: 384c068586878994b86216c8bf37fc45,
         type: 3}
       propertyPath: synchronizedValue
@@ -19015,6 +19026,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4651949582522952662, guid: 3e5d0544623f3d942989fb5fb5d93f81,
         type: 3}
+    - target: {fileID: 5787937418324907358, guid: 3e5d0544623f3d942989fb5fb5d93f81,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6238325832543197198, guid: 3e5d0544623f3d942989fb5fb5d93f81,
         type: 3}
       propertyPath: synchronizedValue

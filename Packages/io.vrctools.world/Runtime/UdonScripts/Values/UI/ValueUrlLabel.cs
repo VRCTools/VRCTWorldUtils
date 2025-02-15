@@ -16,20 +16,25 @@ using TMPro;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.World.LocalValues;
+using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
-  [RequireComponent(typeof(TextMeshProUGUI))]
+namespace VRCTools.World.Values.UI {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-  [AddComponentMenu("Synchronized Values/UI/Synchronized URL Label")]
-  public class SynchronizedUrlLabel : UdonSharpBehaviour {
+  [RequireComponent(typeof(TextMeshProUGUI))]
+  [AddComponentMenu("Values/UI/Value URL Label")]
+  public class ValueUrlLabel : UdonSharpBehaviour {
+    public ValueType source;
+    public LocalUrl localValue;
     public SynchronizedUrl synchronizedValue;
     private string _template;
 
     private TextMeshProUGUI _text;
 
     private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized URL Label] Synchronized value is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+        Debug.LogError("[Value URL Label] URL value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
@@ -37,16 +42,24 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._text = this.GetComponent<TextMeshProUGUI>();
       this._template = this._text.text;
 
-      this.synchronizedValue._RegisterHandler(SynchronizedUrl.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
+        nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
     private void OnDestroy() {
-      if (!Utilities.IsValid(this.synchronizedValue)) return;
+      if (Utilities.IsValid(this.localValue)) {
+        this.localValue._UnregisterHandler(this);
+      }
 
-      this.synchronizedValue._UnregisterHandler(this);
+      if (Utilities.IsValid(this.synchronizedValue)) {
+        this.synchronizedValue._UnregisterHandler(this);
+      }
     }
 
-    public void _OnStateUpdated() { this._text.text = string.Format(this._template, this.synchronizedValue.State); }
+    public void _OnStateUpdated() {
+      this._text.text = string.Format(this._template,
+        ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue));
+    }
   }
 }
