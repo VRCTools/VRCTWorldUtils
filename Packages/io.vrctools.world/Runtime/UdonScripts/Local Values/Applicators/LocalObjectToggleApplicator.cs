@@ -18,7 +18,7 @@ using VRC.SDKBase;
 
 namespace VRCTools.World.LocalValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-  [AddComponentMenu("Local Values/Applicators/Object Toggle Applicator")]
+  [AddComponentMenu("Local Values/Applicators/Local Object Toggle Applicator")]
   public class LocalObjectToggleApplicator : UdonSharpBehaviour {
     public LocalBoolean localValue;
 
