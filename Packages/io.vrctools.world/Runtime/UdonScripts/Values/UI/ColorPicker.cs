@@ -27,7 +27,7 @@ namespace VRCTools.World.Values.UI {
   ///   to permit dynamic color changes.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-  [AddComponentMenu("Local Values/UI/Local Color Picker")]
+  [AddComponentMenu("Values/UI/Color Picker")]
   public class ColorPicker : UdonSharpBehaviour {
     public ValueType source;
     public LocalColor localValue;
