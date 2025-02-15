@@ -92,12 +92,15 @@ namespace Editor.Scripts.Values.Converters {
 
       EditorGUILayout.LabelField("Red Channel", EditorStyles.boldLabel);
       _DrawProperty(this._redSource, this._staticRedValue, this._localRedValue, this._synchronizedRedValue);
+      EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Green Channel", EditorStyles.boldLabel);
       _DrawProperty(this._greenSource, this._staticGreenValue, this._localGreenValue, this._synchronizedGreenValue);
+      EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Blue Channel", EditorStyles.boldLabel);
       _DrawProperty(this._blueSource, this._staticBlueValue, this._localBlueValue, this._synchronizedBlueValue);
+      EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Alpha Channel", EditorStyles.boldLabel);
       _DrawProperty(this._alphaSource, this._staticAlphaValue, this._localAlphaValue, this._synchronizedAlphaValue);
