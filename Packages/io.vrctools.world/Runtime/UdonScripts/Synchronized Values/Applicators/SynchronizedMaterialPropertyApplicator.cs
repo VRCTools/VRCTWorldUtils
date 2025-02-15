@@ -17,7 +17,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
+namespace VRCTools.World.SynchronizedValues.Applicators {
   /// <summary>
   ///   Applies a set of synchronized values to material parameters.
   ///   This script can run in either traditional material mode (e.g. all changes are directly applied to a given

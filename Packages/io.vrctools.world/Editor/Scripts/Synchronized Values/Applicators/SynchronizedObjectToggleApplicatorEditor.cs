@@ -16,7 +16,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
-using VRCTools.World.SynchronizedValues.UI;
+using VRCTools.World.SynchronizedValues.Applicators;
 
 namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
   [CustomEditor(typeof(SynchronizedObjectToggleApplicator))]

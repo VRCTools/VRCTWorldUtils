@@ -16,7 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 
-namespace VRCTools.World.SynchronizedValues.UI {
+namespace VRCTools.World.SynchronizedValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Object Toggle Applicator")]
   public class SynchronizedObjectToggleApplicator : UdonSharpBehaviour {
