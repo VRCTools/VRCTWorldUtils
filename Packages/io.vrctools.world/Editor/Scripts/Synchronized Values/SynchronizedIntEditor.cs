@@ -48,12 +48,6 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       this._restrictedMaximumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMaximumValue));
     }
 
-    public override void OnInspectorGUI() {
-      if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(this.target)) return;
-
-      base.OnInspectorGUI();
-    }
-
     protected override void RenderInspectorGUI() {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._defaultValue);
