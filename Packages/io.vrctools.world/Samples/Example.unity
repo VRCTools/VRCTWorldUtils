@@ -2287,7 +2287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1153726559}
   m_Layer: 0
-  m_Name: Local Objects
+  m_Name: Local Values
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2492,7 +2492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1198147472}
   m_Layer: 0
-  m_Name: Synchronized Objects
+  m_Name: Synchronized Values
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
