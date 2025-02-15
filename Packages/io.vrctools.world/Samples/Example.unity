@@ -16572,6 +16572,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7514437339156613689, guid: e046e727e65fc444ebd1be30a0e3a901,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7578726786915727781, guid: e046e727e65fc444ebd1be30a0e3a901,
         type: 3}
       propertyPath: m_Name
@@ -17972,6 +17977,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8d6bd3fa1ca9fa843a5308f30517e32a,
         type: 2}
+    - target: {fileID: 7399840291491584299, guid: 18970b7713e3013478dbb1ef5f60ae59,
+        type: 3}
+      propertyPath: synchronizedValue
+      value: 
+      objectReference: {fileID: 754475204}
+    - target: {fileID: 7399840291491584299, guid: 18970b7713e3013478dbb1ef5f60ae59,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7399840291491584299, guid: 18970b7713e3013478dbb1ef5f60ae59,
+        type: 3}
     - target: {fileID: 8348455247612465211, guid: 18970b7713e3013478dbb1ef5f60ae59,
         type: 3}
       propertyPath: m_Name

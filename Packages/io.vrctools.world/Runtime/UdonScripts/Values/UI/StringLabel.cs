@@ -16,20 +16,25 @@ using TMPro;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.World.LocalValues;
+using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
-namespace VRCTools.World.LocalValues.UI {
+namespace VRCTools.World.Values.UI {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
-  [AddComponentMenu("Local Values/UI/Local String Label")]
-  public class LocalStringLabel : UdonSharpBehaviour {
+  [AddComponentMenu("Values/UI/String Label")]
+  public class StringLabel : UdonSharpBehaviour {
+    public ValueType source;
     public LocalString localValue;
-    private string _template;
+    public SynchronizedString synchronizedValue;
 
+    private string _template;
     private TextMeshProUGUI _text;
 
     private void Start() {
-      if (!Utilities.IsValid(this.localValue)) {
-        Debug.LogError("[Local String Label] Local value is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+        Debug.LogError("[String Label] String value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
@@ -37,17 +42,20 @@ namespace VRCTools.World.LocalValues.UI {
       this._text = this.GetComponent<TextMeshProUGUI>();
       this._template = this._text.text;
 
-      this.localValue._RegisterHandler(LocalString.EVENT_STATE_UPDATED, this,
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
         nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
     private void OnDestroy() {
-      if (!Utilities.IsValid(this.localValue)) return;
+      if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
 
-      this.localValue._UnregisterHandler(this);
+      if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
-    public void _OnStateUpdated() { this._text.text = string.Format(this._template, this.localValue.State); }
+    public void _OnStateUpdated() {
+      this._text.text = string.Format(this._template,
+        ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue));
+    }
   }
 }
