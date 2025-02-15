@@ -24,13 +24,12 @@ namespace VRCTools.World.Editor.SynchronizedValues {
     private SerializedProperty _defaultValue;
 
     protected override string HelpText =>
-      "Provides a synchronized int value with event capabilities.\n\n" +
+      "Provides a synchronized string value with event capabilities.\n\n" +
       "You may use this component to create animations or material properties which may be changed on the fly " +
       "within an instance of this world.\n\n" +
       "Please note that this script is useless on its own. You will need to combine it with either custom " +
       "scripts or one of the scripts provided by this package: \n\n" +
-      " - For material properties use MaterialProperty\n" +
-      " - For animators use AnimatorParameter\n\n" +
+      " - For labels use LocalStringLabel\n" +
       "Additional compatible scripts may be available within this package.";
 
     protected override void OnEnable() {
