@@ -158,7 +158,16 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
 
     private static int[] _ResolveParameterIds(string[] parameterNames) {
       var parameterIds = new int[parameterNames.Length];
-      for (var i = 0; i < parameterNames.Length; i++) parameterIds[i] = VRCShader.PropertyToID(parameterNames[i]);
+      for (var i = 0; i < parameterNames.Length; i++) {
+        var parameterName = parameterNames[i];
+        
+        if (string.IsNullOrEmpty(parameterName)) {
+          parameterIds[i] = -1;
+          continue;
+        }
+        
+        parameterIds[i] = VRCShader.PropertyToID(parameterName);
+      }
 
       return parameterIds;
     }
@@ -186,6 +195,10 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this.targetRenderer.GetPropertyBlock(this._materialPropertyBlock);
     }
 
+    private static bool _ValidateParameter(UdonSharpBehaviour behaviour, int parameterId) {
+      return Utilities.IsValid(parameterId) && parameterId != -1;
+    }
+
     private void _ApplyMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
@@ -202,6 +215,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedBooleans.Length; i++) {
         var value = this.synchronizedBooleans[i];
         var parameterId = this._synchronizedBooleanParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -221,6 +235,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedColors.Length; ++i) {
         var value = this.synchronizedColors[i];
         var parameterId = this._synchronizedColorParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -240,6 +255,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedFloats.Length; ++i) {
         var value = this.synchronizedFloats[i];
         var parameterId = this._synchronizedFloatParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -259,6 +275,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedInts.Length; ++i) {
         var value = this.synchronizedInts[i];
         var parameterId = this._synchronizedIntParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
@@ -278,6 +295,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedVectors.Length; ++i) {
         var value = this.synchronizedVectors[i];
         var parameterId = this._synchronizedVectorParameterIds[i];
+        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
         if (this.usePropertyBlock)
