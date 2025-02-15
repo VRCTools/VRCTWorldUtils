@@ -17,12 +17,13 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
 namespace VRCTools.World.Values.Converters {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Boolean Operation Converter")]
   public class BooleanOperationConverter : UdonSharpBehaviour {
-    public bool useSynchronizedTarget;
+    public ValueType target;
     public LocalBoolean localTarget;
     public SynchronizedBoolean synchronizedTarget;
 
@@ -39,14 +40,8 @@ namespace VRCTools.World.Values.Converters {
     public SynchronizedBoolean synchronizedBetaValue;
 
     private void Start() {
-      if (this.useSynchronizedTarget) {
-        if (!Utilities.IsValid(this.synchronizedTarget)) {
-          Debug.LogError("[Boolean Operation Converter] Synchronized target is invalid - Disabled", this);
-          this.enabled = false;
-          return;
-        }
-      } else if (!Utilities.IsValid(this.localTarget)) {
-        Debug.LogError("[Boolean Operation Converter] Local target is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+        Debug.LogError("[Boolean Operation Converter] Target value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
@@ -61,22 +56,14 @@ namespace VRCTools.World.Values.Converters {
       ValueSource source,
       LocalBoolean localValue,
       SynchronizedBoolean synchronizedValue) {
-      switch (source) {
-        case ValueSource.STATIC: break;
-        case ValueSource.LOCAL:
-          localValue._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnComponentUpdated));
-          break;
-        case ValueSource.SYNCHRONIZED:
-          synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this,
-            nameof(this._OnComponentUpdated));
-          break;
-      }
+      ValueUtility.RegisterUpdateHandler(source, localValue, synchronizedValue, this, nameof(this._OnComponentUpdated));
     }
 
     public void _OnComponentUpdated() {
-      var alpha = this._GetValue(this.sourceAlpha, this.staticAlphaValue, this.localAlphaValue,
+      var alpha = ValueUtility.GetValue(this.sourceAlpha, this.staticAlphaValue, this.localAlphaValue,
         this.synchronizedAlphaValue);
-      var beta = this._GetValue(this.sourceBeta, this.staticBetaValue, this.localBetaValue, this.synchronizedBetaValue);
+      var beta = ValueUtility.GetValue(this.sourceBeta, this.staticBetaValue, this.localBetaValue,
+        this.synchronizedBetaValue);
 
       var newValue = false;
       switch (this.operation) {
@@ -103,24 +90,7 @@ namespace VRCTools.World.Values.Converters {
           break;
       }
 
-      if (this.useSynchronizedTarget)
-        this.synchronizedTarget.State = newValue;
-      else
-        this.localTarget.State = newValue;
-    }
-
-    private bool _GetValue(
-      ValueSource source,
-      bool staticValue,
-      LocalBoolean localValue,
-      SynchronizedBoolean synchronizedValue) {
-      switch (source) {
-        case ValueSource.STATIC: return staticValue;
-        case ValueSource.LOCAL: return localValue.State;
-        case ValueSource.SYNCHRONIZED: return synchronizedValue.State;
-      }
-
-      return false;
+      ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, newValue);
     }
   }
 }

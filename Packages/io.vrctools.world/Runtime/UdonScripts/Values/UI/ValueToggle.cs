@@ -50,13 +50,9 @@ namespace VRCTools.World.Values.UI {
     }
 
     private void OnDestroy() {
-      if (Utilities.IsValid(this.localValue)) {
-        this.localValue._UnregisterHandler(this);
-      }
+      if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
 
-      if (Utilities.IsValid(this.synchronizedValue)) {
-        this.synchronizedValue._UnregisterHandler(this);
-      }
+      if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
     public void _OnStateUpdated() {

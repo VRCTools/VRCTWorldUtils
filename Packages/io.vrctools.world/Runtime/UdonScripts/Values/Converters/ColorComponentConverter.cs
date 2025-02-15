@@ -14,9 +14,9 @@
 
 using UdonSharp;
 using UnityEngine;
-using VRC.SDKBase;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
 namespace VRCTools.World.Values.Converters {
   /// <summary>
@@ -25,7 +25,7 @@ namespace VRCTools.World.Values.Converters {
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Converters/Color Component Converter")]
   public class ColorComponentConverter : UdonSharpBehaviour {
-    public bool useSynchronizedTarget;
+    public ValueType target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
 
@@ -50,14 +50,8 @@ namespace VRCTools.World.Values.Converters {
     public SynchronizedFloat synchronizedAlphaValue;
 
     private void Start() {
-      if (this.useSynchronizedTarget) {
-        if (!Utilities.IsValid(this.synchronizedTarget)) {
-          Debug.LogError("[Color Component Converter] Synchronized target is invalid - Disabled", this);
-          this.enabled = false;
-          return;
-        }
-      } else if (!Utilities.IsValid(this.localTarget)) {
-        Debug.LogError("[Color Component Converter] Local target is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+        Debug.LogError("[Color Component Converter] Target value is invalid - Disabled", this);
         this.enabled = false;
         return;
       }
@@ -75,82 +69,25 @@ namespace VRCTools.World.Values.Converters {
       ValueSource source,
       LocalFloat localValue,
       SynchronizedFloat synchronizedValue) {
-      switch (source) {
-        case ValueSource.LOCAL:
-          if (!Utilities.IsValid(localValue))
-            Debug.LogError($"[Color Component Converter] {channel} source is invalid - Component will be set to zero",
-              this);
-          else
-            localValue._RegisterHandler(LocalFloat.EVENT_STATE_UPDATED, this, nameof(this._OnComponentUpdated));
-          break;
-        case ValueSource.SYNCHRONIZED:
-          if (!Utilities.IsValid(synchronizedValue))
-            Debug.LogError($"[Color Component Converter] {channel} source is invalid - Component will be set to zero",
-              this);
-          else
-            synchronizedValue._RegisterHandler(SynchronizedFloat.EVENT_STATE_UPDATED, this,
-              nameof(this._OnComponentUpdated));
-          break;
-      }
-    }
+      if (!ValueUtility.IsValid(source, localValue, synchronizedValue))
+        Debug.LogError($"[Color Component Converter] {channel} source is invalid - Component will be set to zero",
+          this);
 
-    private float _GetComponentValue(
-      string channel,
-      ValueSource source,
-      float staticValue,
-      LocalFloat localValue,
-      SynchronizedFloat synchronizedValue) {
-      var component = 0f;
-
-      switch (source) {
-        case ValueSource.STATIC:
-          component = staticValue;
-          break;
-        case ValueSource.LOCAL:
-          if (Utilities.IsValid(localValue))
-            component = localValue.State;
-          else
-            Debug.LogError($"[Color Component Converter] {channel} source is invalid - Component will be set to zero",
-              this);
-          break;
-        case ValueSource.SYNCHRONIZED:
-          if (Utilities.IsValid(synchronizedValue))
-            component = synchronizedValue.State;
-          else
-            Debug.LogError($"[Color Component Converter] {channel} source is invalid - Component will be set to zero",
-              this);
-          break;
-      }
-
-      return component;
+      ValueUtility.RegisterUpdateHandler(source, localValue, synchronizedValue, this, nameof(this._OnComponentUpdated));
     }
 
     public void _OnComponentUpdated() {
-      var red = this._GetComponentValue("Red", this.redSource, this.staticRedValue, this.localRedValue,
+      var red = ValueUtility.GetValue(this.redSource, this.staticRedValue, this.localRedValue,
         this.synchronizedRedValue);
-      var green = this._GetComponentValue("Green", this.greenSource, this.staticGreenValue, this.localGreenValue,
+      var green = ValueUtility.GetValue(this.greenSource, this.staticGreenValue, this.localGreenValue,
         this.synchronizedGreenValue);
-      var blue = this._GetComponentValue("Blue", this.blueSource, this.staticBlueValue, this.localBlueValue,
+      var blue = ValueUtility.GetValue(this.blueSource, this.staticBlueValue, this.localBlueValue,
         this.synchronizedBlueValue);
-      var alpha = this._GetComponentValue("Alpha", this.alphaSource, this.staticAlphaValue, this.localAlphaValue,
+      var alpha = ValueUtility.GetValue(this.alphaSource, this.staticAlphaValue, this.localAlphaValue,
         this.synchronizedAlphaValue);
 
       var color = new Color(red, green, blue, alpha);
-      if (this.useSynchronizedTarget) {
-        if (!Utilities.IsValid(this.synchronizedTarget)) {
-          Debug.LogError("[Color Component Converter] Synchronized target is invalid - Ignored", this);
-          return;
-        }
-
-        this.synchronizedTarget.State = color;
-      } else {
-        if (!Utilities.IsValid(this.localTarget)) {
-          Debug.LogError("[Color Component Converter] Synchronized target is invalid - Ignored", this);
-          return;
-        }
-
-        this.localTarget.State = color;
-      }
+      ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, color);
     }
   }
 }

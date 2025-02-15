@@ -16,15 +16,19 @@ using UnityEditor;
 using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
 namespace VRCTools.World.Editor.Values.Converters {
   [CustomEditor(typeof(BooleanOperationConverter))]
   public class BooleanOperationConverterEditor : AbstractCustomUdonEditor {
+    public SerializedProperty _target;
+    public SerializedProperty _localTarget;
+    public SerializedProperty _synchronizedTarget;
+
     public SerializedProperty _localAlphaValue;
     public SerializedProperty _localBetaValue;
-    public SerializedProperty _localTarget;
 
     public SerializedProperty _operation;
 
@@ -35,12 +39,10 @@ namespace VRCTools.World.Editor.Values.Converters {
     public SerializedProperty _staticBetaValue;
     public SerializedProperty _synchronizedAlphaValue;
     public SerializedProperty _synchronizedBetaValue;
-    public SerializedProperty _synchronizedTarget;
-    public SerializedProperty _useSynchronizedTarget;
 
     private void OnEnable() {
-      this._useSynchronizedTarget
-        = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.useSynchronizedTarget));
+      this._target
+        = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.target));
       this._localTarget = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.localTarget));
       this._synchronizedTarget
         = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.synchronizedTarget));
@@ -61,54 +63,24 @@ namespace VRCTools.World.Editor.Values.Converters {
     }
 
     protected override void RenderInspectorGUI() {
-      EditorGUILayout.PropertyField(this._useSynchronizedTarget);
-
-      var useSynchronizedTarget = this._useSynchronizedTarget.boolValue;
-      EditorGUILayout.PropertyField(useSynchronizedTarget ? this._synchronizedTarget : this._localTarget);
-      if ((useSynchronizedTarget && !Utilities.IsValid(this._synchronizedTarget.objectReferenceValue)) ||
-          (!useSynchronizedTarget && !Utilities.IsValid(this._localTarget.objectReferenceValue)))
-        EditorGUILayout.HelpBox("Target value is invalid or unset - Component will be disabled on start",
-          MessageType.Error);
-
+      ValueEditorUtility.DrawSourceProperty(new GUIContent("target"), this._target, this._localTarget,
+        this._synchronizedTarget, "Target value is invalid or unset - Component will be disabled on start");
       EditorGUILayout.PropertyField(this._operation);
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("A", EditorStyles.boldLabel);
-      _DrawProperty(this._sourceAlpha, this._staticAlphaValue, this._localAlphaValue, this._synchronizedAlphaValue);
+      ValueEditorUtility.DrawSourceProperty(new GUIContent("Component"), this._sourceAlpha, this._staticAlphaValue,
+        this._localAlphaValue, this._synchronizedAlphaValue,
+        "Component value is invalid or unset - Value will be substituted by false");
 
       var operation = (BooleanOperation)this._operation.enumValueIndex;
       if (operation == BooleanOperation.NOT) return;
-
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("B", EditorStyles.boldLabel);
-      _DrawProperty(this._sourceBeta, this._staticBetaValue, this._localBetaValue, this._synchronizedBetaValue);
-    }
-
-    private static void _DrawProperty(
-      SerializedProperty source,
-      SerializedProperty staticProperty,
-      SerializedProperty localProperty,
-      SerializedProperty synchronizedProperty) {
-      EditorGUILayout.PropertyField(source);
-      var s = (ValueSource)source.enumValueIndex;
-
-      SerializedProperty property = null;
-      switch (s) {
-        case ValueSource.STATIC:
-          property = staticProperty;
-          break;
-        case ValueSource.LOCAL:
-          property = localProperty;
-          break;
-        case ValueSource.SYNCHRONIZED:
-          property = synchronizedProperty;
-          break;
-      }
-
-      EditorGUILayout.PropertyField(property, new GUIContent("Source"));
-      if (s != ValueSource.STATIC && !Utilities.IsValid(property.objectReferenceValue))
-        EditorGUILayout.HelpBox("Source value is invalid or unset - Component will be set to false", MessageType.Error);
+      ValueEditorUtility.DrawSourceProperty(new GUIContent("Component"), this._sourceBeta, this._staticBetaValue,
+        this._localBetaValue, this._synchronizedBetaValue,
+        "Component value is invalid or unset - Value will be substituted by false");
     }
   }
 }
