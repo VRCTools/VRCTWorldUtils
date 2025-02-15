@@ -38,6 +38,9 @@ namespace VRCTools.World.LocalValues.Applicators {
     public LocalInt[] localInts;
     public string[] localIntParameters;
 
+    public LocalTexture2D[] localTextures;
+    public string[] localTextureParameters;
+
     public LocalVector3[] localVectors;
     public string[] localVectorParameters;
 
@@ -45,6 +48,7 @@ namespace VRCTools.World.LocalValues.Applicators {
     private int[] _localColorParameterIds;
     private int[] _localFloatParameterIds;
     private int[] _localIntParameterIds;
+    private int[] _localTextureParameterIds;
     private int[] _localVectorParameterIds;
 
     private MaterialPropertyBlock _materialPropertyBlock;
@@ -70,6 +74,7 @@ namespace VRCTools.World.LocalValues.Applicators {
         = MappingUtility.CheckCoherentMapping(this.localFloats, this.localFloatParameters, this);
       this.localInts
         = MappingUtility.CheckCoherentMapping(this.localInts, this.localIntParameters, this);
+      this.localTextures = MappingUtility.CheckCoherentMapping(this.localTextures, this.localTextureParameters, this);
       this.localVectors
         = MappingUtility.CheckCoherentMapping(this.localVectors, this.localVectorParameters, this);
 
@@ -78,6 +83,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._localColorParameterIds = _ResolveParameterIds(this.localColorParameters);
       this._localFloatParameterIds = _ResolveParameterIds(this.localFloatParameters);
       this._localIntParameterIds = _ResolveParameterIds(this.localIntParameters);
+      this._localTextureParameterIds = _ResolveParameterIds(this.localTextureParameters);
       this._localVectorParameterIds = _ResolveParameterIds(this.localVectorParameters);
 
       // we handle each value separately to minimize unnecessary updates to materials which could potentially cause
@@ -106,6 +112,12 @@ namespace VRCTools.World.LocalValues.Applicators {
         value._RegisterHandler(LocalInt.EVENT_STATE_UPDATED, this, nameof(this._OnIntStateUpdated));
       }
 
+      foreach (var value in this.localTextures) {
+        if (!Utilities.IsValid(value)) continue;
+        
+        value._RegisterHandler(LocalTexture2D.EVENT_STATE_UPDATED, this, nameof(this._OnTextureStateUpdated));
+      }
+
       foreach (var value in this.localVectors) {
         if (!Utilities.IsValid(value)) continue;
 
@@ -127,6 +139,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyUpdatedColorState(true);
       this._ApplyUpdatedFloatState(true);
       this._ApplyUpdatedIntState(true);
+      this._ApplyUpdatedTextureState(true);
       this._ApplyUpdatedVectorState(true);
     }
 
@@ -226,6 +239,27 @@ namespace VRCTools.World.LocalValues.Applicators {
           this.material.SetInt(parameterId, value.State);
       }
 
+      this._ApplyMaterialBlock();
+    }
+
+    public void _OnTextureStateUpdated() {
+      this._ApplyUpdatedTextureState(false);
+    }
+
+    private void _ApplyUpdatedTextureState(bool force) {
+      this._EnsureMaterialBlock();
+
+      for (var i = 0; i < this.localTextures.Length; ++i) {
+        var value = this.localTextures[i];
+        var parameterId = this._localTextureParameterIds[i];
+        if (!force && !value.IsUpdatingHandlers) continue;
+        
+        if (this.useMaterialBlock)
+          this._materialPropertyBlock.SetTexture(parameterId, value.State);
+        else
+          this.material.SetTexture(parameterId, value.State);
+      }
+      
       this._ApplyMaterialBlock();
     }
 

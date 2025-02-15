@@ -25,24 +25,28 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
   public class LocalMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor {
     private MultiPropertyList _localBooleanList;
     private SerializedProperty _localBooleanParameters;
-
     private SerializedProperty _localBooleans;
+
     private MultiPropertyList _localColorList;
     private SerializedProperty _localColorParameters;
-
     private SerializedProperty _localColors;
+
     private MultiPropertyList _localFloatList;
     private SerializedProperty _localFloatParameters;
-
     private SerializedProperty _localFloats;
+
     private MultiPropertyList _localIntList;
     private SerializedProperty _localIntParameters;
-
     private SerializedProperty _localInts;
+
     private MultiPropertyList _localVectorList;
     private SerializedProperty _localVectorParameters;
-
     private SerializedProperty _localVectors;
+
+    private MultiPropertyList _localTextureList;
+    private SerializedProperty _localTextureParameters;
+    private SerializedProperty _localTextures;
+
     private SerializedProperty _material;
     private SerializedProperty _targetRenderer;
     private SerializedProperty _useMaterialBlock;
@@ -76,6 +80,9 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
       this._localInts = this.serializedObject.FindProperty(nameof(Applicator.localInts));
       this._localIntParameters
         = this.serializedObject.FindProperty(nameof(Applicator.localIntParameters));
+
+      this._localTextures = this.serializedObject.FindProperty(nameof(Applicator.localTextures));
+      this._localTextureParameters = this.serializedObject.FindProperty(nameof(Applicator.localTextureParameters));
 
       this._localVectors = this.serializedObject.FindProperty(nameof(Applicator.localVectors));
       this._localVectorParameters
@@ -113,6 +120,14 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
         new[] { "Parameter Name" },
         new[] { this._localIntParameters });
 
+      this._localTextureList = new MultiPropertyList(
+        new GUIContent("Texture Properties"),
+        this.serializedObject,
+        "Local Value",
+        this._localTextures,
+        new[] { "Parameter Name" },
+        new[] { this._localTextureParameters });
+
       this._localVectorList = new MultiPropertyList(
         new GUIContent("Vector Properties"),
         this.serializedObject,
@@ -145,6 +160,7 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
       this._localColorList.DoLayout();
       this._localFloatList.DoLayout();
       this._localIntList.DoLayout();
+      this._localTextureList.DoLayout();
       this._localVectorList.DoLayout();
     }
   }
