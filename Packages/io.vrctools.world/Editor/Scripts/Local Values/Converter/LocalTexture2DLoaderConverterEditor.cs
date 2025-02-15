@@ -14,7 +14,7 @@
 
 using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
-using VRCTools.World.LocalValues.Applicators;
+using VRCTools.World.LocalValues.Converters;
 
 namespace VRCTools.World.Editor.LocalValues.Converter {
   using Converter = LocalTexture2DLoaderConverter;

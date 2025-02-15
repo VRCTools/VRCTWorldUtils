@@ -20,7 +20,7 @@ using VRC.SDK3.Image;
 using VRC.SDKBase;
 using VRC.Udon.Common.Interfaces;
 
-namespace VRCTools.World.LocalValues.Applicators {
+namespace VRCTools.World.LocalValues.Converters {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Converter/Local Texture2D Loader Converter")]
   public class LocalTexture2DLoaderConverter : UdonSharpBehaviour {
@@ -37,14 +37,14 @@ namespace VRCTools.World.LocalValues.Applicators {
     public Texture2D invalidUrlErrorTexture;
 
     public float retryPeriod = 2f;
-    
+
     private VRCImageDownloader _imageDownloader;
 
     private bool _loading;
     private bool _downloadQueued;
 
     private float _retryTimer = -1;
-    
+
     private void Start() {
       if (!Utilities.IsValid(this.localUrl)) {
         Debug.LogError("[Texture2D Loader Converter] Invalid local url reference - Disabled", this);
@@ -59,7 +59,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
 
       this._imageDownloader = new VRCImageDownloader();
-      
+
       this.localUrl._RegisterHandler(LocalUrl.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
@@ -68,12 +68,12 @@ namespace VRCTools.World.LocalValues.Applicators {
       if (this._retryTimer <= 0) {
         return;
       }
-      
+
       this._retryTimer -= Time.deltaTime;
       if (this._retryTimer > 0) {
         return;
       }
-      
+
       this._OnStateUpdated();
     }
 
@@ -83,7 +83,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       if (Utilities.IsValid(this.localTexture2D)) {
         this.localTexture2D.State = this.defaultTexture;
       }
-      
+
       // dispose of our image downloader instance if it was allocated on script startup
       if (Utilities.IsValid(this._imageDownloader)) {
         this._imageDownloader.Dispose();
@@ -92,7 +92,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       if (!Utilities.IsValid(this.localUrl)) {
         return;
       }
-      
+
       this.localUrl._UnregisterHandler(this);
     }
 
@@ -105,11 +105,11 @@ namespace VRCTools.World.LocalValues.Applicators {
 
       this._loading = true;
       this._retryTimer = -1;
-      
+
       var url = this.localUrl.State;
       if (VRCUrl.IsNullOrEmpty(url)) {
         this._loading = false;
-        
+
         this.localTexture2D.State = this.defaultTexture;
         return;
       }
@@ -125,12 +125,13 @@ namespace VRCTools.World.LocalValues.Applicators {
     public override void OnImageLoadSuccess(IVRCImageDownload result) {
       Debug.Log($"[Texture2D Loader Converter] Image download from \"{result.Url}\" successful", this);
       this.localTexture2D.State = result.Result;
-      
+
       this._OnImageLoadFinished();
     }
 
     public override void OnImageLoadError(IVRCImageDownload result) {
-      Debug.LogWarning($"[Texture2D Loader Converter] Failed to load texture from \"{result.Url}\": {result.ErrorMessage}", this);
+      Debug.LogWarning(
+        $"[Texture2D Loader Converter] Failed to load texture from \"{result.Url}\": {result.ErrorMessage}", this);
 
       var texture = this.errorTexture;
       switch (result.Error) {
@@ -154,9 +155,9 @@ namespace VRCTools.World.LocalValues.Applicators {
       if (texture == null) {
         texture = this.errorTexture;
       }
-      
+
       this.localTexture2D.State = texture;
-      
+
       this._OnImageLoadFinished();
 
       if (result.Error == VRCImageDownloadError.TooManyRequests) {
