@@ -1,0 +1,4 @@
+These skybox textures were provided by Poly Haven (https://polyhaven.com/hdris) and are provided under the terms of the
+CC 0 license (effectively placing them in the public domain).
+
+The full license text may be found at https://creativecommons.org/publicdomain/zero/1.0/
