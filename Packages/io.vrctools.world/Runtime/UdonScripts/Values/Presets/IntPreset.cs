@@ -17,6 +17,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Utils;
 
 namespace VRCTools.World.Values.Presets {
   /// <summary>
@@ -25,42 +26,19 @@ namespace VRCTools.World.Values.Presets {
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Presets/Int Preset")]
   public class IntPreset : UdonSharpBehaviour {
-    public bool useSynchronizedTarget;
+    public ValueType target;
     public LocalInt localTarget;
     public SynchronizedInt synchronizedTarget;
 
     public int preset;
 
     private void Start() {
-      if (this.useSynchronizedTarget) {
-        if (Utilities.IsValid(this.synchronizedTarget)) return;
-
-        Debug.LogError("[Int Preset] Synchronized target is invalid - Disabled", this);
-        this.enabled = false;
-      } else if (!Utilities.IsValid(this.localTarget)) {
-        Debug.LogError("[Int Preset] Local target is invalid - Disabled", this);
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+        Debug.LogError("[Int Preset] Value target is invalid - Disabled", this);
         this.enabled = false;
       }
     }
 
-    public void _Apply() {
-      if (this.useSynchronizedTarget) {
-        if (!Utilities.IsValid(this.synchronizedTarget)) {
-          Debug.LogError("[Int Preset] Synchronized target is invalid - Ignored", this);
-          this.enabled = false;
-          return;
-        }
-
-        this.synchronizedTarget.State = this.preset;
-      } else {
-        if (!Utilities.IsValid(this.localTarget)) {
-          Debug.LogError("[Int Preset] Local target is invalid - Ignored", this);
-          this.enabled = false;
-          return;
-        }
-
-        this.localTarget.State = this.preset;
-      }
-    }
+    public void _Apply() { ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, this.preset); }
   }
 }

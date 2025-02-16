@@ -13,21 +13,23 @@
 // limitations under the License.
 
 using UnityEditor;
+using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Editor.Utils;
 
 namespace VRCTools.World.Editor.Values.Presets {
   public abstract class AbstractPresetEditor : AbstractCustomUdonEditor {
+    private SerializedProperty _target;
     private SerializedProperty _localTarget;
+    private SerializedProperty _synchronizedTarget;
 
     private SerializedProperty _preset;
-    private SerializedProperty _synchronizedTarget;
-    private SerializedProperty _useSynchronizedTarget;
 
     private void OnEnable() {
       // typically we use nameof to not cause too much trouble during refactors - this is an exception since all presets
       // share the same basic pattern which we cannot share purely due to limitations within the Udon# compiler
-      this._useSynchronizedTarget = this.serializedObject.FindProperty("useSynchronizedTarget");
+      this._target = this.serializedObject.FindProperty("target");
       this._localTarget = this.serializedObject.FindProperty("localTarget");
       this._synchronizedTarget = this.serializedObject.FindProperty("synchronizedTarget");
 
@@ -35,16 +37,9 @@ namespace VRCTools.World.Editor.Values.Presets {
     }
 
     protected override void RenderInspectorGUI() {
-      EditorGUILayout.PropertyField(this._useSynchronizedTarget);
-      EditorGUILayout.PropertyField(
-        this._useSynchronizedTarget.boolValue ? this._synchronizedTarget : this._localTarget);
-      if (!Utilities.IsValid(this._useSynchronizedTarget.boolValue
-            ? this._synchronizedTarget.objectReferenceValue
-            : this._localTarget.objectReferenceValue))
-        EditorGUILayout.HelpBox("Target reference is invalid or unspecified - Component will be disabled on startup",
-          MessageType.Error);
+      ValueEditorUtility.DrawSourceProperty(new GUIContent("Target"), this._target, this._localTarget,
+        this._synchronizedTarget, "Target reference is invalid or unspecified - Component will be disabled on startup");
       EditorGUILayout.Space(20);
-
       EditorGUILayout.PropertyField(this._preset);
     }
   }

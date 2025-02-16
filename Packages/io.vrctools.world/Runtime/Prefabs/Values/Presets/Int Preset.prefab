@@ -55,7 +55,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8950460321107045422}
-  useSynchronizedTarget: 0
+  target: 0
   localTarget: {fileID: 0}
   synchronizedTarget: {fileID: 0}
   preset: 0

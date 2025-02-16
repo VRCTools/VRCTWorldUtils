@@ -513,13 +513,17 @@ namespace VRCTools.World.Utils {
       return GetValue(ToSource(type), Vector3.zero, localValue, synchronizedValue);
     }
 
-    public static void SetValue(ValueType type, LocalVector3 localValue, SynchronizedVector3 synchronizedValue) {
+    public static void SetValue(
+      ValueType type,
+      LocalVector3 localValue,
+      SynchronizedVector3 synchronizedValue,
+      Vector3 value) {
       switch (type) {
         case ValueType.LOCAL:
-          localValue.State = synchronizedValue.State;
+          localValue.State = value;
           break;
         case ValueType.SYNCHRONIZED:
-          synchronizedValue.State = synchronizedValue.State;
+          synchronizedValue.State = value;
           break;
       }
     }
