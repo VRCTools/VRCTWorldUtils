@@ -14,6 +14,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using VRCTools.World.Editor.Utils;
 
 namespace VRCTools.World.Editor.Abstractions {
@@ -46,7 +47,7 @@ namespace VRCTools.World.Editor.Abstractions {
 
     protected virtual void RenderInspectorFooter() {
       this._RenderHelpText();
-      this._RenderSupporterLinks();
+      CustomEditorUtility.DrawSupporterLinks();
     }
 
     private void _RenderHelpText() {
@@ -58,21 +59,6 @@ namespace VRCTools.World.Editor.Abstractions {
       if (!this._helpFoldout) return;
 
       EditorGUILayout.HelpBox(helpText, MessageType.None);
-    }
-
-    private void _RenderSupporterLinks() {
-      GUILayout.Space(20);
-      CustomEditorUtility.DrawLine(Color.gray);
-
-      EditorGUILayout.BeginHorizontal();
-      {
-        GUILayout.Label($"{CustomEditorUtility.PackageName} v{CustomEditorUtility.PackageVersion}");
-
-        if (EditorGUILayout.LinkButton("Discord")) Application.OpenURL("https://discord.gg/jm6dZ7VHbw");
-
-        if (EditorGUILayout.LinkButton("Patreon")) Application.OpenURL("https://patreon.com/dotStart");
-      }
-      EditorGUILayout.EndHorizontal();
     }
 
     protected virtual void OnPropertiesChanged() { this.serializedObject.ApplyModifiedProperties(); }

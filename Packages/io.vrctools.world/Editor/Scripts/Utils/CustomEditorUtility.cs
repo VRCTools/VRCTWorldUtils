@@ -110,5 +110,20 @@ namespace VRCTools.World.Editor.Utils {
         "requires manual synchronization and should only be combined with scripts in manual mode",
         MessageType.Error);
     }
+
+    public static void DrawSupporterLinks() {
+      GUILayout.Space(20);
+      DrawLine(Color.gray);
+
+      EditorGUILayout.BeginHorizontal();
+      {
+        GUILayout.Label($"{PackageName} v{PackageVersion}");
+
+        if (EditorGUILayout.LinkButton("Discord")) Application.OpenURL("https://discord.gg/jm6dZ7VHbw");
+
+        if (EditorGUILayout.LinkButton("Patreon")) Application.OpenURL("https://patreon.com/dotStart");
+      }
+      EditorGUILayout.EndHorizontal();
+    }
   }
 }
