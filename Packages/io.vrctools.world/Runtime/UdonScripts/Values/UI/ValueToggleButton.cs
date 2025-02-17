@@ -31,6 +31,9 @@ namespace VRCTools.World.Values.UI {
 
     public Color activeColor = Color.white;
     public Color inactiveColor = Color.gray;
+    public bool alternateLabel;
+    public GameObject onLabel;
+    public GameObject offLabel;
 
     public bool invert;
 
@@ -59,6 +62,16 @@ namespace VRCTools.World.Values.UI {
     public void _OnStateUpdated() {
       var state = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
       this._image.color = state != this.invert ? this.activeColor : this.inactiveColor;
+
+      if (this.alternateLabel) {
+        if (Utilities.IsValid(this.onLabel)) {
+          this.onLabel.SetActive(state);
+        }
+
+        if (Utilities.IsValid(this.offLabel)) {
+          this.offLabel.SetActive(!state);
+        }
+      }
     }
 
     public void _Toggle() { ValueUtility.ToggleValue(this.source, this.localValue, this.synchronizedValue); }

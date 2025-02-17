@@ -28,6 +28,9 @@ namespace VRCTools.World.Editor.Values.UI {
 
     private SerializedProperty _activeColor;
     private SerializedProperty _inactiveColor;
+    private SerializedProperty _alternateLabel;
+    private SerializedProperty _onLabel;
+    private SerializedProperty _offLabel;
 
     private SerializedProperty _invert;
 
@@ -44,6 +47,9 @@ namespace VRCTools.World.Editor.Values.UI {
 
       this._activeColor = this.serializedObject.FindProperty(nameof(ValueToggleButton.activeColor));
       this._inactiveColor = this.serializedObject.FindProperty(nameof(ValueToggleButton.inactiveColor));
+      this._alternateLabel = this.serializedObject.FindProperty(nameof(ValueToggleButton.alternateLabel));
+      this._onLabel = this.serializedObject.FindProperty(nameof(ValueToggleButton.onLabel));
+      this._offLabel = this.serializedObject.FindProperty(nameof(ValueToggleButton.offLabel));
 
       this._invert = this.serializedObject.FindProperty(nameof(ValueToggleButton.invert));
     }
@@ -57,6 +63,14 @@ namespace VRCTools.World.Editor.Values.UI {
       EditorGUILayout.LabelField("Appearance", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._activeColor);
       EditorGUILayout.PropertyField(this._inactiveColor);
+      EditorGUILayout.Space(5);
+      EditorGUILayout.PropertyField(this._alternateLabel);
+      EditorGUI.BeginDisabledGroup(!this._alternateLabel.boolValue);
+      {
+        EditorGUILayout.PropertyField(this._onLabel);
+        EditorGUILayout.PropertyField(this._offLabel);
+      }
+      EditorGUI.EndDisabledGroup();
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Advanced Settings", EditorStyles.boldLabel);
