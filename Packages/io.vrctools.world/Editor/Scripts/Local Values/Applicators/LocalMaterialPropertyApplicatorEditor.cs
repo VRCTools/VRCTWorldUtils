@@ -23,6 +23,10 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
   [CustomEditor(typeof(Applicator))]
   public class LocalMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor {
+    private SerializedProperty _target;
+    private SerializedProperty _targetMaterial;
+    private SerializedProperty _targetRenderer;
+
     private MultiPropertyList _localBooleanList;
     private SerializedProperty _localBooleanParameters;
     private SerializedProperty _localBooleans;
@@ -47,10 +51,6 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
     private SerializedProperty _localVectorParameters;
     private SerializedProperty _localVectors;
 
-    private SerializedProperty _material;
-    private SerializedProperty _targetRenderer;
-    private SerializedProperty _useMaterialBlock;
-
     protected override string HelpText =>
       "Applies material properties to a material or renderer based on one or more local values.\n\n" +
       "This script is expected to be combined with one or more local value components:\n" +
@@ -61,8 +61,8 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
       " - LocalVector3";
 
     private void OnEnable() {
-      this._material = this.serializedObject.FindProperty(nameof(Applicator.material));
-      this._useMaterialBlock = this.serializedObject.FindProperty(nameof(Applicator.usePropertyBlock));
+      this._target = this.serializedObject.FindProperty(nameof(Applicator.target));
+      this._targetMaterial = this.serializedObject.FindProperty(nameof(Applicator.targetMaterial));
       this._targetRenderer = this.serializedObject.FindProperty(nameof(Applicator.targetRenderer));
 
       this._localBooleans = this.serializedObject.FindProperty(nameof(Applicator.localBooleans));
@@ -139,20 +139,7 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
     protected override void RenderInspectorGUI() {
       EditorGUILayout.LabelField("Target", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._useMaterialBlock);
-      if (this._useMaterialBlock.boolValue) {
-        EditorGUILayout.PropertyField(this._targetRenderer);
-        EditorGUILayout.Space(5);
-        EditorGUILayout.HelpBox(
-          "Important: Material Property Blocks are only available for shaders which have been explicitly " +
-          "designed to support instancing. Additionally, \"Enable GPU instancing\" must be selected within the " +
-          "material. If your changes are not taking effect, you may need to apply properties directly to the " +
-          "Material or switch to a different shader.",
-          MessageType.Info
-        );
-      } else {
-        EditorGUILayout.PropertyField(this._material);
-      }
+      MaterialPropertyEditorUtility.DrawTarget(this._target, this._targetMaterial, this._targetRenderer);
 
       EditorGUILayout.Space(20);
 

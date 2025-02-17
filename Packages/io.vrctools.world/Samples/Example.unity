@@ -2064,9 +2064,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 380531192}
-  material: {fileID: 0}
-  usePropertyBlock: 1
+  target: 0
   targetRenderer: {fileID: 380531194}
+  targetMaterial: {fileID: 0}
   localBooleans: []
   localBooleanParameters: []
   localColors: []
@@ -2887,9 +2887,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 485138769}
-  material: {fileID: 0}
-  usePropertyBlock: 1
+  target: 1
   targetRenderer: {fileID: 485138767}
+  targetMaterial: {fileID: 0}
   localBooleans: []
   localBooleanParameters: []
   localColors:
@@ -6371,9 +6371,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 811088451}
-  material: {fileID: 0}
-  usePropertyBlock: 1
+  target: 1
   targetRenderer: {fileID: 811088453}
+  targetMaterial: {fileID: 0}
   localBooleans: []
   localBooleanParameters: []
   localColors:
@@ -6667,7 +6667,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 859085130}
-  useSynchronizedTarget: 0
+  target: 0
   localTarget: {fileID: 974133717}
   synchronizedTarget: {fileID: 0}
   preset: Clearly 42
@@ -8534,9 +8534,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1173075464}
-  material: {fileID: 0}
-  usePropertyBlock: 1
+  target: 0
   targetRenderer: {fileID: 1173075466}
+  targetMaterial: {fileID: 0}
   localBooleans: []
   localBooleanParameters: []
   localColors: []
@@ -9027,8 +9027,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1218916572}
-  material: {fileID: 2100000, guid: d408248c240146c41a44322172c2a04b, type: 2}
-  usePropertyBlock: 1
+  target: 1
+  targetMaterial: {fileID: 2100000, guid: d408248c240146c41a44322172c2a04b, type: 2}
   targetRenderer: {fileID: 1218916570}
   synchronizedBooleans: []
   synchronizedBooleanParameters: []
@@ -9314,7 +9314,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1224160941}
-  useSynchronizedTarget: 0
+  target: 0
   localTarget: {fileID: 2063516060}
   synchronizedTarget: {fileID: 0}
   preset:
@@ -10586,7 +10586,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1432718525}
-  useSynchronizedTarget: 0
+  target: 0
   localTarget: {fileID: 783093814}
   synchronizedTarget: {fileID: 0}
   preset: 0.42
@@ -11592,8 +11592,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1700351166}
-  material: {fileID: 0}
-  usePropertyBlock: 1
+  target: 0
+  targetMaterial: {fileID: 0}
   targetRenderer: {fileID: 1700351169}
   synchronizedBooleans: []
   synchronizedBooleanParameters: []
@@ -13495,7 +13495,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2092621134}
-  useSynchronizedTarget: 0
+  target: 0
   localTarget: {fileID: 1178888545}
   synchronizedTarget: {fileID: 0}
   preset: 21

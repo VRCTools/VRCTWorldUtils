@@ -17,17 +17,17 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using VRC.SDKBase;
 using VRCTools.World.Utils;
+using VRCTools.World.Values.Applicators;
 
 namespace VRCTools.World.LocalValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Applicators/Local Material Property Applicator")]
   public class LocalMaterialPropertyApplicator : UdonSharpBehaviour {
-    public Material material;
-
-    [FormerlySerializedAs("useMaterialBlock")]
-    public bool usePropertyBlock;
-
+    public MaterialPropertyTarget target;
     public Renderer targetRenderer;
+
+    [FormerlySerializedAs("material")]
+    public Material targetMaterial;
 
     public LocalBoolean[] localBooleans;
     public string[] localBooleanParameters;
@@ -57,13 +57,8 @@ namespace VRCTools.World.LocalValues.Applicators {
     private MaterialPropertyBlock _materialPropertyBlock;
 
     private void Start() {
-      if (this.usePropertyBlock) {
-        if (!Utilities.IsValid(this.targetRenderer)) {
-          Debug.LogError("[Local Material Property Applicator] Renderer is invalid - Disabled");
-          this.enabled = false;
-        }
-      } else if (!Utilities.IsValid(this.material)) {
-        Debug.LogError("[Local Material Property Applicator] Material is invalid - Disabled");
+      if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
+        Debug.LogError("[Local Material Property Applicator] Renderer is invalid - Disabled");
         this.enabled = false;
       }
 
@@ -82,12 +77,12 @@ namespace VRCTools.World.LocalValues.Applicators {
         = MappingUtility.CheckCoherentMapping(this.localVectors, this.localVectorParameters, this);
 
       // for performance reasons we'll resolve all parameters to their indices as well
-      this._localBooleanParameterIds = _ResolveParameterIds(this.localBooleanParameters);
-      this._localColorParameterIds = _ResolveParameterIds(this.localColorParameters);
-      this._localFloatParameterIds = _ResolveParameterIds(this.localFloatParameters);
-      this._localIntParameterIds = _ResolveParameterIds(this.localIntParameters);
-      this._localTextureParameterIds = _ResolveParameterIds(this.localTextureParameters);
-      this._localVectorParameterIds = _ResolveParameterIds(this.localVectorParameters);
+      this._localBooleanParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.localBooleanParameters);
+      this._localColorParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.localColorParameters);
+      this._localFloatParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.localFloatParameters);
+      this._localIntParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.localIntParameters);
+      this._localTextureParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.localTextureParameters);
+      this._localVectorParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.localVectorParameters);
 
       // we handle each value separately to minimize unnecessary updates to materials which could potentially cause
       // some congestion for more frequently  local values
@@ -168,21 +163,6 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
     }
 
-    private static int[] _ResolveParameterIds(string[] parameterNames) {
-      var parameterIds = new int[parameterNames.Length];
-      for (var i = 0; i < parameterNames.Length; i++) {
-        var parameterName = parameterNames[i];
-        if (string.IsNullOrEmpty(parameterName)) {
-          parameterIds[i] = -1;
-          continue;
-        }
-
-        parameterIds[i] = VRCShader.PropertyToID(parameterNames[i]);
-      }
-
-      return parameterIds;
-    }
-
     public void _RefreshAllParameters() {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedColorState(true);
@@ -195,7 +175,7 @@ namespace VRCTools.World.LocalValues.Applicators {
     private void _EnsureMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
-      if (!this.usePropertyBlock) return;
+      if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
 
       // allocation of material property blocks in Start() used to cause Unity to crash in some circumstances thus
       // requiring this delayed allocation
@@ -207,14 +187,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       this.targetRenderer.GetPropertyBlock(this._materialPropertyBlock);
     }
 
-    private static bool _ValidateParameter(UdonSharpBehaviour behaviour, int parameterId) {
-      return Utilities.IsValid(parameterId) && parameterId != -1;
-    }
-
     private void _ApplyMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
-      if (!this.usePropertyBlock) return;
+      if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
 
       this.targetRenderer.SetPropertyBlock(this._materialPropertyBlock);
     }
@@ -227,13 +203,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localBooleans.Length; i++) {
         var value = this.localBooleans[i];
         var parameterId = this._localBooleanParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetInt(parameterId, value.State ? 1 : 0);
-        else
-          this.material.SetInt(parameterId, value.State ? 1 : 0);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -247,13 +220,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localColors.Length; ++i) {
         var value = this.localColors[i];
         var parameterId = this._localColorParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetColor(parameterId, value.State);
-        else
-          this.material.SetColor(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -267,13 +237,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localFloats.Length; ++i) {
         var value = this.localFloats[i];
         var parameterId = this._localFloatParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetFloat(parameterId, value.State);
-        else
-          this.material.SetFloat(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -287,13 +254,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localInts.Length; ++i) {
         var value = this.localInts[i];
         var parameterId = this._localIntParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetInt(parameterId, value.State);
-        else
-          this.material.SetInt(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -307,13 +271,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localTextures.Length; ++i) {
         var value = this.localTextures[i];
         var parameterId = this._localTextureParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetTexture(parameterId, value.State);
-        else
-          this.material.SetTexture(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -327,13 +288,10 @@ namespace VRCTools.World.LocalValues.Applicators {
       for (var i = 0; i < this.localVectors.Length; ++i) {
         var value = this.localVectors[i];
         var parameterId = this._localVectorParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetVector(parameterId, value.State);
-        else
-          this.material.SetVector(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();

@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using VRC.SDKBase;
 using VRCTools.World.Utils;
+using VRCTools.World.Values.Applicators;
 
 namespace VRCTools.World.SynchronizedValues.Applicators {
   /// <summary>
@@ -29,10 +30,10 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Material Property Applicator")]
   public class SynchronizedMaterialPropertyApplicator : UdonSharpBehaviour {
-    public Material material;
+    public MaterialPropertyTarget target;
 
-    [FormerlySerializedAs("useMaterialBlock")]
-    public bool usePropertyBlock;
+    [FormerlySerializedAs("material")]
+    public Material targetMaterial;
 
     public Renderer targetRenderer;
 
@@ -60,13 +61,8 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     private int[] _synchronizedVectorParameterIds;
 
     private void Start() {
-      if (this.usePropertyBlock) {
-        if (!Utilities.IsValid(this.targetRenderer)) {
-          Debug.LogError("[Synchronized Material Property Applicator] Renderer is invalid - Disabled");
-          this.enabled = false;
-        }
-      } else if (!Utilities.IsValid(this.material)) {
-        Debug.LogError("[Synchronized Material Property Applicator] Material is invalid - Disabled");
+      if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
+        Debug.LogError("[Synchronized Material Property Applicator] Target is invalid - Disabled");
         this.enabled = false;
       }
 
@@ -84,11 +80,15 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
         = MappingUtility.CheckCoherentMapping(this.synchronizedVectors, this.synchronizedVectorParameters, this);
 
       // for performance reasons we'll resolve all parameters to their indices as well
-      this._synchronizedBooleanParameterIds = _ResolveParameterIds(this.synchronizedBooleanParameters);
-      this._synchronizedColorParameterIds = _ResolveParameterIds(this.synchronizedColorParameters);
-      this._synchronizedFloatParameterIds = _ResolveParameterIds(this.synchronizedFloatParameters);
-      this._synchronizedIntParameterIds = _ResolveParameterIds(this.synchronizedIntParameters);
-      this._synchronizedVectorParameterIds = _ResolveParameterIds(this.synchronizedVectorParameters);
+      this._synchronizedBooleanParameterIds
+        = MaterialPropertyUtility.ResolveParameterIds(this.synchronizedBooleanParameters);
+      this._synchronizedColorParameterIds
+        = MaterialPropertyUtility.ResolveParameterIds(this.synchronizedColorParameters);
+      this._synchronizedFloatParameterIds
+        = MaterialPropertyUtility.ResolveParameterIds(this.synchronizedFloatParameters);
+      this._synchronizedIntParameterIds = MaterialPropertyUtility.ResolveParameterIds(this.synchronizedIntParameters);
+      this._synchronizedVectorParameterIds
+        = MaterialPropertyUtility.ResolveParameterIds(this.synchronizedVectorParameters);
 
       // we handle each value separately to minimize unnecessary updates to materials which could potentially cause
       // some congestion for more frequently  synchronized values
@@ -157,22 +157,6 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       }
     }
 
-    private static int[] _ResolveParameterIds(string[] parameterNames) {
-      var parameterIds = new int[parameterNames.Length];
-      for (var i = 0; i < parameterNames.Length; i++) {
-        var parameterName = parameterNames[i];
-
-        if (string.IsNullOrEmpty(parameterName)) {
-          parameterIds[i] = -1;
-          continue;
-        }
-
-        parameterIds[i] = VRCShader.PropertyToID(parameterName);
-      }
-
-      return parameterIds;
-    }
-
     public void _RefreshAllParameters() {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedColorState(true);
@@ -184,7 +168,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     private void _EnsureMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
-      if (!this.usePropertyBlock) return;
+      if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
 
       // allocation of material property blocks in Start() used to cause Unity to crash in some circumstances thus
       // requiring this delayed allocation
@@ -196,14 +180,10 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this.targetRenderer.GetPropertyBlock(this._materialPropertyBlock);
     }
 
-    private static bool _ValidateParameter(UdonSharpBehaviour behaviour, int parameterId) {
-      return Utilities.IsValid(parameterId) && parameterId != -1;
-    }
-
     private void _ApplyMaterialBlock() {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
-      if (!this.usePropertyBlock) return;
+      if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
 
       this.targetRenderer.SetPropertyBlock(this._materialPropertyBlock);
     }
@@ -216,13 +196,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedBooleans.Length; i++) {
         var value = this.synchronizedBooleans[i];
         var parameterId = this._synchronizedBooleanParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetInt(parameterId, value.State ? 1 : 0);
-        else
-          this.material.SetInt(parameterId, value.State ? 1 : 0);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -236,13 +212,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedColors.Length; ++i) {
         var value = this.synchronizedColors[i];
         var parameterId = this._synchronizedColorParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetColor(parameterId, value.State);
-        else
-          this.material.SetColor(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -256,13 +228,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedFloats.Length; ++i) {
         var value = this.synchronizedFloats[i];
         var parameterId = this._synchronizedFloatParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetFloat(parameterId, value.State);
-        else
-          this.material.SetFloat(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -276,13 +244,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedInts.Length; ++i) {
         var value = this.synchronizedInts[i];
         var parameterId = this._synchronizedIntParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetInt(parameterId, value.State);
-        else
-          this.material.SetInt(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
       }
 
       this._ApplyMaterialBlock();
@@ -296,13 +260,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       for (var i = 0; i < this.synchronizedVectors.Length; ++i) {
         var value = this.synchronizedVectors[i];
         var parameterId = this._synchronizedVectorParameterIds[i];
-        if (!_ValidateParameter(value, parameterId)) continue;
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        if (this.usePropertyBlock)
-          this._materialPropertyBlock.SetVector(parameterId, value.State);
-        else
-          this.material.SetVector(parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
       }
 
       this._ApplyMaterialBlock();
