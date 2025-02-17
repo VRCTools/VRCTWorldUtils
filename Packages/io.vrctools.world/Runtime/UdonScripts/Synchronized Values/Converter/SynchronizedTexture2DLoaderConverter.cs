@@ -61,7 +61,8 @@ namespace VRCTools.World.LocalValues.Converters {
       this._imageDownloader = new VRCImageDownloader();
 
       this.synchronizedUrl._RegisterHandler(LocalUrl.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
-      this._OnStateUpdated();
+
+      this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
 
     private void Update() {

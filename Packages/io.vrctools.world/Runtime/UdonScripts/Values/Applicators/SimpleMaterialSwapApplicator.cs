@@ -60,7 +60,8 @@ namespace VRCTools.World.Values.Applicators {
       }
 
       this.localValue._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
-      this._OnStateUpdated();
+
+      this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
 
     public void _OnStateUpdated() {
