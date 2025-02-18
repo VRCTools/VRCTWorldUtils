@@ -1,7 +1,7 @@
 {
   "name": "io.vrctools.world",
   "displayName": "VRCTools - World Utilities",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "unity": "2022.3",
   "description": "Provides various simple scripts for use within worlds.",
   "vrchatVersion": "2022.1.1",
