@@ -32,6 +32,16 @@ namespace VRCTools.World.LocalValues {
     public Color defaultValue;
 
     /// <summary>
+    ///   Identifies whether alpha values are permitted within this color value (only applicable in-editor).
+    /// </summary>
+    public bool permitAlpha = true;
+
+    /// <summary>
+    ///  Identifies whether HDR values are permitted within this color value (only applicable in-editor).
+    /// </summary>
+    public bool permitHDR;
+
+    /// <summary>
     ///   Stores the actual local state.
     /// </summary>
     private Color _state;

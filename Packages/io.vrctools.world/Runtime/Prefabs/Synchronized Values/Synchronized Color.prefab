@@ -58,6 +58,8 @@ MonoBehaviour:
   synchronizationBackoff: 2
   synchronizationDebugging: 0
   defaultValue: {r: 0, g: 0, b: 0, a: 0}
+  permitAlpha: 1
+  permitHDR: 0
 --- !u!114 &3161696595059443349
 MonoBehaviour:
   m_ObjectHideFlags: 0

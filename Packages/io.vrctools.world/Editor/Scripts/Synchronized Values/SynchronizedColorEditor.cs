@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using UnityEditor;
+using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
@@ -22,6 +23,10 @@ namespace VRCTools.World.Editor.SynchronizedValues {
   [CustomEditor(typeof(Value))]
   public class SynchronizedColorEditor : AbstractSynchronizedEventEmitterEditor {
     private SerializedProperty _defaultValue;
+    private SerializedProperty _permitAlpha;
+    private SerializedProperty _permitHDR;
+
+    private bool _colorTypeFoldout;
 
     protected override string HelpText =>
       "Provides a synchronized color value with event capabilities.\n\n" +
@@ -36,11 +41,28 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       base.OnEnable();
 
       this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
+      this._permitAlpha = this.serializedObject.FindProperty(nameof(Value.permitAlpha));
+      this._permitHDR = this.serializedObject.FindProperty(nameof(Value.permitHDR));
     }
 
     protected override void RenderInspectorGUI() {
+      var permitAlpha = this._permitAlpha.boolValue;
+      var permitHDR = this._permitHDR.boolValue;
+
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
+      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"), this._defaultValue.colorValue, true, permitAlpha,
+        permitHDR);
+
+      this._colorTypeFoldout = EditorGUILayout.Foldout(this._colorTypeFoldout, "Color Type");
+      if (this._colorTypeFoldout) {
+        EditorGUI.indentLevel++;
+        {
+          EditorGUILayout.PropertyField(this._permitAlpha);
+          EditorGUILayout.PropertyField(this._permitHDR);
+        }
+        EditorGUI.indentLevel--;
+      }
+      
       EditorGUILayout.Space(20);
 
       base.RenderInspectorGUI();
