@@ -15,7 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRCTools.World.Abstractions;
+using VRCTools.Event;
 
 namespace VRCTools.World.SynchronizedValues {
   /// <summary>
@@ -23,7 +23,7 @@ namespace VRCTools.World.SynchronizedValues {
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized URL")]
-  public class SynchronizedUrl : AbstractSynchronizedBehaviour {
+  public class SynchronizedUrl : AbstractSynchronizedEventEmitter {
     public const int EVENT_STATE_UPDATED = 0;
     public const int EVENT_COUNT = 1;
 

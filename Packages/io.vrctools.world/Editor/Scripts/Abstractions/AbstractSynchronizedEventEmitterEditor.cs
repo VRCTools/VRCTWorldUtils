@@ -14,24 +14,24 @@
 
 using UnityEditor;
 using UnityEngine;
-using VRCTools.World.Abstractions;
+using VRCTools.Event;
 using VRCTools.World.Editor.Utils;
 
 namespace VRCTools.World.Editor.Abstractions {
   /// <summary>
   ///   Provides a specialized extension to the custom Udon editor which handles the fields and functionality provide
-  ///   within <see cref="AbstractSynchronizedBehaviour" />.
+  ///   within <see cref="AbstractSynchronizedEventEmitter" />.
   /// </summary>
-  public abstract class AbstractSynchronizedBehaviourEditor : AbstractCustomUdonEditor {
+  public abstract class AbstractSynchronizedEventEmitterEditor : AbstractCustomUdonEditor {
     private bool _advancedFoldout;
     private SerializedProperty _synchronizationBackoff;
     private SerializedProperty _synchronizationDebugging;
 
     protected virtual void OnEnable() {
       this._synchronizationBackoff
-        = this.serializedObject.FindProperty(nameof(AbstractSynchronizedBehaviour.synchronizationBackoff));
+        = this.serializedObject.FindProperty(nameof(AbstractSynchronizedEventEmitter.synchronizationBackoff));
       this._synchronizationDebugging
-        = this.serializedObject.FindProperty(nameof(AbstractSynchronizedBehaviour.synchronizationDebugging));
+        = this.serializedObject.FindProperty(nameof(AbstractSynchronizedEventEmitter.synchronizationDebugging));
     }
 
     protected override void RenderInspectorHeader() {

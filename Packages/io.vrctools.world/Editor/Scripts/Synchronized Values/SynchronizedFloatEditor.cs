@@ -21,7 +21,7 @@ namespace VRCTools.World.Editor.SynchronizedValues {
   using Value = SynchronizedFloat;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedFloatEditor : AbstractSynchronizedBehaviourEditor {
+  public class SynchronizedFloatEditor : AbstractSynchronizedEventEmitterEditor {
     private SerializedProperty _defaultValue;
     private SerializedProperty _minimalUpdateDifference;
 

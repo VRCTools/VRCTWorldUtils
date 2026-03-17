@@ -21,7 +21,7 @@ namespace VRCTools.World.Editor.SynchronizedValues {
   using Value = SynchronizedInt;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedIntEditor : AbstractSynchronizedBehaviourEditor {
+  public class SynchronizedIntEditor : AbstractSynchronizedEventEmitterEditor {
     private SerializedProperty _defaultValue;
     private SerializedProperty _restrictedMaximumValue;
     private SerializedProperty _restrictedMinimumValue;

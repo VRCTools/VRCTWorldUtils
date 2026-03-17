@@ -14,7 +14,7 @@
 
 using UdonSharp;
 using UnityEngine;
-using VRCTools.World.Abstractions;
+using VRCTools.Event;
 
 namespace VRCTools.World.SynchronizedValues {
   /// <summary>
@@ -22,7 +22,7 @@ namespace VRCTools.World.SynchronizedValues {
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized String")]
-  public class SynchronizedString : AbstractSynchronizedBehaviour {
+  public class SynchronizedString : AbstractSynchronizedEventEmitter {
     public const int EVENT_STATE_UPDATED = 0;
     public const int EVENT_COUNT = 1;
 

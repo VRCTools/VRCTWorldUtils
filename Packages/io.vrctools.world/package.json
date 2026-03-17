@@ -12,6 +12,7 @@
   },
   "vpmDependencies": {
     "com.vrchat.worlds": "^3.7.0",
-    "io.vrctools.event": "^0.1.0"
+    "io.vrctools.common": "^0.1.0",
+    "io.vrctools.event": "^0.2.0"
   }
 }

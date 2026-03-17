@@ -20,7 +20,7 @@ namespace VRCTools.World.Editor.SynchronizedValues {
   using Value = SynchronizedString;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedStringEditor : AbstractSynchronizedBehaviourEditor {
+  public class SynchronizedStringEditor : AbstractSynchronizedEventEmitterEditor {
     private SerializedProperty _defaultValue;
 
     protected override string HelpText =>
