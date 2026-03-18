@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRCTools.Event;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues {
   /// <summary>
@@ -23,8 +24,9 @@ namespace VRCTools.World.LocalValues {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Vector3")]
   public class LocalVector3 : AbstractEventEmitter {
-    public const int EVENT_STATE_UPDATED = 0;
-    public const int EVENT_COUNT = 1;
+    public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
+    public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
+    public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
 
     /// <summary>
     ///   Identifies the value with which this local Vector3 will be initialized.
@@ -43,7 +45,7 @@ namespace VRCTools.World.LocalValues {
     ///   When setting the value, event emission will only take place if the new value differs from the current
     ///   value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public Vector3 State {
+    public virtual Vector3 State {
       get => this._state;
       set {
         if (this._state == value) return;
@@ -51,10 +53,15 @@ namespace VRCTools.World.LocalValues {
       }
     }
 
-    private void Start() {
+    protected virtual void Start() {
       this._state = this.defaultValue;
 
       this._EmitEvent(EVENT_STATE_UPDATED);
+    }
+
+    public virtual void _Reset() {
+      this.State = this.defaultValue;
+      this._EmitEvent(EVENT_STATE_RESET);
     }
   }
 }
