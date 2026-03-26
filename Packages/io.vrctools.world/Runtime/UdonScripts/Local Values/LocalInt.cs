@@ -51,7 +51,7 @@ namespace VRCTools.World.LocalValues {
     /// <summary>
     ///   Stores the actual local state.
     /// </summary>
-    private int _state;
+    protected int _state;
 
     public override int EventCount => EVENT_COUNT;
 

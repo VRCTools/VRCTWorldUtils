@@ -1,0 +1,111 @@
+﻿// Copyright 2025 .start <https://dotstart.tv>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using UdonSharp;
+using UnityEngine;
+using VRC.SDK3.Persistence;
+using VRC.SDKBase;
+using VRCTools.World.LocalValues;
+using VRCTools.World.Values;
+
+namespace VRCTools.World.PersistedValues {
+  [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
+  [AddComponentMenu("Persisted Values/Persisted Vector3")]
+  public class PersistedVector3 : LocalVector3 {
+    public new const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
+    public new const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
+    public const int EVENT_LOADED = ValueEvents.PERSISTED_LOADED;
+    public const int EVENT_PERSIST = ValueEvents.PERSISTED_PERSIST;
+    public new const int EVENT_COUNT = ValueEvents.PERSISTED_COUNT;
+
+    /// <summary>
+    ///   Identifies the key with which this value will be persisted.
+    /// </summary>
+    public string key;
+
+    public override int EventCount => EVENT_COUNT;
+
+    /// <summary>
+    ///   Retrieves or updates the local state.
+    ///   When setting the value, event emission will only take place if the new value differs from the current
+    ///   value. Otherwise, the operation effectively acts as a noop.
+    /// </summary>
+    public override Vector3 State {
+      get => this._state;
+      set {
+        if (!this.Loaded) {
+          Debug.LogError(
+            "[Persisted Vector3] Attempted to update value prior to OnPlayerRestored event being invoked - State change has been ignored",
+            this);
+          return;
+        }
+
+        if (this._state == value) return;
+
+        this._state = value;
+        this._Persist();
+        this._EmitEvent(EVENT_STATE_UPDATED);
+      }
+    }
+
+    /// <summary>
+    ///   Identifies whether the value has been populated yet.
+    /// </summary>
+    public bool Loaded { get; private set; }
+
+    public override void _Reset() {
+      if (!this.Loaded) {
+        Debug.LogError(
+          "[Persisted Vector3] Attempted to reset value prior to OnPlayerRestored event being invoked",
+          this);
+        return;
+      }
+
+      base._Reset();
+    }
+
+    /// <summary>
+    ///   Persists the current value to the local player store.
+    /// </summary>
+    public void _Persist() {
+      if (!this.Loaded) {
+        Debug.LogError(
+          "[Persisted Vector3] Attempted to persist value prior to OnPlayerRestored event being invoked",
+          this);
+        return;
+      }
+
+      if (string.IsNullOrEmpty(this.key)) {
+        Debug.LogError("[Persisted Vector3] Attempted to persist value without key", this);
+        return;
+      }
+
+      PlayerData.SetVector3(this.key, this.State);
+      this._EmitEvent(EVENT_PERSIST);
+    }
+
+    public override void OnPlayerRestored(VRCPlayerApi player) {
+      if (!player.isLocal) {
+        return;
+      }
+
+      this.State = PlayerData.TryGetVector3(Networking.LocalPlayer, this.key, out var stored)
+        ? stored
+        : this.defaultValue;
+
+      this.Loaded = true;
+      this._EmitEvent(EVENT_LOADED);
+    }
+  }
+}

@@ -7,8 +7,9 @@
     #endregion
 
     #region Persisted Values
-    public const int PERSISTED_PERSIST = 2;
-    public const int PERSISTED_COUNT = STANDARD_COUNT + 1;
+    public const int PERSISTED_LOADED = STANDARD_COUNT;
+    public const int PERSISTED_PERSIST = STANDARD_COUNT + 1;
+    public const int PERSISTED_COUNT = STANDARD_COUNT + 2;
     #endregion
   }
 }
