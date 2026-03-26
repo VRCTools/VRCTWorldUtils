@@ -5,6 +5,9 @@
     },
     "io.vrctools.event": {
       "version": "0.1.0"
+    },
+    "com.llealloo.audiolink": {
+      "version": "3.1.2"
     }
   },
   "locked": {
@@ -30,6 +33,10 @@
       "dependencies": {
         "com.vrchat.worlds": "^3.7.0"
       }
+    },
+    "com.llealloo.audiolink": {
+      "version": "3.1.2",
+      "dependencies": {}
     }
   }
 }
