@@ -88,7 +88,7 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
           this._mappingUpperBound);
         CustomEditorUtility.ValidateIntBounds(this._mappingLowerBound, this._mappingUpperBound);
 
-        if (!synchronizedValue.restrictValue && this._enableMapping.boolValue)
+        if (synchronizedValue && !synchronizedValue.restrictValue && this._enableMapping.boolValue)
           EditorGUILayout.HelpBox(
             "Value does not specify a value range\n\n" +
             "Mapping will not be applied as no source range has been defined.",

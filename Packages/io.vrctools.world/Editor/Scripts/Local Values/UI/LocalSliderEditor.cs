@@ -88,7 +88,7 @@ namespace VRCTools.World.Editor.LocalValues.UI {
           this._mappingUpperBound);
         CustomEditorUtility.ValidateIntBounds(this._mappingLowerBound, this._mappingUpperBound);
 
-        if (!localValue.restrictValue && this._enableMapping.boolValue)
+        if (localValue && !localValue.restrictValue && this._enableMapping.boolValue)
           EditorGUILayout.HelpBox(
             "Value does not specify a value range\n\n" +
             "Mapping will not be applied as no source range has been defined.",
