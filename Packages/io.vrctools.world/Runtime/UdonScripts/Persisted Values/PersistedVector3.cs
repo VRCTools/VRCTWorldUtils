@@ -45,7 +45,7 @@ namespace VRCTools.World.PersistedValues {
       get => this._state;
       set {
         if (!this.Loaded) {
-          Debug.LogError(
+          Debug.LogWarning(
             "[Persisted Vector3] Attempted to update value prior to OnPlayerRestored event being invoked - State change has been ignored",
             this);
           return;
@@ -66,7 +66,7 @@ namespace VRCTools.World.PersistedValues {
 
     public override void _Reset() {
       if (!this.Loaded) {
-        Debug.LogError(
+        Debug.LogWarning(
           "[Persisted Vector3] Attempted to reset value prior to OnPlayerRestored event being invoked",
           this);
         return;
@@ -80,7 +80,7 @@ namespace VRCTools.World.PersistedValues {
     /// </summary>
     public void _Persist() {
       if (!this.Loaded) {
-        Debug.LogError(
+        Debug.LogWarning(
           "[Persisted Vector3] Attempted to persist value prior to OnPlayerRestored event being invoked",
           this);
         return;
