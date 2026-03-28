@@ -1,4 +1,4 @@
-﻿// Copyright 2025 .start <https://dotstart.tv>
+﻿// Copyright 2025-2026 .start <https://dotstart.tv>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
 // limitations under the License.
 
 using UnityEditor;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 
 namespace VRCTools.World.Editor.LocalValues {
   using Value = LocalString;
 
   [CustomEditor(typeof(Value))]
-  public class LocalStringEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _defaultValue;
-
+  public class LocalStringEditor : AbstractLocalValueEditor {
     protected override string HelpText =>
       "Provides a local string value with event capabilities.\n\n" +
       "You may use this component to define local string values which may be changed on the fly " +
@@ -31,12 +28,5 @@ namespace VRCTools.World.Editor.LocalValues {
       "scripts or one of the scripts provided by this package: \n\n" +
       " - For labels use LocalStringLabel\n" +
       "Additional compatible scripts may be available within this package.";
-
-    private void OnEnable() { this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue)); }
-
-    protected override void RenderInspectorGUI() {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
-    }
   }
 }

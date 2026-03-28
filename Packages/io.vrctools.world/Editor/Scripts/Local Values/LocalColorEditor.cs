@@ -1,4 +1,4 @@
-﻿// Copyright 2025 .start <https://dotstart.tv>
+﻿// Copyright 2025-2026 .start <https://dotstart.tv>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
 
 using UnityEditor;
 using UnityEngine;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 
 namespace VRCTools.World.Editor.LocalValues {
   using Value = LocalColor;
 
   [CustomEditor(typeof(Value))]
-  public class LocalColorEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _defaultValue;
+  public class LocalColorEditor : AbstractLocalValueEditor {
     private SerializedProperty _permitAlpha;
     private SerializedProperty _permitHDR;
 
@@ -37,8 +35,9 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For material properties use LocalMaterialPropertyApplicator\n" +
       "Additional compatible scripts may be available within this package.";
 
-    private void OnEnable() {
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
+    protected override void OnEnable() {
+      base.OnEnable();
+
       this._permitAlpha = this.serializedObject.FindProperty(nameof(Value.permitAlpha));
       this._permitHDR = this.serializedObject.FindProperty(nameof(Value.permitHDR));
     }
@@ -48,18 +47,19 @@ namespace VRCTools.World.Editor.LocalValues {
       var permitHDR = this._permitHDR.boolValue;
 
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"), this._defaultValue.colorValue, true, permitAlpha,
+      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"),
+        this._defaultValue.colorValue, true, permitAlpha,
         permitHDR);
 
       this._colorTypeFoldout = EditorGUILayout.Foldout(this._colorTypeFoldout, "Color Type");
-      if (this._colorTypeFoldout) {
-        EditorGUI.indentLevel++;
-        {
-          EditorGUILayout.PropertyField(this._permitAlpha);
-          EditorGUILayout.PropertyField(this._permitHDR);
-        }
-        EditorGUI.indentLevel--;
+      if (!this._colorTypeFoldout) return;
+
+      EditorGUI.indentLevel++;
+      {
+        EditorGUILayout.PropertyField(this._permitAlpha);
+        EditorGUILayout.PropertyField(this._permitHDR);
       }
+      EditorGUI.indentLevel--;
     }
   }
 }

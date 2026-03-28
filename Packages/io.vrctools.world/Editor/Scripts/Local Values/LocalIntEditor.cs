@@ -1,4 +1,4 @@
-﻿// Copyright 2025 .start <https://dotstart.tv>
+﻿// Copyright 2025-2026 .start <https://dotstart.tv>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
 
 using UnityEditor;
 using UnityEngine;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 
 namespace VRCTools.World.Editor.LocalValues {
   using Value = LocalInt;
 
   [CustomEditor(typeof(Value))]
-  public class LocalIntEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _defaultValue;
+  public class LocalIntEditor : AbstractLocalValueEditor {
     private SerializedProperty _restrictedMaximumValue;
     private SerializedProperty _restrictedMinimumValue;
 
@@ -38,17 +36,16 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For animators use LocalAnimatorApplicator\n\n" +
       "Additional compatible scripts may be available within this package.";
 
-    private void OnEnable() {
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-
+    protected override void OnEnable() {
+      base.OnEnable();
+      
       this._restrictValue = this.serializedObject.FindProperty(nameof(Value.restrictValue));
       this._restrictedMinimumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMinimumValue));
       this._restrictedMaximumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMaximumValue));
     }
 
     protected override void RenderInspectorGUI() {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
+      base.RenderInspectorGUI();
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Restrictions", EditorStyles.boldLabel);

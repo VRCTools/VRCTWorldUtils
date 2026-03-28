@@ -1,4 +1,4 @@
-﻿// Copyright 2025 .start <https://dotstart.tv>
+﻿// Copyright 2025-2026 .start <https://dotstart.tv>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
 // limitations under the License.
 
 using UnityEditor;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 
 namespace VRCTools.World.Editor.LocalValues {
   using Value = LocalBoolean;
 
   [CustomEditor(typeof(Value))]
-  public class LocalBooleanEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _defaultValue;
-
+  public class LocalBooleanEditor : AbstractLocalValueEditor {
     protected override string HelpText =>
       "Provides a local boolean value with event capabilities.\n\n" +
       "You may use this component to create objects, animations or material properties which may be toggled on/off" +
@@ -34,12 +31,5 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For material replacements use LocalMaterialSwapApplicator\n" +
       " - For material replacements use LocalMaterialPropertyApplicator\n" +
       "Additional compatible scripts may be available within this package.";
-
-    private void OnEnable() { this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue)); }
-
-    protected override void RenderInspectorGUI() {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
-    }
   }
 }

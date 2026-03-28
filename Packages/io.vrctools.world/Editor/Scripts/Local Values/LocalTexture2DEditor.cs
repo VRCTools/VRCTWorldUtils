@@ -1,4 +1,4 @@
-﻿// Copyright 2025 .start <https://dotstart.tv>
+﻿// Copyright 2025-2026 .start <https://dotstart.tv>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,28 +13,18 @@
 // limitations under the License.
 
 using UnityEditor;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues;
 
 namespace VRCTools.World.Editor.LocalValues {
   using Value = LocalTexture2D;
 
   [CustomEditor(typeof(Value))]
-  public class LocalTexture2DEditor : AbstractCustomUdonEditor {
-    private SerializedProperty _defaultValue;
-
+  public class LocalTexture2DEditor : AbstractLocalValueEditor {
     protected override string HelpText =>
       "Provides a local Texture2D value with event capabilities.\n\n" +
       "You may use this component to create objects which may be updated on the fly within an instance of this " +
       "world.\n\n" +
       "Please note that this script is useless on its own. You will need to combine it with either custom " +
       "scripts or one of the scripts provided by this package.";
-
-    private void OnEnable() { this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue)); }
-
-    protected override void RenderInspectorGUI() {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
-    }
   }
 }
