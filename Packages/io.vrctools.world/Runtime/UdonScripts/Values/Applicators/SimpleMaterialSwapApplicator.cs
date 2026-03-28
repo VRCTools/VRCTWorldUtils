@@ -59,7 +59,8 @@ namespace VRCTools.World.Values.Applicators {
         this._originalMaterials[i] = r.sharedMaterials[slot];
       }
 
-      this.localValue._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
+      ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
+        nameof(this._OnStateUpdated));
 
       this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
