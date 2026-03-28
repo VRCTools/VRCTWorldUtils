@@ -30,7 +30,7 @@ namespace VRCTools.World.Editor.LocalValues {
       this._RenderDefaults();
     }
 
-    protected void _RenderDefaults() {
+    protected virtual void _RenderDefaults() {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._defaultValue);
     }
