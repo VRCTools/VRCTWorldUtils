@@ -100,10 +100,11 @@ namespace VRCTools.World.PersistedValues {
         return;
       }
 
-      this.State = PlayerData.TryGetBool(Networking.LocalPlayer, this.key, out var stored) ? stored : this.defaultValue;
+      this._state = PlayerData.TryGetBool(Networking.LocalPlayer, this.key, out var stored) ? stored : this.defaultValue;
 
       this.Loaded = true;
       this._EmitEvent(EVENT_LOADED);
+      this._EmitEvent(EVENT_STATE_UPDATED);
     }
   }
 }
