@@ -62,8 +62,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
 
     private void Start() {
       if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
-        Debug.LogError("[Synchronized Material Property Applicator] Target is invalid - Disabled");
+        Debug.LogError("[Synchronized Material Property Applicator] Target is invalid - Disabled", this);
         this.enabled = false;
+        return;
       }
 
       // before we do anything we check for corrupted component data (e.g. if our editor has broken somehow or Unity

@@ -58,8 +58,9 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     private void Start() {
       if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
-        Debug.LogError("[Local Material Property Applicator] Renderer is invalid - Disabled");
+        Debug.LogError("[Local Material Property Applicator] Renderer is invalid - Disabled", this);
         this.enabled = false;
+        return;
       }
 
       // before we do anything we check for corrupted component data (e.g. if our editor has broken somehow or Unity
