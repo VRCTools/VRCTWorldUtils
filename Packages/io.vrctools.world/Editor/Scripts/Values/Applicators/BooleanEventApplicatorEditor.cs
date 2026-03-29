@@ -17,11 +17,12 @@ using UnityEditor;
 using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
+using VRCTools.World.Utils;
 using VRCTools.World.Values.Applicators;
 
 namespace VRCTools.World.Editor.Values.Applicators {
   using Applicator = BooleanEventApplicator;
-  
+
   [CustomEditor(typeof(Applicator))]
   public class BooleanEventApplicatorEditor : AbstractCustomUdonEditor {
     private SerializedProperty _source;
@@ -33,6 +34,11 @@ namespace VRCTools.World.Editor.Values.Applicators {
 
     private SerializedProperty _trueBehaviours;
     private SerializedProperty _trueEventNames;
+
+    private SerializedProperty _delayMode;
+    private SerializedProperty _delayTiming;
+    private SerializedProperty _delayFrames;
+    private SerializedProperty _delaySeconds;
 
     private MultiPropertyList _falseEventList;
     private MultiPropertyList _trueEventList;
@@ -48,6 +54,11 @@ namespace VRCTools.World.Editor.Values.Applicators {
 
       this._trueBehaviours = this.serializedObject.FindProperty(nameof(Applicator.trueBehaviours));
       this._trueEventNames = this.serializedObject.FindProperty(nameof(Applicator.trueEventNames));
+
+      this._delayMode = this.serializedObject.FindProperty(nameof(Applicator.delayMode));
+      this._delayTiming = this.serializedObject.FindProperty(nameof(Applicator.delayTiming));
+      this._delayFrames = this.serializedObject.FindProperty(nameof(Applicator.delayFrames));
+      this._delaySeconds = this.serializedObject.FindProperty(nameof(Applicator.delaySeconds));
 
       this._falseEventList = new MultiPropertyList(
         new GUIContent("False State Events"),
@@ -70,9 +81,29 @@ namespace VRCTools.World.Editor.Values.Applicators {
         this._synchronizedValue, "Invalid or unspecified local value reference.\n\n" +
                                  "This component will disable itself upon startup.");
       EditorGUILayout.Space(20);
-      
+
+      EditorGUILayout.LabelField("Targets", EditorStyles.boldLabel);
       this._falseEventList.DoLayout();
       this._trueEventList.DoLayout();
+      EditorGUILayout.Space(20);
+
+      EditorGUILayout.LabelField("Delay", EditorStyles.boldLabel);
+      EditorGUILayout.PropertyField(this._delayMode);
+
+      var delayMode = (DelayMode)this._delayMode.enumValueIndex;
+      switch (delayMode) {
+        case DelayMode.NONE: return;
+        case DelayMode.FRAMES:
+          EditorGUILayout.PropertyField(this._delayFrames);
+          break;
+        case DelayMode.SECONDS:
+          EditorGUILayout.PropertyField(this._delaySeconds);
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
+
+      EditorGUILayout.PropertyField(this._delayTiming);
     }
   }
 }

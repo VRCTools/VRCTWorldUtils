@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRC.Udon.Common.Enums;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -32,6 +33,11 @@ namespace VRCTools.World.Values.Applicators {
 
     public UdonSharpBehaviour[] trueBehaviours;
     public string[] trueEventNames;
+
+    public DelayMode delayMode;
+    public EventTiming delayTiming = EventTiming.Update;
+    public int delayFrames;
+    public float delaySeconds;
 
     private void Start() {
       this.falseBehaviours = MappingUtility.CheckCoherentMapping(this.falseBehaviours, this.falseEventNames, this);
@@ -64,7 +70,20 @@ namespace VRCTools.World.Values.Applicators {
           continue;
         }
 
-        behaviour.SendCustomEvent(eventName);
+        switch (this.delayMode) {
+          case DelayMode.NONE:
+            behaviour.SendCustomEvent(eventName);
+            break;
+          case DelayMode.FRAMES:
+            behaviour.SendCustomEventDelayedFrames(eventName, this.delayFrames, this.delayTiming);
+            break;
+          case DelayMode.SECONDS:
+            behaviour.SendCustomEventDelayedSeconds(eventName, this.delaySeconds, this.delayTiming);
+            break;
+          default:
+            Debug.LogError("[Boolean Event Applicator] Delay mode not implemented", this);
+            break;
+        }
       }
     }
   }
