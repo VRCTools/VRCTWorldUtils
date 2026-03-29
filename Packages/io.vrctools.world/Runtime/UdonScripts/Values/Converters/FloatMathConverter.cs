@@ -55,7 +55,7 @@ namespace VRCTools.World.Values.Converters {
         nameof(this._OnStateUpdated));
     }
 
-    private void _OnStateUpdated() {
+    public void _OnStateUpdated() {
       var a = ValueUtility.GetValue(this.sourceA, this.staticValueA, this.localValueA, this.synchronizedValueA);
       var b = ValueUtility.GetValue(this.sourceB, this.staticValueB, this.localValueB, this.synchronizedValueB);
 
