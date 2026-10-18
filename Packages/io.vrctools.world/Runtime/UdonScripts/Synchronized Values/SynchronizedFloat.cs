@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRCTools.Event;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues {
   /// <summary>
@@ -23,8 +24,9 @@ namespace VRCTools.World.SynchronizedValues {
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized Float")]
   public class SynchronizedFloat : AbstractSynchronizedEventEmitter {
-    public const int EVENT_STATE_UPDATED = 0;
-    public const int EVENT_COUNT = 1;
+    public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
+    public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
+    public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
 
     /// <summary>
     ///   Identifies the value with which this synchronized float will be initialized.
@@ -122,6 +124,15 @@ namespace VRCTools.World.SynchronizedValues {
       base.Start();
 
       this._EmitEvent(EVENT_STATE_UPDATED);
+    }
+
+    /// <summary>
+    ///   Reverts the current value back to the default value.
+    /// </summary>
+    public virtual void _Reset()
+    {
+      this.State = this.restrictValue ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) : this.defaultValue;
+      this._EmitEvent(EVENT_STATE_RESET);
     }
 
     public void _Zero() { this.State = 0; }
