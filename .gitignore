@@ -63,6 +63,9 @@ Assets/PackageMakerWindowData.asset*
 .idea
 .vscode
 
+# MacOS
+.DS_Store
+
 # Ignore auto-generated assets
 Assets/
 
@@ -70,6 +73,14 @@ Assets/
 ClientSimStorage
 ClientSimStorage.meta
 
+# Ignore AudioLink
+.audiolink_pipeline
+
 # Ignore additional user settings
 UserSettings/EditorUserSettings.asset
 UserSettings/layouts
+UserSettings/Search.index
+UserSettings/Search.settings
+
+# Ignore exported packages
+Exports/
