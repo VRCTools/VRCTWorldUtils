@@ -77,11 +77,13 @@ namespace VRCTools.World.Values.Converters {
 
       var newValue = Mathf.SmoothDamp(currentValue, targetValue, ref this._velocity, this.smoothTime, this.maxSpeed);
       ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, newValue);
+      var writtenValue = ValueUtility.GetValue(this.target, this.localTarget, this.synchronizedTarget);
 
       // de-activate update logic when the value gets close enough to the target so that we do not waste CPU cycles
       // doing nothing; float.Epsilon is the absolute minimum difference supported by us
-      var difference = Mathf.Abs(newValue - targetValue);
-      if (difference <= Mathf.Max(float.Epsilon, this.minDifference)) {
+      var targetDifference = Mathf.Abs(writtenValue - targetValue);
+      var writtenDifference = Mathf.Abs(writtenValue - newValue);
+      if (targetDifference <= Mathf.Max(float.Epsilon, this.minDifference) || writtenDifference > Mathf.Epsilon) {
         this._active = false;
       }
     }
