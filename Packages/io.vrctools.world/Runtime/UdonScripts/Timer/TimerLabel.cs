@@ -100,7 +100,7 @@ namespace VRCTools.World.Timer
                 return;
             }
             
-            this._remainingTimeUpdateTimer = this._remainingTimeUpdateTimer;
+            this._remainingTimeUpdateTimer = this.remainingTimeUpdateFrequency;
             this.UpdateRemainingTime();
         }
 
