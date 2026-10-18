@@ -26,7 +26,7 @@ namespace VRCTools.World.SynchronizedValues {
   public class SynchronizedColor : AbstractSynchronizedEventEmitter {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
-    public const int EVENT_COUNT = 1;
+    public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
 
     /// <summary>
     ///   Identifies the value with which this synchronized color will be initialized.
@@ -96,26 +96,34 @@ namespace VRCTools.World.SynchronizedValues {
     /// </summary>
     public void _Reset()
     {
+      // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
+      if (this.state == this.defaultValue)
+      {
+        return;
+      }
+      
       this._EnsureOwnership();
       
-      this.resetCounter++;
+      this._previousResetCounterValue = ++this.resetCounter;
       this.State = this.defaultValue;
 
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
     public override void OnDeserialization() {
-      base.OnDeserialization();
-
       var updated = this.state != this._previousState;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
 
-      var reset = this._previousResetCounterValue != this.resetCounter;
+      var reset = this._previousResetCounterValue != this.resetCounter && this.StateInitialized;
       this._previousResetCounterValue = this.resetCounter;
       
       if (reset) this._EmitEvent(EVENT_STATE_RESET);
+
+      // base has to be invoked last here as it also takes care of flagging the object as initialized thus requiring
+      // the value logic to run first
+      base.OnDeserialization();
     }
   }
 }

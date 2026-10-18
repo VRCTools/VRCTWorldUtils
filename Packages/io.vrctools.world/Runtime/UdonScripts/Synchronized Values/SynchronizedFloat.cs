@@ -143,10 +143,22 @@ namespace VRCTools.World.SynchronizedValues {
     /// </summary>
     public virtual void _Reset()
     {
+      var defaultValue = this.restrictValue
+        ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
+        : this.defaultValue;
+      
+      // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
+      var currentlyDefault = Mathf.Abs(this.state - defaultValue) < 
+                             (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
+      if (currentlyDefault)
+      {
+        return;
+      }
+      
       this._EnsureOwnership();
       
-      this.resetCounter++;
-      this.State = this.restrictValue ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) : this.defaultValue;
+      this._previousResetCounterValue = ++this.resetCounter;
+      this.State = defaultValue;
       
       this._EmitEvent(EVENT_STATE_RESET);
     }
@@ -154,8 +166,6 @@ namespace VRCTools.World.SynchronizedValues {
     public void _Zero() { this.State = 0; }
 
     public override void OnDeserialization() {
-      base.OnDeserialization();
-
       var updated = Mathf.Abs(this.state - this._previousState) >=
                     (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
       if (updated)
@@ -164,10 +174,14 @@ namespace VRCTools.World.SynchronizedValues {
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
 
-      var reset = this._previousResetCounterValue != this.resetCounter;
+      var reset = this._previousResetCounterValue != this.resetCounter && this.StateInitialized;
       this._previousResetCounterValue = this.resetCounter;
       
       if (reset) this._EmitEvent(EVENT_STATE_RESET);
+
+      // base has to be invoked last here as it also takes care of flagging the object as initialized thus requiring
+      // the value logic to run first
+      base.OnDeserialization();
     }
   }
 }
