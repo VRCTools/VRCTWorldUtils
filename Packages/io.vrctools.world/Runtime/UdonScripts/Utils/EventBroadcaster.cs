@@ -27,7 +27,9 @@ namespace VRCTools.World.Utils {
 
     public DelayMode delayMode;
     public EventTiming delayTiming = EventTiming.Update;
+    [Min(0)]
     public int delayFrames;
+    [Min(0)]
     public float delaySeconds;
 
     private void Start() {
