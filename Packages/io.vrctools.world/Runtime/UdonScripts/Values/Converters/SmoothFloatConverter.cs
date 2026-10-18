@@ -65,9 +65,17 @@ namespace VRCTools.World.Values.Converters {
 
       var target = ValueUtility.GetValue(this.source, this.localSource, this.synchronizedSource);
       var current = ValueUtility.GetValue(this.target, this.localTarget, this.synchronizedTarget);
+      
+      // if either target value or current value become NaN or infinity for whatever reason, we will no longer be able
+      // to perform smoothing and should immediately adopt the target value before de-activating ourselves
+      if (float.IsNaN(target) || float.IsInfinity(target) || float.IsNaN(current) || float.IsInfinity(current))
+      {
+        ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, target);
+        this._active = false;
+        return;
+      }
 
       var result = Mathf.SmoothDamp(current, target, ref this._velocity, this.smoothTime, this.maxSpeed);
-
       ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, result);
 
       // de-activate update logic when the value gets close enough to the target so that we do not waste CPU cycles
