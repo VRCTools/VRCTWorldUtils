@@ -67,6 +67,12 @@ namespace VRCTools.World.LocalValues {
     ///   Reverts the current value back to the default value.
     /// </summary>
     public virtual void _Reset() {
+      // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
+      if (this._state == this.defaultValue)
+      {
+        return;
+      }
+      
       this.State = this.defaultValue;
       this._EmitEvent(EVENT_STATE_RESET);
     }
