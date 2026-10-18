@@ -87,10 +87,16 @@ namespace VRCTools.World.Values.Converters {
     }
 
     public void _OnStateUpdated() {
+      if (this._active)
+      {
+        return;
+      }
+      
       // this converter is special as we do not directly update the targets from here, instead this method merely
       // indicates that there is work to be done for Update() which will then slowly adjust the target until the end
       // condition is met
       this._active = true;
+      this._velocity = 0f;
     }
   }
 }
