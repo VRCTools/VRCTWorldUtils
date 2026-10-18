@@ -35,6 +35,7 @@ namespace VRCTools.World.Timer
         public TextMeshProUGUI statePausedLabel;
         public TextMeshProUGUI stateRunningLabel;
 
+        [Min(0)]
         public float remainingTimeUpdateFrequency = 1f;
         public string remainingTimeFormat = @"hh\:mm\:ss";
         public bool setActiveRemainingLabel = true;
