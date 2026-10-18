@@ -31,7 +31,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
     public int mappingLowerBound;
     public int mappingUpperBound = 100;
     [Min(float.Epsilon)]
-    public int multiplier = 1;
+    public float multiplier = 1;
 
     private Slider _slider;
     private bool _updating;
