@@ -69,7 +69,8 @@ namespace VRCTools.World.SynchronizedValues {
       set
       {
         var newValue = this.restrictValue ? 
-          Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value)) : value;
+          Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) :
+          value;
 
         if (this.state == newValue) return;
 

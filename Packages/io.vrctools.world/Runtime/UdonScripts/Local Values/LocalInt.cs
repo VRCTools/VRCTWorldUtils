@@ -64,7 +64,7 @@ namespace VRCTools.World.LocalValues {
       get => this._state;
       set {
         var newValue = this.restrictValue
-          ? Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value))
+          ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue)
           : value;
         
         if (this._state == newValue) return;
