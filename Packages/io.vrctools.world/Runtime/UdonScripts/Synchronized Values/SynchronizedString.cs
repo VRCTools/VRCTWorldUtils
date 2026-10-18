@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRCTools.Event;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues {
   /// <summary>
@@ -23,8 +24,9 @@ namespace VRCTools.World.SynchronizedValues {
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized String")]
   public class SynchronizedString : AbstractSynchronizedEventEmitter {
-    public const int EVENT_STATE_UPDATED = 0;
-    public const int EVENT_COUNT = 1;
+    public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
+    public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
+    public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
 
     /// <summary>
     ///   Identifies the value with which this synchronized boolean will be initialized.
@@ -42,7 +44,15 @@ namespace VRCTools.World.SynchronizedValues {
     [UdonSynced]
     private string state;
 
+    /// <summary>
+    ///   Stores a counter which tracks the number of resets performed on this value.
+    /// </summary>
+    [UdonSynced]
+    private int resetCounter;
+
     public override int EventCount => EVENT_COUNT;
+
+    private int _previousResetCounterValue;
 
     /// <summary>
     ///   Retrieves or updates the synchronized state.
@@ -71,6 +81,19 @@ namespace VRCTools.World.SynchronizedValues {
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
+    /// <summary>
+    ///   Reverts the current value back to the default value.
+    /// </summary>
+    public void _Reset()
+    {
+      this._EnsureOwnership();
+      
+      this.resetCounter++;
+      this.State = this.defaultValue;
+
+      this._EmitEvent(EVENT_STATE_RESET);
+    }
+
     public void _Clear() { this.State = ""; }
 
     public override void OnDeserialization() {
@@ -80,6 +103,11 @@ namespace VRCTools.World.SynchronizedValues {
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
+
+      var reset = this._previousResetCounterValue != this.resetCounter;
+      this._previousResetCounterValue = this.resetCounter;
+      
+      if (reset) this._EmitEvent(EVENT_STATE_RESET);
     }
   }
 }

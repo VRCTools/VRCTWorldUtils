@@ -71,7 +71,15 @@ namespace VRCTools.World.SynchronizedValues {
     [UdonSynced]
     private float state;
 
+    /// <summary>
+    ///   Stores a counter which tracks the number of resets performed on this value.
+    /// </summary>
+    [UdonSynced]
+    private int resetCounter;
+
     public override int EventCount => EVENT_COUNT;
+
+    private int _previousResetCounterValue;
 
     /// <summary>
     ///   Retrieves or updates the synchronized state.
@@ -131,7 +139,11 @@ namespace VRCTools.World.SynchronizedValues {
     /// </summary>
     public virtual void _Reset()
     {
+      this._EnsureOwnership();
+      
+      this.resetCounter++;
       this.State = this.restrictValue ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) : this.defaultValue;
+      
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
@@ -142,13 +154,16 @@ namespace VRCTools.World.SynchronizedValues {
 
       var updated = Mathf.Abs(this.state - this._previousState) >=
                     (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
-      if (!updated)
+      if (updated)
       {
-        return;
+        this._previousState = this.state;
+        this._EmitEvent(EVENT_STATE_UPDATED);
       }
 
-      this._previousState = this.state;
-      this._EmitEvent(EVENT_STATE_UPDATED);
+      var reset = this._previousResetCounterValue != this.resetCounter;
+      this._previousResetCounterValue = this.resetCounter;
+      
+      if (reset) this._EmitEvent(EVENT_STATE_RESET);
     }
   }
 }
