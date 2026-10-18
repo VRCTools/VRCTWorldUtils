@@ -63,24 +63,24 @@ namespace VRCTools.World.Values.Converters {
         return;
       }
 
-      var target = ValueUtility.GetValue(this.source, this.localSource, this.synchronizedSource);
-      var current = ValueUtility.GetValue(this.target, this.localTarget, this.synchronizedTarget);
+      var targetValue = ValueUtility.GetValue(this.source, this.localSource, this.synchronizedSource);
+      var currentValue = ValueUtility.GetValue(this.target, this.localTarget, this.synchronizedTarget);
       
       // if either target value or current value become NaN or infinity for whatever reason, we will no longer be able
       // to perform smoothing and should immediately adopt the target value before de-activating ourselves
-      if (float.IsNaN(target) || float.IsInfinity(target) || float.IsNaN(current) || float.IsInfinity(current))
+      if (float.IsNaN(targetValue) || float.IsInfinity(targetValue) || float.IsNaN(currentValue) || float.IsInfinity(currentValue))
       {
-        ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, target);
+        ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, targetValue);
         this._active = false;
         return;
       }
 
-      var result = Mathf.SmoothDamp(current, target, ref this._velocity, this.smoothTime, this.maxSpeed);
-      ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, result);
+      var newValue = Mathf.SmoothDamp(currentValue, targetValue, ref this._velocity, this.smoothTime, this.maxSpeed);
+      ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, newValue);
 
       // de-activate update logic when the value gets close enough to the target so that we do not waste CPU cycles
       // doing nothing; float.Epsilon is the absolute minimum difference supported by us
-      var difference = Mathf.Abs(result - target);
+      var difference = Mathf.Abs(newValue - targetValue);
       if (difference <= Mathf.Max(float.Epsilon, this.minDifference)) {
         this._active = false;
       }
