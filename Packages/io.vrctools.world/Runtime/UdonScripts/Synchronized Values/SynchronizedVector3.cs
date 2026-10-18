@@ -74,6 +74,8 @@ namespace VRCTools.World.SynchronizedValues {
         this._EnsureOwnership();
 
         this.state = this._previousState = value;
+        
+        this._TrySynchronize();
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
     }
