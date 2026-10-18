@@ -28,10 +28,30 @@ namespace VRCTools.World.Editor.Utils {
   ///   Provides various simple functions for use within custom editor implementations.
   /// </summary>
   internal static class CustomEditorUtility {
+    
     /// <summary>
     ///   Retrieves the package metadata for the calling assembly (if possible).
     /// </summary>
     private static PackageInfo LocalPackageInfo => PackageInfo.FindForAssembly(Assembly.GetExecutingAssembly());
+
+    private static readonly string LogoPath = $"{LocalPackageInfo.assetPath}/Editor/Textures/logo.png";
+    private static readonly string LightLogoPath = $"{LocalPackageInfo.assetPath}/Editor/Textures/logo-light.png";
+    
+    private static Texture2D _logo;
+
+    private static Texture2D Logo
+    {
+      get
+      {
+        if (_logo != null)
+        {
+          return _logo;
+        }
+        
+        _logo = AssetDatabase.LoadAssetAtPath<Texture2D>(EditorGUIUtility.isProSkin ? LogoPath : LightLogoPath);
+        return _logo;
+      }
+    }
 
     internal static string PackageName {
       get {
@@ -117,6 +137,16 @@ namespace VRCTools.World.Editor.Utils {
 
       EditorGUILayout.BeginHorizontal();
       {
+        var iconRect = GUILayoutUtility.GetRect(20f, 20f, GUILayout.ExpandWidth(false));
+        GUI.DrawTexture(iconRect, Logo, ScaleMode.ScaleToFit);
+        
+        EditorGUIUtility.AddCursorRect(iconRect, MouseCursor.Link);
+        if (UnityEngine.Event.current.type == EventType.MouseUp &&
+            iconRect.Contains(UnityEngine.Event.current.mousePosition))
+        {
+          Application.OpenURL("https://vrctools.io");
+        }
+        
         GUILayout.Label($"{PackageName} v{PackageVersion}");
         
         if (EditorGUILayout.LinkButton("Documentation")) Application.OpenURL("https://vrctools.io/docs/world-utils/");
