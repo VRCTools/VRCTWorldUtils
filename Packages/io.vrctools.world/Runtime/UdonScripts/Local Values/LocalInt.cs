@@ -93,7 +93,9 @@ namespace VRCTools.World.LocalValues {
     ///   Reverts the current value back to the default value.
     /// </summary>
     public virtual void _Reset() {
-      this.State = this.defaultValue;
+      this.State = this.restrictValue ? 
+        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) : 
+        this.defaultValue;
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
