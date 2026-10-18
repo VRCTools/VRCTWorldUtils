@@ -79,7 +79,7 @@ namespace VRCTools.World.SynchronizedValues {
     public float State {
       get => this.state;
       set {
-        var newValue = this.restrictValue ? Mathf.Clamp(value, this.minimalUpdateDifference, this.restrictedMinimumValue) : value;
+        var newValue = this.restrictValue ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) : value;
 
         if (Mathf.Abs(newValue - this.state) < (this.preventNuisanceUpdates ? 
               this.minimalUpdateDifference : Mathf.Epsilon))

@@ -75,7 +75,7 @@ namespace VRCTools.World.LocalValues {
     public virtual float State {
       get => this._state;
       set {
-        var newValue = this.restrictValue ? Mathf.Clamp(value, this.minimalUpdateDifference, this.restrictedMinimumValue) : value;
+        var newValue = this.restrictValue ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) : value;
 
         if (Mathf.Abs(newValue - this._state) <
             (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon))
