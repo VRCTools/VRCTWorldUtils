@@ -79,16 +79,13 @@ namespace VRCTools.World.SynchronizedValues {
     public float State {
       get => this.state;
       set {
-        if (this.preventNuisanceUpdates && Mathf.Abs(value - this.state) < this.minimalUpdateDifference) return;
-
+        var newValue = this.restrictValue ?
+          Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value)) : value;
+        
+        if (this.preventNuisanceUpdates && Mathf.Abs(newValue - this.state) < this.minimalUpdateDifference) return;
+        
         this._EnsureOwnership();
-
-        if (this.restrictValue)
-          this.state = this._previousState
-            = Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value));
-        else
-          this.state = this._previousState = value;
-
+        this.state = this._previousState = newValue;
         this._TrySynchronize();
         this._EmitEvent(EVENT_STATE_UPDATED);
       }

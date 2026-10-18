@@ -63,12 +63,13 @@ namespace VRCTools.World.LocalValues {
     public virtual int State {
       get => this._state;
       set {
-        if (this._state == value) return;
-
-        this._state = this.restrictValue
+        var newValue = this.restrictValue
           ? Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value))
           : value;
+        
+        if (this._state == newValue) return;
 
+        this._state = newValue;
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
     }

@@ -75,12 +75,13 @@ namespace VRCTools.World.LocalValues {
     public virtual float State {
       get => this._state;
       set {
-        if (this.preventNuisanceUpdates && Mathf.Abs(value - this._state) < this.minimalUpdateDifference) return;
-
-        this._state = this.restrictValue
+        var newValue = this.restrictValue
           ? Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value))
           : value;
+        
+        if (this.preventNuisanceUpdates && Mathf.Abs(newValue - this._state) < this.minimalUpdateDifference) return;
 
+        this._state = newValue;
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
     }

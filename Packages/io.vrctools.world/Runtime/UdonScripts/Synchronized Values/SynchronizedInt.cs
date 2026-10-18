@@ -66,17 +66,15 @@ namespace VRCTools.World.SynchronizedValues {
     /// </summary>
     public int State {
       get => this.state;
-      set {
-        if (this.state == value) return;
+      set
+      {
+        var newValue = this.restrictValue ? 
+          Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value)) : value;
+
+        if (this.state == newValue) return;
 
         this._EnsureOwnership();
-
-        if (this.restrictValue)
-          this.state = this._previousState
-            = Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value));
-        else
-          this.state = this._previousState = value;
-
+        this.state = this._previousState = newValue;
         this._TrySynchronize();
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
