@@ -79,10 +79,9 @@ namespace VRCTools.World.SynchronizedValues {
     public float State {
       get => this.state;
       set {
-        var newValue = this.restrictValue ?
-          Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value)) : value;
+        var newValue = this.restrictValue ? Mathf.Clamp(value, this.minimalUpdateDifference, this.restrictedMinimumValue) : value;
 
-        if (Mathf.Abs(newValue - this.state) >= (this.preventNuisanceUpdates ? 
+        if (Mathf.Abs(newValue - this.state) < (this.preventNuisanceUpdates ? 
               this.minimalUpdateDifference : Mathf.Epsilon))
         {
           return;
@@ -124,11 +123,15 @@ namespace VRCTools.World.SynchronizedValues {
     public override void OnDeserialization() {
       base.OnDeserialization();
 
-      var updated = !this.preventNuisanceUpdates ||
-                    Mathf.Abs(this._previousState - this.state) >= this.minimalUpdateDifference;
-      this._previousState = this.state;
+      var updated = Mathf.Abs(this.state - this._previousState) >=
+                    (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
+      if (!updated)
+      {
+        return;
+      }
 
-      if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
+      this._previousState = this.state;
+      this._EmitEvent(EVENT_STATE_UPDATED);
     }
   }
 }
