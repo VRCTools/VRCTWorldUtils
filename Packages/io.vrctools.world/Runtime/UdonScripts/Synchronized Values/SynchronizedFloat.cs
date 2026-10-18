@@ -81,8 +81,11 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         var newValue = this.restrictValue ?
           Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value)) : value;
-        
-        if (this.preventNuisanceUpdates && Mathf.Abs(newValue - this.state) < this.minimalUpdateDifference) return;
+
+        var changed = this.preventNuisanceUpdates
+          ? Mathf.Abs(newValue - this.state) >= this.minimalUpdateDifference
+          : !Mathf.Approximately(newValue, this.state);
+        if (!changed) return;
         
         this._EnsureOwnership();
         this.state = this._previousState = newValue;
