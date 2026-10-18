@@ -78,11 +78,12 @@ namespace VRCTools.World.LocalValues {
         var newValue = this.restrictValue
           ? Mathf.Max(this.restrictedMinimumValue, Mathf.Min(this.restrictedMaximumValue, value))
           : value;
-        
-        var changed = this.preventNuisanceUpdates ?
-          Mathf.Abs(newValue - this._state) >= this.minimalUpdateDifference :
-          !Mathf.Approximately(this._state, newValue);
-        if (!changed) return;
+
+        if (Mathf.Abs(newValue - this._state) >=
+            (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon))
+        {
+          return;
+        }
 
         this._state = newValue;
         this._EmitEvent(EVENT_STATE_UPDATED);
