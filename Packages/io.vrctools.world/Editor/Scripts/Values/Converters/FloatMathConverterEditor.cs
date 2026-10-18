@@ -41,6 +41,9 @@ namespace VRCTools.World.Editor.Values.Converters {
     private SerializedProperty _localValueB;
     private SerializedProperty _synchronizedValueB;
 
+    private SerializedProperty _permitNanPropagation;
+    private SerializedProperty _permitInfinityPropagation;
+
     protected override string HelpText => "Performs simple math operations on two values and writes the result to a" +
                                           "given target.";
 
@@ -60,6 +63,9 @@ namespace VRCTools.World.Editor.Values.Converters {
       this._staticValueB = this.serializedObject.FindProperty(nameof(Converter.staticValueB));
       this._localValueB = this.serializedObject.FindProperty(nameof(Converter.localValueB));
       this._synchronizedValueB = this.serializedObject.FindProperty(nameof(Converter.synchronizedValueB));
+      
+      this._permitNanPropagation = this.serializedObject.FindProperty(nameof(Converter.permitNanPropagation));
+      this._permitInfinityPropagation = this.serializedObject.FindProperty(nameof(Converter.permitInfinityPropagation));
     }
 
     protected override void RenderInspectorGUI() {
@@ -114,6 +120,11 @@ namespace VRCTools.World.Editor.Values.Converters {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Value"), this._sourceB, this._staticValueB,
         this._localValueB, this._synchronizedValueB,
         "Parameter is invalid or unset - It will be set to zero");
+      
+      EditorGUILayout.Space(20);
+      EditorGUILayout.LabelField("Propagation", EditorStyles.boldLabel);
+      EditorGUILayout.PropertyField(this._permitNanPropagation);
+      EditorGUILayout.PropertyField(this._permitInfinityPropagation);
     }
   }
 }

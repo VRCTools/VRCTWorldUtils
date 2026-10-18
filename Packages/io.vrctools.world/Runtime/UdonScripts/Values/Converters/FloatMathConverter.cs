@@ -42,6 +42,9 @@ namespace VRCTools.World.Values.Converters {
     public LocalFloat localValueB;
     public SynchronizedFloat synchronizedValueB;
 
+    public bool permitNanPropagation;
+    public bool permitInfinityPropagation;
+
     private void Start() {
       if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
         Debug.LogError("[Float Math Converter] Target value is invalid - Disabled", this);
@@ -76,6 +79,18 @@ namespace VRCTools.World.Values.Converters {
         default:
           Debug.LogError("[Float Math Converter] Operation is not implemented", this);
           return;
+      }
+
+      if (!this.permitNanPropagation && float.IsNaN(result))
+      {
+        Debug.LogWarning("[Float Math Converter] Result is NaN and propagation is not permitted - Skipping update", this);
+        return;
+      }
+
+      if (!this.permitInfinityPropagation && float.IsInfinity(result))
+      {
+        Debug.LogWarning("[Float Math Converter] Result is infinite and propagation is not permitted - Skipping update", this);
+        return;
       }
 
       ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, result);
