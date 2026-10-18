@@ -151,6 +151,7 @@ namespace VRCTools.World.Editor.Timer
             this._resetEvents.DoLayout();
             EditorGUILayout.Space(20);
             
+            EditorGUILayout.PropertyField(this._delayMode);
             var delayMode = (DelayMode) this._delayMode.enumValueIndex;
             switch (delayMode)
             {
