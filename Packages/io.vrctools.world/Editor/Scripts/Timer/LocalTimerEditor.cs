@@ -22,6 +22,9 @@ namespace VRCTools.World.Editor.Timer
     [CustomEditor(typeof(LocalTimer))]
     public class LocalTimerEditor : AbstractCustomUdonEditor
     {
+        protected override string HelpText => "Pausable timer which counts down for a given duration and emits events" +
+                                              "when completed.";
+
         private SerializedProperty _activateOnStart;
         private SerializedProperty _recurring;
         private SerializedProperty _defaultDuration;

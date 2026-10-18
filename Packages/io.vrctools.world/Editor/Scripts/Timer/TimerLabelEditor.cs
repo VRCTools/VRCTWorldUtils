@@ -22,6 +22,8 @@ namespace VRCTools.World.Editor.Timer
     [CustomEditor(typeof(TimerLabel))]
     public class TimerLabelEditor : AbstractCustomUdonEditor
     {
+        protected override string HelpText => "Displays the current state of a timer within a Unity UI.";
+
         private SerializedProperty _localTimer;
 
         private SerializedProperty _remainingTimeLabel;
