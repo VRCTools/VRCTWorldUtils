@@ -42,6 +42,13 @@ namespace VRCTools.World.Values.Applicators {
     public float delaySeconds;
 
     private void Start() {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
+      {
+        Debug.LogError("[Boolean Event Applicator] Source value is invalid - Disabled", this);
+        this.enabled = false;
+        return;
+      }
+      
       this.falseBehaviours = MappingUtility.CheckCoherentMapping(this.falseBehaviours, this.falseEventNames, this);
       this.trueBehaviours = MappingUtility.CheckCoherentMapping(this.trueBehaviours, this.trueEventNames, this);
 
