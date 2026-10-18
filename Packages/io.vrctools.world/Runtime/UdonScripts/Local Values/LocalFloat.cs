@@ -103,7 +103,7 @@ namespace VRCTools.World.LocalValues {
 
       if (this.minimalUpdateDifference < Mathf.Epsilon) {
         Debug.LogError(
-          $"Minimum update difference of {this.minimalUpdateDifference} exceeds smallest permitted value of {Mathf.Epsilon} - Value will be clamped",
+          $"Minimum update difference of {this.minimalUpdateDifference} falls short of smallest permitted value of {Mathf.Epsilon} - Value will be clamped",
           this);
         this.minimalUpdateDifference = Mathf.Epsilon;
       }
