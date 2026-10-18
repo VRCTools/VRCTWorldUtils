@@ -95,14 +95,16 @@ namespace VRCTools.World.SynchronizedValues {
     }
 
     protected override void Start() {
-      this.state = this._previousState = this.defaultValue;
-
       if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
         Debug.LogError(
           $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored",
           this);
         this.restrictValue = false;
       }
+      
+      this.state = this._previousState = (this.restrictValue ? 
+        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) :
+        this.defaultValue);
 
       if (this.minimalUpdateDifference < Mathf.Epsilon) {
         Debug.LogError(

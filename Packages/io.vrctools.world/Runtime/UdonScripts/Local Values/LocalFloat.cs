@@ -90,14 +90,16 @@ namespace VRCTools.World.LocalValues {
     }
 
     protected virtual void Start() {
-      this._state = this.defaultValue;
-
       if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
         Debug.LogError(
           $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored",
           this);
         this.restrictValue = false;
       }
+      
+      this._state = this.restrictValue ?
+        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) :
+        this.defaultValue;
 
       if (this.minimalUpdateDifference < Mathf.Epsilon) {
         Debug.LogError(
