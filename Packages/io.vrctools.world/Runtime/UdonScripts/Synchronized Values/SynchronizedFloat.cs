@@ -61,7 +61,7 @@ namespace VRCTools.World.SynchronizedValues {
     /// <summary>
     ///   Stores the previously known state.
     /// </summary>
-    public float _previousState;
+    private float _previousState;
 
     /// <summary>
     ///   Stores the actual synchronized state.
