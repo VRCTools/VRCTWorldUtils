@@ -68,7 +68,7 @@ namespace VRCTools.World.LocalValues {
     /// </summary>
     public virtual void _Reset() {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
-      if (this._state == this.defaultValue)
+      if ((this._state == null && this.defaultValue == null) || (this._state != null && this._state.Equals(this.defaultValue)))
       {
         return;
       }
