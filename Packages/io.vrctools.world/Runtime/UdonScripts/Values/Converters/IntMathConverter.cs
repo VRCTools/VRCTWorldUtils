@@ -71,9 +71,21 @@ namespace VRCTools.World.Values.Converters {
           result = a * b;
           break;
         case IntegralMathOperation.DIVIDE:
+          if (b == 0)
+          {
+            Debug.LogError("[Int Math Converter] Division by zero is not permitted - Value remains unchanged", this);
+            return;
+          }
+          
           result = a / b;
           break;
         case IntegralMathOperation.REM:
+          if (b == 0)
+          {
+            Debug.LogError("[Int Math Converter] Remainder by zero is not permitted - Value remains unchanged", this);
+            return;
+          }
+          
           result = a % b;
           break;
         default:
