@@ -14,6 +14,7 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRC.SDKBase;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -91,6 +92,12 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         var newValue = this.restrictValue ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) : value;
 
+        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        {
+          Debug.LogWarning("[Synchronized Float] Attempted state update prior to initialization - Ignored", this);
+          return;
+        }
+
         if (Mathf.Abs(newValue - this.state) < (this.preventNuisanceUpdates ? 
               this.minimalUpdateDifference : Mathf.Epsilon))
         {
@@ -134,6 +141,11 @@ namespace VRCTools.World.SynchronizedValues {
       }
 
       base.Start();
+    }
+
+    protected override void OnStateInitialized()
+    {
+      base.OnStateInitialized();
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
@@ -143,6 +155,12 @@ namespace VRCTools.World.SynchronizedValues {
     /// </summary>
     public virtual void _Reset()
     {
+      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      {
+        Debug.LogWarning("[Synchronized Float] Attempted state reset prior to initialization - Ignored", this);
+        return;
+      }
+      
       var defaultValue = this.restrictValue
         ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
         : this.defaultValue;
@@ -167,10 +185,12 @@ namespace VRCTools.World.SynchronizedValues {
 
     public override void OnDeserialization() {
       var updated = Mathf.Abs(this.state - this._previousState) >=
-                    (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
-      if (updated)
+                    (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon) && this.StateInitialized;
+      if (!this.StateInitialized || updated)
       {
         this._previousState = this.state;
+      }
+      if (updated) {
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
 

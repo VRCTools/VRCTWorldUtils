@@ -65,6 +65,12 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         if (this.state.Equals(value)) return;
 
+        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        {
+          Debug.LogWarning("[Synchronized URL] Attempted state update prior to initialization - Ignored", this);
+          return;
+        }
+
         this._EnsureOwnership();
 
         if (value == null)
@@ -84,6 +90,11 @@ namespace VRCTools.World.SynchronizedValues {
         this.state = this._previousState = this.defaultValue;
 
       base.Start();
+    }
+
+    protected override void OnStateInitialized()
+    {
+      base.OnStateInitialized();
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
@@ -98,6 +109,12 @@ namespace VRCTools.World.SynchronizedValues {
       {
         return;
       }
+
+      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      {
+        Debug.LogWarning("[Synchronized URL] Attempted state reset prior to initialization - Ignored", this);
+        return;
+      }
       
       this._EnsureOwnership();
       
@@ -110,7 +127,7 @@ namespace VRCTools.World.SynchronizedValues {
     public void _Clear() { this.State = VRCUrl.Empty; }
 
     public override void OnDeserialization() {
-      var updated = !this._previousState.Equals(this.state);
+      var updated = !this._previousState.Equals(this.state) && this.StateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);

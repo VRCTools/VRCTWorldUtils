@@ -14,6 +14,7 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRC.SDKBase;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -64,6 +65,12 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         if (this.state == value) return;
 
+        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        {
+          Debug.LogWarning("[Synchronized Boolean] Attempted state update prior to initialization - Ignored", this);
+          return;
+        }
+
         this._EnsureOwnership();
 
         this.state = this._previousState = value;
@@ -77,6 +84,11 @@ namespace VRCTools.World.SynchronizedValues {
       this.state = this._previousState = this.defaultValue;
 
       base.Start();
+    }
+
+    protected override void OnStateInitialized()
+    {
+      base.OnStateInitialized();
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
@@ -89,6 +101,12 @@ namespace VRCTools.World.SynchronizedValues {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
       if (this.state == this.defaultValue)
       {
+        return;
+      }
+
+      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      {
+        Debug.LogWarning("[Synchronized Boolean] Attempted state reset prior to initialization - Ignored", this);
         return;
       }
       
@@ -119,7 +137,7 @@ namespace VRCTools.World.SynchronizedValues {
     public void _SetFalse() { this.State = false; }
 
     public override void OnDeserialization() {
-      var updated = this._previousState != this.state;
+      var updated = this._previousState != this.state && this.StateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);

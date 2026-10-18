@@ -14,6 +14,7 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRC.SDKBase;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -78,6 +79,12 @@ namespace VRCTools.World.SynchronizedValues {
       get => this.state;
       set
       {
+        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        {
+          Debug.LogWarning("[Synchronized Int] Attempted state update prior to initialization - Ignored", this);
+          return;
+        }
+        
         var newValue = this.restrictValue ? 
           Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) :
           value;
@@ -104,6 +111,11 @@ namespace VRCTools.World.SynchronizedValues {
         this.defaultValue);
 
       base.Start();
+    }
+
+    protected override void OnStateInitialized()
+    {
+      base.OnStateInitialized();
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
@@ -113,6 +125,12 @@ namespace VRCTools.World.SynchronizedValues {
     /// </summary>
     public virtual void _Reset()
     {
+      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      {
+        Debug.LogWarning("[Synchronized Int] Attempted state reset prior to initialization - Ignored", this);
+        return;
+      }
+      
       var defaultValue = this.restrictValue ? 
         Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) : 
         this.defaultValue;
@@ -138,7 +156,7 @@ namespace VRCTools.World.SynchronizedValues {
     public void _Decrement() { this.State--; }
 
     public override void OnDeserialization() {
-      var updated = this._previousState != this.state;
+      var updated = this._previousState != this.state && this.StateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
