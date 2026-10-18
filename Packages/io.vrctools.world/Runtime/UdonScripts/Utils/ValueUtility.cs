@@ -34,8 +34,15 @@ namespace VRCTools.World.Utils {
     /// <param name="from2">the lower bound of the target range</param>
     /// <param name="to2">the upper bound of the target range</param>
     /// <returns>a remapped value</returns>
-    public static float Remap(float value, float from1, float to1, float from2, float to2) {
-      return from2 + (value - from1) * (to2 - from1) / (to1 - from1);
+    public static float Remap(float value, float from1, float to1, float from2, float to2)
+    {
+      var range = to1 - from1;
+      if (Mathf.Approximately(range, 0f))
+      {
+        return from2;
+      }
+      
+      return from2 + (value - from1) * (to2 - from2) / range;
     }
 
     /// <summary>
@@ -47,7 +54,13 @@ namespace VRCTools.World.Utils {
     /// <param name="from2">the lower bound of the target range</param>
     /// <param name="to2">the upper bound of the target range</param>
     /// <returns>a remapped value</returns>
-    public static int Remap(int value, int from1, int to1, int from2, int to2) {
+    public static int Remap(int value, int from1, int to1, int from2, int to2)
+    {
+      if (from1 == to1)
+      {
+        return from2;
+      }
+      
       return Mathf.RoundToInt(Remap((float)value, from1, to1, from2, to2));
     }
 
