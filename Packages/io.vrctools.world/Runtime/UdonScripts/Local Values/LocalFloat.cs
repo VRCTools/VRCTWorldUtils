@@ -83,6 +83,11 @@ namespace VRCTools.World.LocalValues {
           return;
         }
 
+        if (float.IsNaN(newValue) == float.IsNaN(this._state) || float.IsInfinity(newValue) == float.IsInfinity(this._state))
+        {
+          return;
+        }
+
         this._state = newValue;
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
