@@ -97,8 +97,12 @@ namespace VRCTools.World.SynchronizedValues {
           return;
         }
 
-        if (float.IsNaN(newValue) == float.IsNaN(this.state) ||
-            float.IsInfinity(newValue) == float.IsInfinity(this.state))
+        if (float.IsNaN(this.state) && float.IsNaN(newValue))
+        {
+          return;
+        }
+
+        if (float.IsInfinity(this.state) && float.IsInfinity(newValue))
         {
           return;
         }
