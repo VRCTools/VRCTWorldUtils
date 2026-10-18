@@ -28,6 +28,7 @@ namespace VRCTools.World.LocalValues.UI {
     public bool enableMapping;
     public int mappingLowerBound;
     public int mappingUpperBound = 100;
+    [Min(1)]
     public int multiplier = 1;
 
     private Slider _slider;
