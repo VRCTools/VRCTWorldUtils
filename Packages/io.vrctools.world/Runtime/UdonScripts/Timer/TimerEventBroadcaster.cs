@@ -73,7 +73,7 @@ namespace VRCTools.World.Timer
             this.localTimer._RegisterHandler(LocalTimer.EVENT_RESUME, this, nameof(this._OnTimerResumed));
             this.localTimer._RegisterHandler(LocalTimer.EVENT_FINISH, this, nameof(this._OnTimerFinished));
             this.localTimer._RegisterHandler(LocalTimer.EVENT_STOP, this, nameof(this._OnTimerStopped));
-            this.localTimer._RegisterHandler(LocalTimer.EVENT_RESET, this, nameof(this._OnTimerResumed));
+            this.localTimer._RegisterHandler(LocalTimer.EVENT_RESET, this, nameof(this._OnTimerReset));
         }
 
         private void _InvokeEvent(UdonSharpBehaviour behaviour, string eventName)
@@ -141,6 +141,11 @@ namespace VRCTools.World.Timer
         public void _OnTimerStopped()
         {
             this._InvokeEvents("TIMER_STOPPED", this.stopBehaviours, this.stopEventNames);
+        }
+
+        public void _OnTimerReset()
+        {
+            this._InvokeEvents("TIMER_RESET", this.resetBehaviours, this.resetEventNames);
         }
     }
 }
