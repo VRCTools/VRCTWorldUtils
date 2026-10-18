@@ -119,7 +119,7 @@ namespace VRCTools.World.Editor.Utils {
       {
         GUILayout.Label($"{PackageName} v{PackageVersion}");
 
-        if (EditorGUILayout.LinkButton("Discord")) Application.OpenURL("https://discord.gg/jm6dZ7VHbw");
+        if (EditorGUILayout.LinkButton("Discord")) Application.OpenURL("https://discord.gg/FGrt9wv5CF");
 
         if (EditorGUILayout.LinkButton("Patreon")) Application.OpenURL("https://patreon.com/dotStart");
       }
