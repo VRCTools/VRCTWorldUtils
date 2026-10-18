@@ -118,6 +118,8 @@ namespace VRCTools.World.Editor.Utils {
       EditorGUILayout.BeginHorizontal();
       {
         GUILayout.Label($"{PackageName} v{PackageVersion}");
+        
+        if (EditorGUILayout.LinkButton("Documentation")) Application.OpenURL("https://vrctools.io/docs/world-utils/");
 
         if (EditorGUILayout.LinkButton("Discord")) Application.OpenURL("https://discord.gg/FGrt9wv5CF");
 
