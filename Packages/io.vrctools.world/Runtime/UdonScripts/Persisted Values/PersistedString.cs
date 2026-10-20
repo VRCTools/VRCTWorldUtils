@@ -93,6 +93,7 @@ namespace VRCTools.World.PersistedValues {
         return;
       }
 
+      UdonDebug.Info(this, $"Persisted string value for key {this.key}");
       PlayerData.SetString(this.key, this.State);
       this._EmitEvent(EVENT_PERSIST);
     }
@@ -107,6 +108,7 @@ namespace VRCTools.World.PersistedValues {
         ? stored
         : this.defaultValue;
 
+      UdonDebug.Info(this, $"Restored string value for key {this.key}");
       this.Loaded = true;
       this._EmitEvent(EVENT_LOADED);
       this._EmitEvent(EVENT_STATE_UPDATED);

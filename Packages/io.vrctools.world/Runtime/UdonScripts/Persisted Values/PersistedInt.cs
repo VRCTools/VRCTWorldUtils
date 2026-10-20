@@ -91,6 +91,7 @@ namespace VRCTools.World.PersistedValues {
         return;
       }
 
+      UdonDebug.Info(this, $"Persisting int value for key {this.key}");
       PlayerData.SetInt(this.key, this.State);
       this._EmitEvent(EVENT_PERSIST);
     }
@@ -103,6 +104,7 @@ namespace VRCTools.World.PersistedValues {
 
       this._state = PlayerData.TryGetInt(Networking.LocalPlayer, this.key, out var stored) ? stored : this.defaultValue;
 
+      UdonDebug.Info(this, $"Restored int value for key {this.key}");
       this.Loaded = true;
       this._EmitEvent(EVENT_LOADED);
       this._EmitEvent(EVENT_STATE_UPDATED);
