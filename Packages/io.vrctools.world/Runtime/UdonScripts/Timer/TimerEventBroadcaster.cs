@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Common.Enums;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.Timer
@@ -90,7 +92,7 @@ namespace VRCTools.World.Timer
                     behaviour.SendCustomEventDelayedSeconds(eventName, this.delaySeconds, this.delayTiming);
                     break;
                 default:
-                    Debug.LogError("[Timer Event Broadcaster] Delay mode not implemented: " + this.delayMode, this);
+                    UdonDebug.Error(this, $"Delay mode not implemented: {this.delayMode}");
                     break;
             }
         }
@@ -104,13 +106,13 @@ namespace VRCTools.World.Timer
 
                 if (!Utilities.IsValid(behaviour))
                 {
-                    Debug.LogError($"[Timer Event Broadcaster] Behaviour {triggerName}#{i} is invalid - Skipped", this);
+                    UdonDebug.Error(this, $"Behaviour {triggerName}#{i} is invalid - Skipped");
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(eventName))
                 {
-                    Debug.LogError($"[Timer Event Broadcaster] Event Name for behaviour {triggerName}#{i} has not been set - Skipped", this);
+                    UdonDebug.Error(this, $"Event Name for behaviour {triggerName}#{i} has not been set - Skipped");
                     continue;
                 }
                 
@@ -118,31 +120,37 @@ namespace VRCTools.World.Timer
             }
         }
 
+        [CustomEvent]
         public void _OnTimerStarted()
         {
             this._InvokeEvents("TIMER_STARTED", this.startBehaviours, this.startEventNames);
         }
 
+        [CustomEvent]
         public void _OnTimerPaused()
         {
             this._InvokeEvents("TIMER_PAUSED", this.pauseBehaviours, this.pauseEventNames);
         }
 
+        [CustomEvent]
         public void _OnTimerResumed()
         {
             this._InvokeEvents("TIMER_RESUMED", this.resumeBehaviours, this.resumeEventNames);
         }
 
+        [CustomEvent]
         public void _OnTimerFinished()
         {
             this._InvokeEvents("TIMER_FINISHED", this.finishBehaviours, this.finishEventNames);
         }
 
+        [CustomEvent]
         public void _OnTimerStopped()
         {
             this._InvokeEvents("TIMER_STOPPED", this.stopBehaviours, this.stopEventNames);
         }
 
+        [CustomEvent]
         public void _OnTimerReset()
         {
             this._InvokeEvents("TIMER_RESET", this.resetBehaviours, this.resetEventNames);

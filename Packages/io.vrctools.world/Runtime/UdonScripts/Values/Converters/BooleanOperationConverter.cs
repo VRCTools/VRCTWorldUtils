@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -41,7 +43,7 @@ namespace VRCTools.World.Values.Converters {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
-        Debug.LogError("[Boolean Operation Converter] Target value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -59,6 +61,7 @@ namespace VRCTools.World.Values.Converters {
       ValueUtility.RegisterUpdateHandler(source, localValue, synchronizedValue, this, nameof(this._OnComponentUpdated));
     }
 
+    [CustomEvent]
     public void _OnComponentUpdated() {
       var alpha = ValueUtility.GetValue(this.sourceAlpha, this.staticAlphaValue, this.localAlphaValue,
         this.synchronizedAlphaValue);

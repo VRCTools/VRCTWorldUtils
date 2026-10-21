@@ -14,6 +14,8 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -51,7 +53,7 @@ namespace VRCTools.World.Values.Converters {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
-        Debug.LogError("[Color Component Converter] Target value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -70,12 +72,12 @@ namespace VRCTools.World.Values.Converters {
       LocalFloat localValue,
       SynchronizedFloat synchronizedValue) {
       if (!ValueUtility.IsValid(source, localValue, synchronizedValue))
-        Debug.LogError($"[Color Component Converter] {channel} source is invalid - Component will be set to zero",
-          this);
+        UdonDebug.Error(this, $"{channel} source is invalid - Component will be set to zero");
 
       ValueUtility.RegisterUpdateHandler(source, localValue, synchronizedValue, this, nameof(this._OnComponentUpdated));
     }
 
+    [CustomEvent]
     public void _OnComponentUpdated() {
       var red = ValueUtility.GetValue(this.redSource, this.staticRedValue, this.localRedValue,
         this.synchronizedRedValue);

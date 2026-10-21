@@ -15,6 +15,8 @@
 using System;
 using UdonSharp;
 using UnityEngine;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -43,13 +45,13 @@ namespace VRCTools.World.Values.Converters {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localSource, this.synchronizedSource)) {
-        Debug.LogError("[Smooth Float Converter] Source value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Source value is invalid - Disabled");
         this.enabled = false;
         return;
       }
 
       if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
-        Debug.LogError("[Smooth Float Converter] Target value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -88,6 +90,7 @@ namespace VRCTools.World.Values.Converters {
       }
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       if (this._active)
       {

@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -79,9 +81,9 @@ namespace VRCTools.World.SynchronizedValues {
       get => this.state;
       set
       {
-        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        if (!this.IsLocallyOwned() && !this.IsStateInitialized)
         {
-          Debug.LogWarning("[Synchronized Int] Attempted state update prior to initialization - Ignored", this);
+          UdonDebug.Warn(this, "Attempted state update prior to initialization - Ignored");
           return;
         }
         
@@ -98,11 +100,11 @@ namespace VRCTools.World.SynchronizedValues {
       }
     }
 
+    [MustCallBase]
     protected override void Start() {
       if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
-        Debug.LogError(
-          $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored",
-          this);
+        UdonDebug.Error(this,
+          $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored");
         this.restrictValue = false;
       }
       
@@ -113,21 +115,21 @@ namespace VRCTools.World.SynchronizedValues {
       base.Start();
     }
 
-    protected override void OnStateInitialized()
+    protected override void _OnStateInitialized()
     {
-      base.OnStateInitialized();
-
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
+    [CustomEvent]
+    [MustCallBase]
     public virtual void _Reset()
     {
-      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      if (!this.IsLocallyOwned() && !this.IsStateInitialized)
       {
-        Debug.LogWarning("[Synchronized Int] Attempted state reset prior to initialization - Ignored", this);
+        UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
       
@@ -149,19 +151,23 @@ namespace VRCTools.World.SynchronizedValues {
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
+    [CustomEvent]
     public void _Zero() { this.State = 0; }
 
+    [CustomEvent]
     public void _Increment() { this.State++; }
 
+    [CustomEvent]
     public void _Decrement() { this.State--; }
 
+    [MustCallBase]
     public override void OnDeserialization() {
-      var updated = this._previousState != this.state && this.StateInitialized;
+      var updated = this._previousState != this.state && this.IsStateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
       
-      var reset = this._previousResetCounterValue != this.resetCounter && this.StateInitialized;
+      var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
       
       if (reset) this._EmitEvent(EVENT_STATE_RESET);

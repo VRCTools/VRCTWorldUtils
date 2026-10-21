@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Common.Enums;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -44,7 +46,7 @@ namespace VRCTools.World.Values.Applicators {
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
       {
-        Debug.LogError("[Boolean Event Applicator] Source value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Source value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -56,6 +58,7 @@ namespace VRCTools.World.Values.Applicators {
         nameof(this._OnStateUpdated));
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       var state = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
 
@@ -67,15 +70,12 @@ namespace VRCTools.World.Values.Applicators {
         var eventName = eventNameSource[i];
 
         if (!Utilities.IsValid(behaviour)) {
-          Debug.LogWarning(
-            $"[Boolean Event Applicator] Target behavior for state {state} at index #{i} is no longer valid", this);
+          UdonDebug.Warn(this, $"Target behavior for state {state} at index #{i} is no longer valid");
           continue;
         }
 
         if (string.IsNullOrEmpty(eventName)) {
-          Debug.LogWarning(
-            $"[Boolean Event Applicator] Target behavior for state {state} at index #{i} has no event name specified",
-            this);
+          UdonDebug.Warn(this, $"Target behavior for state {state} at index #{i} has no event name specified");
           continue;
         }
 
@@ -90,7 +90,7 @@ namespace VRCTools.World.Values.Applicators {
             behaviour.SendCustomEventDelayedSeconds(eventName, this.delaySeconds, this.delayTiming);
             break;
           default:
-            Debug.LogError("[Boolean Event Applicator] Delay mode not implemented", this);
+            UdonDebug.Error(this, "Delay mode not implemented");
             break;
         }
       }

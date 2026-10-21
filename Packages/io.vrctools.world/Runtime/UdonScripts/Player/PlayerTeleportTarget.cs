@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEditor;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.Event;
 
 namespace VRCTools.World.Player {
@@ -45,11 +47,13 @@ namespace VRCTools.World.Player {
     }
     #endif
 
+    [CustomEvent]
     public void _TeleportTo() {
       var localPlayer = Networking.LocalPlayer;
       var t = this.target;
       if (!Utilities.IsValid(t)) t = this.transform;
 
+      UdonDebug.Info(this, "Teleporting local player to target");
       localPlayer.TeleportTo(t.position, t.rotation);
       this._EmitEvent(EVENT_TELEPORTED_TO);
     }

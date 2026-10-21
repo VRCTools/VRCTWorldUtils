@@ -1,10 +1,13 @@
 {
   "dependencies": {
     "com.vrchat.worlds": {
-      "version": "3.7.5"
+      "version": "3.8.1"
+    },
+    "io.vrctools.common": {
+      "version": "0.2.1"
     },
     "io.vrctools.event": {
-      "version": "0.1.0"
+      "version": "0.3.0"
     },
     "com.llealloo.audiolink": {
       "version": "3.1.2"
@@ -28,16 +31,16 @@
       "dependencies": {}
     },
     "io.vrctools.event": {
-      "version": "0.3.0",
+      "version": "0.4.1",
       "dependencies": {
-        "com.vrchat.worlds": "^3.7.0",
-        "io.vrctools.common": "^0.2.1"
+        "com.vrchat.worlds": "^3.8.1",
+        "io.vrctools.common": "^0.3.1"
       }
     },
     "io.vrctools.common": {
-      "version": "0.2.1",
+      "version": "0.3.1",
       "dependencies": {
-        "com.vrchat.worlds": "^3.7.0"
+        "com.vrchat.worlds": "^3.8.1"
       }
     },
     "com.llealloo.audiolink": {

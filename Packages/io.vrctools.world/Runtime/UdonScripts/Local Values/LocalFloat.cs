@@ -14,6 +14,7 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -98,6 +99,7 @@ namespace VRCTools.World.LocalValues {
       }
     }
 
+    [MustCallBase]
     protected virtual void Start() {
       if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
         Debug.LogError(
@@ -123,6 +125,8 @@ namespace VRCTools.World.LocalValues {
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
+    [CustomEvent]
+    [MustCallBase]
     public virtual void _Reset()
     {
       var defaultValue = this.restrictValue
@@ -141,6 +145,7 @@ namespace VRCTools.World.LocalValues {
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
+    [CustomEvent]
     public void _Zero() { this.State = 0; }
   }
 }

@@ -18,10 +18,15 @@ using VRCTools.World.Player;
 
 namespace VRCTools.World.Editor.Player {
   [CustomEditor(typeof(PlayerTeleportTarget))]
-  public class PlayerTeleportTargetEditor : AbstractCustomUdonEditor {
+  public class PlayerTeleportTargetEditor : AbstractEventEmitterEditor {
     private SerializedProperty _target;
 
-    private void OnEnable() { this._target = this.serializedObject.FindProperty(nameof(PlayerTeleportTarget.target)); }
+    protected override void OnEnable()
+    {
+      base.OnEnable();
+      
+      this._target = this.serializedObject.FindProperty(nameof(PlayerTeleportTarget.target));
+    }
 
     protected override void RenderInspectorGUI() {
       EditorGUILayout.PropertyField(this._target);
@@ -29,6 +34,9 @@ namespace VRCTools.World.Editor.Player {
         EditorGUILayout.HelpBox(
           "No target has been assigned - Teleport target will match the position and rotation of this game object.",
           MessageType.Info);
+      
+      EditorGUILayout.Space();
+      base.RenderInspectorGUI();
     }
   }
 }

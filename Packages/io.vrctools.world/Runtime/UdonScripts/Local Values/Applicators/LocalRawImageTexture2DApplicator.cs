@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 
 namespace VRCTools.World.LocalValues.Applicators {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
@@ -28,7 +30,7 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     private void Start() {
       if (!Utilities.IsValid(this.localValue)) {
-        Debug.LogError("[Raw Image Texture2D Applicator] Invalid local value reference - Disabled", this);
+        UdonDebug.Error(this, "Invalid local value reference - Disabled");
         this.enabled = false;
         return;
       }
@@ -39,6 +41,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._OnStateUpdated();
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() { this._image.texture = this.localValue.State; }
   }
 }

@@ -17,6 +17,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDK3.Components;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.Event;
 
 namespace VRCTools.World.Internal {
@@ -86,7 +88,7 @@ namespace VRCTools.World.Internal {
 
     protected void Start() {
       if (!Utilities.IsValid(this.uiCursor)) {
-        Debug.LogError("[ColorPicker] Invalid cursor reference - Disabled");
+        UdonDebug.Error(this, "Invalid cursor reference - Disabled");
         this.enabled = false;
         return;
       }
@@ -106,6 +108,7 @@ namespace VRCTools.World.Internal {
       this._UpdateUI();
     }
 
+    [MustCallBase]
     public override void OnPickup() { this._held = true; }
 
     private void _UpdateUI() {
@@ -119,6 +122,7 @@ namespace VRCTools.World.Internal {
       this.uiCursor.rectTransform.localPosition = new Vector3(pos.x, pos.y, 0);
     }
 
+    [MustCallBase]
     public override void OnDrop() {
       this._held = false;
 

@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Utils;
 
@@ -37,6 +38,7 @@ namespace VRCTools.World.Player {
       this.behaviours = MappingUtility.CheckCoherentMapping(this.behaviours, this.eventNames, this);
     }
 
+    [MustCallBase]
     public override void Interact() {
       for (var i = 0; i < this.behaviours.Length; i++) {
         var behaviour = this.behaviours[i];

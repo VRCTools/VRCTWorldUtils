@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Persistence;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.Values;
 
@@ -45,9 +47,8 @@ namespace VRCTools.World.PersistedValues {
       get => this._state;
       set {
         if (!this.Loaded) {
-          Debug.LogWarning(
-            "[Persisted Boolean] Attempted to update value prior to OnPlayerRestored event being invoked - State change has been ignored",
-            this);
+          UdonDebug.Warn(this,
+            "Attempted to update value prior to OnPlayerRestored event being invoked - State change has been ignored");
           return;
         }
 
@@ -64,11 +65,11 @@ namespace VRCTools.World.PersistedValues {
     /// </summary>
     public bool Loaded { get; private set; }
 
+    [CustomEvent]
+    [MustCallBase]
     public override void _Reset() {
       if (!this.Loaded) {
-        Debug.LogWarning(
-          "[Persisted Boolean] Attempted to reset value prior to OnPlayerRestored event being invoked",
-          this);
+        UdonDebug.Warn(this, "Attempted to reset value prior to OnPlayerRestored event being invoked");
         return;
       }
 
@@ -78,23 +79,23 @@ namespace VRCTools.World.PersistedValues {
     /// <summary>
     ///   Persists the current value to the local player store.
     /// </summary>
+    [CustomEvent]
     public void _Persist() {
       if (!this.Loaded) {
-        Debug.LogWarning(
-          "[Persisted Boolean] Attempted to persist value prior to OnPlayerRestored event being invoked",
-          this);
+        UdonDebug.Warn(this, "Attempted to persist value prior to OnPlayerRestored event being invoked");
         return;
       }
 
       if (string.IsNullOrEmpty(this.key)) {
-        Debug.LogError("[Persisted Boolean] Attempted to persist value without key", this);
+        UdonDebug.Error(this, "Attempted to persist value without key");
         return;
       }
 
       PlayerData.SetBool(this.key, this.State);
       this._EmitEvent(EVENT_PERSIST);
     }
-
+    
+    [MustCallBase]
     public override void OnPlayerRestored(VRCPlayerApi player) {
       if (!player.isLocal) {
         return;

@@ -18,6 +18,8 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 
 namespace VRCTools.World.Timer
 {
@@ -53,7 +55,7 @@ namespace VRCTools.World.Timer
         {
             if (!Utilities.IsValid(this.localTimer))
             {
-                Debug.LogError("[Timer Label] Invalid timer value given - Disabled");
+                UdonDebug.Error(this, "Invalid timer value given - Disabled");
                 this.enabled = false;
                 return;
             }
@@ -66,7 +68,7 @@ namespace VRCTools.World.Timer
             if (!this._remainingTimeLabelPresent && !this._stateStoppedLabelPresent && !this._statePausedLabelPresent &&
                 !this._stateRunningLabelPresent)
             {
-                Debug.LogError("[Timer Label] No labels given (there is nothing to do) - Disabled");
+                UdonDebug.Error(this, "No labels given (there is nothing to do) - Disabled");
                 this.enabled = false;
             }
 
@@ -85,7 +87,7 @@ namespace VRCTools.World.Timer
             this.localTimer._RegisterHandler(LocalTimer.EVENT_RESUME, this, nameof(this._OnTimerStateUpdated));
             this.localTimer._RegisterHandler(LocalTimer.EVENT_STOP, this, nameof(this._OnTimerStateUpdated));
 
-            this.UpdateState();
+            this._UpdateState();
         }
 
         private void Update()
@@ -102,7 +104,7 @@ namespace VRCTools.World.Timer
             }
             
             this._remainingTimeUpdateTimer = this.remainingTimeUpdateFrequency;
-            this.UpdateRemainingTime();
+            this._UpdateRemainingTime();
         }
 
         private void OnDestroy()
@@ -115,18 +117,20 @@ namespace VRCTools.World.Timer
             this.localTimer._UnregisterHandler(this);
         }
 
+        [CustomEvent]
         public void _OnTimerStateUpdated()
         {
-            this.UpdateState();
+            this._UpdateState();
         }
 
-        public void UpdateState()
+        [CustomEvent]
+        public void _UpdateState()
         {
             var state = this.localTimer.State;
             
             if (this._remainingTimeLabelPresent)
             {
-                this.UpdateRemainingTime();
+                this._UpdateRemainingTime();
 
                 if (this.setActiveRemainingLabel)
                 {
@@ -150,7 +154,8 @@ namespace VRCTools.World.Timer
             }
         }
     
-        public void UpdateRemainingTime()
+        [CustomEvent]
+        public void _UpdateRemainingTime()
         {
 
             if (!this._remainingTimeLabelPresent)

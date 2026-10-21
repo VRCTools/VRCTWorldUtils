@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.SynchronizedValues.UI {
@@ -39,7 +41,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
 
     private void Start() {
       if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized Int Slider] Synchronized value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Synchronized value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -47,9 +49,8 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._slider = this.GetComponent<Slider>();
 
       if (!this._slider.wholeNumbers)
-        Debug.LogWarning(
-          "[Synchronized Int Slider] Slider has not been configured to use whole numbers - Values will be rounded to the closest whole number",
-          this);
+        UdonDebug.Warn(this,
+          "Slider has not been configured to use whole numbers - Values will be rounded to the closest whole number");
 
       this.synchronizedValue._RegisterHandler(SynchronizedInt.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
       this._OnStateUpdated();
@@ -61,6 +62,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this.synchronizedValue._UnregisterHandler(this);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       this._updating = true;
       {
@@ -76,6 +78,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._updating = false;
     }
 
+    [CustomEvent]
     public void _OnValueChanged() {
       if (this._updating) return;
 

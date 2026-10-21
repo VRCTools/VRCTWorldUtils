@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -92,9 +94,9 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         var newValue = this.restrictValue ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) : value;
 
-        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        if (!this.IsLocallyOwned() && !this.IsStateInitialized)
         {
-          Debug.LogWarning("[Synchronized Float] Attempted state update prior to initialization - Ignored", this);
+          UdonDebug.Warn(this, "Attempted state update prior to initialization - Ignored");
           return;
         }
 
@@ -121,11 +123,11 @@ namespace VRCTools.World.SynchronizedValues {
       }
     }
 
+    [MustCallBase]
     protected override void Start() {
       if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
-        Debug.LogError(
-          $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored",
-          this);
+        UdonDebug.Error(this,
+          $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored");
         this.restrictValue = false;
       }
       
@@ -134,30 +136,29 @@ namespace VRCTools.World.SynchronizedValues {
         this.defaultValue);
 
       if (this.minimalUpdateDifference < Mathf.Epsilon) {
-        Debug.LogError(
-          $"Minimum update difference of {this.minimalUpdateDifference} falls short of smallest permitted value of {Mathf.Epsilon} - Value will be clamped",
-          this);
+        UdonDebug.Error(this,
+          $"Minimum update difference of {this.minimalUpdateDifference} falls short of smallest permitted value of {Mathf.Epsilon} - Value will be clamped");
         this.minimalUpdateDifference = Mathf.Epsilon;
       }
 
       base.Start();
     }
 
-    protected override void OnStateInitialized()
+    protected override void _OnStateInitialized()
     {
-      base.OnStateInitialized();
-
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
+    [CustomEvent]
+    [MustCallBase]
     public virtual void _Reset()
     {
-      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      if (!this.IsLocallyOwned() && !this.IsStateInitialized)
       {
-        Debug.LogWarning("[Synchronized Float] Attempted state reset prior to initialization - Ignored", this);
+        UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
       
@@ -181,12 +182,14 @@ namespace VRCTools.World.SynchronizedValues {
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
+    [CustomEvent]
     public void _Zero() { this.State = 0; }
-
+    
+    [MustCallBase]
     public override void OnDeserialization() {
       var updated = Mathf.Abs(this.state - this._previousState) >=
-                    (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon) && this.StateInitialized;
-      if (!this.StateInitialized || updated)
+                    (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon) && this.IsStateInitialized;
+      if (!this.IsStateInitialized || updated)
       {
         this._previousState = this.state;
       }
@@ -194,7 +197,7 @@ namespace VRCTools.World.SynchronizedValues {
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
 
-      var reset = this._previousResetCounterValue != this.resetCounter && this.StateInitialized;
+      var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
       
       if (reset) this._EmitEvent(EVENT_STATE_RESET);

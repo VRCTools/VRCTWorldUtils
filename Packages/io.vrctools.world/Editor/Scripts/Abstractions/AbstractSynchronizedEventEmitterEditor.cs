@@ -14,6 +14,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Editor.Utils;
 
@@ -22,12 +23,14 @@ namespace VRCTools.World.Editor.Abstractions {
   ///   Provides a specialized extension to the custom Udon editor which handles the fields and functionality provide
   ///   within <see cref="AbstractSynchronizedEventEmitter" />.
   /// </summary>
-  public abstract class AbstractSynchronizedEventEmitterEditor : AbstractCustomUdonEditor {
-    private bool _advancedFoldout;
+  public abstract class AbstractSynchronizedEventEmitterEditor : AbstractEventEmitterEditor {
     private SerializedProperty _synchronizationBackoff;
     private SerializedProperty _synchronizationDebugging;
 
-    protected virtual void OnEnable() {
+    [MustCallBase]
+    protected override void OnEnable() {
+      base.OnEnable();
+      
       this._synchronizationBackoff
         = this.serializedObject.FindProperty(nameof(AbstractSynchronizedEventEmitter.synchronizationBackoff));
       this._synchronizationDebugging
@@ -45,19 +48,14 @@ namespace VRCTools.World.Editor.Abstractions {
     protected override void RenderInspectorGUI() {
       EditorGUILayout.LabelField("Networking", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._synchronizationBackoff, new GUIContent("Synchronization Backoff"));
+      
+      base.RenderInspectorGUI();
+    }
 
-      if (this._synchronizationBackoff.floatValue <= 0)
-        EditorGUILayout.HelpBox("Backoff has been set to an invalid value\nScript will default to 1 second at runtime",
-          MessageType.Error);
-
-      this._advancedFoldout = EditorGUILayout.Foldout(this._advancedFoldout, "Advanced Settings");
-      if (this._advancedFoldout) {
-        EditorGUI.indentLevel++;
-        {
-          EditorGUILayout.PropertyField(this._synchronizationDebugging, new GUIContent("Enable Debug Logging"));
-        }
-        EditorGUI.indentLevel--;
-      }
+    protected override void RenderAdvancedInspectorGUI()
+    {
+      EditorGUILayout.PropertyField(this._synchronizationDebugging, new GUIContent("Enable Synchronization Logging"));
+      base.RenderAdvancedInspectorGUI();
     }
   }
 }

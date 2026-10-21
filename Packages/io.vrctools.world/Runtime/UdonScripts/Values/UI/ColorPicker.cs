@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Internal;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
@@ -40,13 +42,13 @@ namespace VRCTools.World.Values.UI {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
-        Debug.LogError("[Color Picker] Invalid local value reference - Disabled");
+        UdonDebug.Error(this, "Invalid local value reference - Disabled");
         this.enabled = false;
         return;
       }
 
       if (!Utilities.IsValid(this.cursor)) {
-        Debug.LogError("[Color Picker] Invalid cursor reference - Disabled");
+        UdonDebug.Error(this, "Invalid cursor reference - Disabled");
         this.enabled = false;
         return;
       }
@@ -72,6 +74,7 @@ namespace VRCTools.World.Values.UI {
         this.crosshair.color = color;
     }
 
+    [CustomEvent]
     public void _OnPositionUpdated() {
       if (this._updating) return;
 
@@ -79,6 +82,7 @@ namespace VRCTools.World.Values.UI {
       this._UpdateColor(Color.HSVToRGB(pos.x, 1, pos.y));
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       this._updating = true;
       {

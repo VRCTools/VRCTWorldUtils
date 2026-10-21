@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.LocalValues.UI {
@@ -38,7 +40,7 @@ namespace VRCTools.World.LocalValues.UI {
 
     private void Start() {
       if (!Utilities.IsValid(this.localValue)) {
-        Debug.LogError("[Local Slider] Local value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Local value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -56,6 +58,7 @@ namespace VRCTools.World.LocalValues.UI {
       this.localValue._UnregisterHandler(this);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       this._updating = true;
       {
@@ -71,6 +74,7 @@ namespace VRCTools.World.LocalValues.UI {
       this._updating = false;
     }
 
+    [CustomEvent]
     public void _OnValueChanged() {
       if (this._updating) return;
 

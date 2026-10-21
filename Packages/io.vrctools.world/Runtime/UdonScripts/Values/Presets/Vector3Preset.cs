@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -34,11 +36,12 @@ namespace VRCTools.World.Values.Presets {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.type, this.localTarget, this.synchronizedTarget)) {
-        Debug.LogError("[Vector3 Preset] Value target is invalid - Disabled", this);
+        UdonDebug.Error(this, "Value target is invalid - Disabled");
         this.enabled = false;
       }
     }
 
+    [CustomEvent]
     public void _Apply() { ValueUtility.SetValue(this.type, this.localTarget, this.synchronizedTarget, this.preset); }
   }
 }

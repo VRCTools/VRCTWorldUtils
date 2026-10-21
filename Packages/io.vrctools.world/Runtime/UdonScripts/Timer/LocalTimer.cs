@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.LocalValues;
 
@@ -228,6 +229,7 @@ namespace VRCTools.World.Timer {
     ///
     /// When a timer is already active, it will be reset and the associated events will be invoked.
     /// </summary>
+    [CustomEvent]
     public void _Start() { this._Start(this.defaultDuration); }
 
     /// <summary>
@@ -236,6 +238,7 @@ namespace VRCTools.World.Timer {
     /// When this method is invoked on a timer that has been stopped or paused, a warning will be emitted. Callers
     /// are expected to check before invoking these methods.
     /// </summary>
+    [CustomEvent]
     public void _Pause() {
       if (!this.IsRunning) {
         Debug.LogWarning("[Local Timer] Attempted to pause stopped or already paused timer - Ignored", this);
@@ -252,6 +255,7 @@ namespace VRCTools.World.Timer {
     /// When this method is invoked on a timer that is not currently paused, a warning will be emitted. Callers are
     /// expected to check before invoking these methods.
     /// </summary>
+    [CustomEvent]
     public void _Resume() {
       if (!this.IsPaused) {
         Debug.LogWarning("[Local Timer] Attempted to resume active or stopped timer - Ignored", this);
@@ -269,6 +273,7 @@ namespace VRCTools.World.Timer {
     /// remaining timer duration. They may be restarted via one of the <see cref="_Start"/> overloads resulting in a
     /// reset back to <see cref="defaultDuration"/> or the given duration depending on the chosen overload.
     /// </summary>
+    [CustomEvent]
     public void _Stop() {
       if (this.IsStopped) {
         Debug.LogWarning("[Local Timer] Attempted to stop already stopped timer - Ignored", this);
@@ -290,6 +295,7 @@ namespace VRCTools.World.Timer {
     ///
     /// If invoked on a stopped timer, this method basically acts as a noop. No events will be emitted.
     /// </summary>
+    [CustomEvent]
     public void _Reset() {
       // if the timer is stopped, there is nothing to do here - the state will remain as is and nothing is modified
       if (this.State == TimerState.Stopped)

@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.SynchronizedValues.Applicators {
@@ -38,7 +40,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
 
     private void Start() {
       if (!Utilities.IsValid(this.target)) {
-        Debug.LogError("Synchronized Animator Property Applicator] Animator is invalid - Disabled");
+        UdonDebug.Error(this, "Animator is invalid - Disabled");
         this.enabled = false;
       }
 
@@ -46,9 +48,9 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this.synchronizedFloats = MappingUtility.CheckCoherentMapping(this.synchronizedFloats, this.synchronizedFloatParameters, this);
       this.synchronizedInts = MappingUtility.CheckCoherentMapping(this.synchronizedInts, this.synchronizedIntParameters, this);
 
-      this._synchronizedBooleanParameterIds = AnimatorPropertyUtility.ResolveParameterIds(this.synchronizedBooleanParameters);
-      this._synchronizedFloatParameterIds = AnimatorPropertyUtility.ResolveParameterIds(this.synchronizedFloatParameters);
-      this._synchronizedIntParameterIds = AnimatorPropertyUtility.ResolveParameterIds(this.synchronizedIntParameters);
+      this._synchronizedBooleanParameterIds = AnimatorUtilities.ResolveParameterIds(this.synchronizedBooleanParameters);
+      this._synchronizedFloatParameterIds = AnimatorUtilities.ResolveParameterIds(this.synchronizedFloatParameters);
+      this._synchronizedIntParameterIds = AnimatorUtilities.ResolveParameterIds(this.synchronizedIntParameters);
 
       foreach (var value in this.synchronizedBooleans) {
         if (!Utilities.IsValid(value)) continue;
@@ -97,6 +99,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this._ApplyUpdatedIntState(true);
     }
 
+    [CustomEvent]
     public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
 
     private void _ApplyUpdatedBooleanState(bool force) {
@@ -110,6 +113,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       }
     }
 
+    [CustomEvent]
     public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
 
     private void _ApplyUpdatedFloatState(bool force) {
@@ -123,6 +127,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       }
     }
 
+    [CustomEvent]
     public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
 
     private void _ApplyUpdatedIntState(bool force) {

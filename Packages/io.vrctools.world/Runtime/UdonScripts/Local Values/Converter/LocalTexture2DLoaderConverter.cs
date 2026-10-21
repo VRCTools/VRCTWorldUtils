@@ -17,6 +17,8 @@ using UnityEngine;
 using VRC.SDK3.Image;
 using VRC.SDKBase;
 using VRC.Udon.Common.Interfaces;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 
 namespace VRCTools.World.LocalValues.Converters {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
@@ -45,13 +47,13 @@ namespace VRCTools.World.LocalValues.Converters {
 
     private void Start() {
       if (!Utilities.IsValid(this.localUrl)) {
-        Debug.LogError("[Texture2D Loader Converter] Invalid local url reference - Disabled", this);
+        UdonDebug.Error(this, "Invalid local url reference - Disabled");
         this.enabled = false;
         return;
       }
 
       if (!Utilities.IsValid(this.localTexture2D)) {
-        Debug.LogError("[Texture2D Loader Converter] Invalid local texture reference - Disabled", this);
+        UdonDebug.Error(this, "Invalid local texture reference - Disabled");
         this.enabled = false;
         return;
       }
@@ -85,9 +87,10 @@ namespace VRCTools.World.LocalValues.Converters {
       this.localUrl._UnregisterHandler(this);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       if (this._loading) {
-        Debug.LogWarning("[Texture2D Loader Converter] Image download in process - Queued update");
+        UdonDebug.Warn(this, "Image download in process - Queued update");
         this._downloadQueued = true;
         return;
       }
@@ -109,16 +112,17 @@ namespace VRCTools.World.LocalValues.Converters {
       this._imageDownloader.DownloadImage(url, null, (IUdonEventReceiver)this);
     }
 
+    [MustCallBase]
     public override void OnImageLoadSuccess(IVRCImageDownload result) {
-      Debug.Log($"[Texture2D Loader Converter] Image download from \"{result.Url}\" successful", this);
+      UdonDebug.Info(this, $"Image download from \"{result.Url}\" successful");
       this.localTexture2D.State = result.Result;
 
       this._OnImageLoadFinished();
     }
 
+    [MustCallBase]
     public override void OnImageLoadError(IVRCImageDownload result) {
-      Debug.LogWarning(
-        $"[Texture2D Loader Converter] Failed to load texture from \"{result.Url}\": {result.ErrorMessage}", this);
+      UdonDebug.Warn(this, $"Failed to load texture from \"{result.Url}\": {result.ErrorMessage}");
 
       var texture = this.errorTexture;
       switch (result.Error) {
@@ -147,7 +151,7 @@ namespace VRCTools.World.LocalValues.Converters {
 
       if (result.Error == VRCImageDownloadError.TooManyRequests) {
         this._retryTimer = this.retryPeriod;
-        Debug.Log($"[Texture2D Loader Converter] Scheduling retry in {this.retryPeriod} seconds", this);
+        UdonDebug.Info(this, $"Scheduling retry in {this.retryPeriod} seconds");
       }
     }
 
@@ -157,7 +161,7 @@ namespace VRCTools.World.LocalValues.Converters {
 
       if (!this._downloadQueued) return;
 
-      Debug.Log("[Texture2D Loader Converter] Dispatching queued image download", this);
+      UdonDebug.Info(this, "Dispatching queued image download");
       this._downloadQueued = false;
       this._OnStateUpdated();
     }

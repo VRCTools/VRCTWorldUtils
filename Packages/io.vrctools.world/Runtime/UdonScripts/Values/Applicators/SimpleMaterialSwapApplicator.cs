@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -37,7 +39,7 @@ namespace VRCTools.World.Values.Applicators {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
-        Debug.LogError("[Simple Material Swap Applicator] Invalid value reference - Disabled", this);
+        UdonDebug.Error(this, "Invalid value reference - Disabled");
         this.enabled = false;
         return;
       }
@@ -51,8 +53,7 @@ namespace VRCTools.World.Values.Applicators {
         var slot = this.slotIndices[i];
 
         if (slot >= r.sharedMaterials.Length) {
-          Debug.LogWarning(
-            $"[Simple Material Swap Applicator] Desired slot {slot} exceeds allocated material list length", r);
+          UdonDebug.Warn(this, $"Desired slot {slot} exceeds allocated material list length");
           continue;
         }
 
@@ -65,6 +66,7 @@ namespace VRCTools.World.Values.Applicators {
       this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       var value = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue) ^ this.invert;
 
@@ -77,8 +79,7 @@ namespace VRCTools.World.Values.Applicators {
         if (!Utilities.IsValid(r) || slot < 0) continue;
 
         if (slot >= r.sharedMaterials.Length) {
-          Debug.LogWarning(
-            $"[Simple Material Swap Applicator] Desired slot {slot} exceeds allocated material list length", r);
+          UdonDebug.Warn(this, $"Desired slot {slot} exceeds allocated material list length");
           continue;
         }
 

@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -65,9 +67,9 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         if (this.state == value) return;
 
-        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        if (!this.IsLocallyOwned() && !this.IsStateInitialized)
         {
-          Debug.LogWarning("[Synchronized Boolean] Attempted state update prior to initialization - Ignored", this);
+          UdonDebug.Warn(this, "Attempted state update prior to initialization - Ignored");
           return;
         }
 
@@ -80,22 +82,22 @@ namespace VRCTools.World.SynchronizedValues {
       }
     }
 
+    [MustCallBase]
     protected override void Start() {
       this.state = this._previousState = this.defaultValue;
 
       base.Start();
     }
 
-    protected override void OnStateInitialized()
+    protected override void _OnStateInitialized()
     {
-      base.OnStateInitialized();
-
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
+    [CustomEvent]
     public void _Reset()
     {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
@@ -104,9 +106,9 @@ namespace VRCTools.World.SynchronizedValues {
         return;
       }
 
-      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      if (!this.IsLocallyOwned() && !this.IsStateInitialized)
       {
-        Debug.LogWarning("[Synchronized Boolean] Attempted state reset prior to initialization - Ignored", this);
+        UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
       
@@ -122,27 +124,31 @@ namespace VRCTools.World.SynchronizedValues {
     ///   Toggles the current value of this synchronized value (e.g. when true, toggles to false; when false, toggles to
     ///   true).
     /// </summary>
+    [CustomEvent]
     public void _Toggle() { this.State = !this.State; }
 
     /// <summary>
     ///   Sets the synchronized value to true.
     ///   When the synchronized value is already true, no synchronization or event emission takes place.
     /// </summary>
+    [CustomEvent]
     public void _SetTrue() { this.State = true; }
 
     /// <summary>
     ///   Sets the synchronized value to false.
     ///   When the synchronized value is already false, no synchronization or event emission takes place.
     /// </summary>
+    [CustomEvent]
     public void _SetFalse() { this.State = false; }
 
+    [MustCallBase]
     public override void OnDeserialization() {
-      var updated = this._previousState != this.state && this.StateInitialized;
+      var updated = this._previousState != this.state && this.IsStateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
 
-      var reset = this._previousResetCounterValue != this.resetCounter && this.StateInitialized;
+      var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
       
       if (reset) this._EmitEvent(EVENT_STATE_RESET);

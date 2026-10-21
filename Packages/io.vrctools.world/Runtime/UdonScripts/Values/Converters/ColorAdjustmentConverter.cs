@@ -14,6 +14,8 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -39,13 +41,13 @@ namespace VRCTools.World.Values.Converters {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localSource, this.synchronizedSource)) {
-        Debug.LogError("[Color Adjustment Converter] Source is not valid - Disabled");
+        UdonDebug.Error(this, "Source is not valid - Disabled");
         this.enabled = false;
         return;
       }
 
       if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
-        Debug.LogError("[Color Adjustment Converter] Target is not valid - Disabled");
+        UdonDebug.Error(this, "Target is not valid - Disabled");
         this.enabled = false;
         return;
       }
@@ -56,6 +58,7 @@ namespace VRCTools.World.Values.Converters {
       this.SendCustomEventDelayedFrames(nameof(this._OnSourceUpdated), 1);
     }
 
+    [CustomEvent]
     public void _OnSourceUpdated() {
       var color = ValueUtility.GetValue(this.source, this.localSource, this.synchronizedSource);
 

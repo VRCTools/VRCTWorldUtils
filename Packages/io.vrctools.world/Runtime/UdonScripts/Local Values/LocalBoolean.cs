@@ -14,6 +14,7 @@
 
 using UdonSharp;
 using UnityEngine;
+using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -55,6 +56,7 @@ namespace VRCTools.World.LocalValues {
       }
     }
 
+    [MustCallBase]
     protected virtual void Start() {
       this._state = this.defaultValue;
 
@@ -65,6 +67,8 @@ namespace VRCTools.World.LocalValues {
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
+    [CustomEvent]
+    [MustCallBase]
     public virtual void _Reset() {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
       if (this._state == this.defaultValue)
@@ -80,18 +84,21 @@ namespace VRCTools.World.LocalValues {
     ///   Toggles the current value of this local value (e.g. when true, toggles to false; when false, toggles to
     ///   true).
     /// </summary>
+    [CustomEvent]
     public void _Toggle() { this.State = !this.State; }
 
     /// <summary>
     ///   Sets the local value to true.
     ///   When the local value is already true, no event emission takes place.
     /// </summary>
+    [CustomEvent]
     public void _SetTrue() { this.State = true; }
 
     /// <summary>
     ///   Sets the local value to false.
     ///   When the local value is already false, no event emission takes place.
     /// </summary>
+    [CustomEvent]
     public void _SetFalse() { this.State = false; }
   }
 }

@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 using VRCTools.World.Values.Applicators;
 
@@ -58,7 +60,7 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     private void Start() {
       if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
-        Debug.LogError("[Local Material Property Applicator] Renderer is invalid - Disabled", this);
+        UdonDebug.Error(this, "Renderer is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -164,6 +166,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
     }
 
+    [CustomEvent]
     public void _RefreshAllParameters() {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedColorState(true);
@@ -196,6 +199,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this.targetRenderer.SetPropertyBlock(this._materialPropertyBlock);
     }
 
+    [CustomEvent]
     public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
 
     private void _ApplyUpdatedBooleanState(bool force) {
@@ -213,6 +217,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyMaterialBlock();
     }
 
+    [CustomEvent]
     public void _OnColorStateUpdated() { this._ApplyUpdatedColorState(false); }
 
     private void _ApplyUpdatedColorState(bool force) {
@@ -230,6 +235,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyMaterialBlock();
     }
 
+    [CustomEvent]
     public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
 
     private void _ApplyUpdatedFloatState(bool force) {
@@ -247,6 +253,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyMaterialBlock();
     }
 
+    [CustomEvent]
     public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
 
     private void _ApplyUpdatedIntState(bool force) {
@@ -264,6 +271,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyMaterialBlock();
     }
 
+    [CustomEvent]
     public void _OnTextureStateUpdated() { this._ApplyUpdatedTextureState(false); }
 
     private void _ApplyUpdatedTextureState(bool force) {
@@ -281,6 +289,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyMaterialBlock();
     }
 
+    [CustomEvent]
     public void _OnVectorStateUpdated() { this._ApplyUpdatedVectorState(false); }
 
     private void _ApplyUpdatedVectorState(bool force) {

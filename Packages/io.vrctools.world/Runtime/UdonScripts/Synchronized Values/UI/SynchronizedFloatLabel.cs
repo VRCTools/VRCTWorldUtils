@@ -16,6 +16,8 @@ using TMPro;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.SynchronizedValues.UI {
@@ -37,7 +39,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
 
     private void Start() {
       if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized Float Label] Synchronized value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Synchronized value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -56,6 +58,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this.synchronizedValue._UnregisterHandler(this);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       var value = this.synchronizedValue.State;
       if (this.AppliesMapping)

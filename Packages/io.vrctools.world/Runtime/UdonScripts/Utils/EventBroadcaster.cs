@@ -17,6 +17,8 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Common.Enums;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 
 namespace VRCTools.World.Utils {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
@@ -36,19 +38,19 @@ namespace VRCTools.World.Utils {
       this.behaviours = MappingUtility.CheckCoherentMapping(this.behaviours, this.eventNames, this);
     }
 
+    [CustomEvent]
     public void _Trigger() {
       for (var i = 0; i < this.behaviours.Length; ++i) {
         var behaviour = this.behaviours[i];
         var eventName = this.eventNames[i];
 
         if (!Utilities.IsValid(behaviour)) {
-          Debug.LogError($"[Event Broadcaster] Behaviour at index #{i} is invalid - Skipped", this);
+          UdonDebug.Error(this, $"Behaviour at index #{i} is invalid - Skipped");
           continue;
         }
 
         if (string.IsNullOrEmpty(eventName)) {
-          Debug.LogError($"[Event Broadcaster] Event name for behaviour at index #{i} has not been set - Skipped",
-            this);
+          UdonDebug.Error(this, $"Event name for behaviour at index #{i} has not been set - Skipped");
           continue;
         }
 
@@ -63,7 +65,7 @@ namespace VRCTools.World.Utils {
             behaviour.SendCustomEventDelayedSeconds(eventName, this.delaySeconds, this.delayTiming);
             break;
           default:
-            Debug.LogError("[Event Broadcaster] Delay mode not implemented", this);
+            UdonDebug.Error(this, "Delay mode not implemented");
             break;
         }
       }

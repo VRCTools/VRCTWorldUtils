@@ -45,7 +45,7 @@ namespace VRCTools.World.Editor.LocalValues {
     }
 
     protected override void RenderInspectorGUI() {
-      base.RenderInspectorGUI();
+      this.RenderDefaults();
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Restrictions", EditorStyles.boldLabel);
@@ -60,6 +60,9 @@ namespace VRCTools.World.Editor.LocalValues {
             MessageType.Error);
       }
       EditorGUI.EndDisabledGroup();
+      
+      EditorGUILayout.Space(20);
+      this.RenderAdvancedFoldoutGUI();
     }
   }
 }

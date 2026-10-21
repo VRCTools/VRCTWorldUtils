@@ -60,6 +60,9 @@ namespace VRCTools.World.Editor.LocalValues {
         EditorGUILayout.PropertyField(this._permitHDR);
       }
       EditorGUI.indentLevel--;
+      
+      EditorGUILayout.Space(20);
+      this.RenderAdvancedFoldoutGUI();
     }
   }
 }

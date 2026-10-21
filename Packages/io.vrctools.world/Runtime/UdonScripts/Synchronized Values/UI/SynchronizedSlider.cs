@@ -17,6 +17,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.SynchronizedValues.UI {
@@ -40,7 +42,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
 
     private void Start() {
       if (!Utilities.IsValid(this.synchronizedValue)) {
-        Debug.LogError("[Synchronized Slider] Synchronized value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Synchronized value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -58,6 +60,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this.synchronizedValue._UnregisterHandler(this);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       this._updating = true;
       {
@@ -73,6 +76,7 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._updating = false;
     }
 
+    [CustomEvent]
     public void _OnValueChanged() {
       if (this._updating) return;
 

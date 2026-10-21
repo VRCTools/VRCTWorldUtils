@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
@@ -65,9 +67,9 @@ namespace VRCTools.World.SynchronizedValues {
       set {
         if (this.state.Equals(value)) return;
 
-        if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+        if (!this.IsLocallyOwned() && !this.IsStateInitialized)
         {
-          Debug.LogWarning("[Synchronized URL] Attempted state update prior to initialization - Ignored", this);
+          UdonDebug.Warn(this, "Attempted state update prior to initialization - Ignored");
           return;
         }
 
@@ -83,6 +85,7 @@ namespace VRCTools.World.SynchronizedValues {
       }
     }
 
+    [MustCallBase]
     protected override void Start() {
       if (this.defaultValue == null)
         this.state = this._previousState = VRCUrl.Empty;
@@ -92,16 +95,15 @@ namespace VRCTools.World.SynchronizedValues {
       base.Start();
     }
 
-    protected override void OnStateInitialized()
+    protected override void _OnStateInitialized()
     {
-      base.OnStateInitialized();
-
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
 
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
+    [CustomEvent]
     public void _Reset()
     {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
@@ -110,9 +112,9 @@ namespace VRCTools.World.SynchronizedValues {
         return;
       }
 
-      if (!Networking.IsOwner(this.gameObject) && !this.StateInitialized)
+      if (!this.IsLocallyOwned() && !this.IsStateInitialized)
       {
-        Debug.LogWarning("[Synchronized URL] Attempted state reset prior to initialization - Ignored", this);
+        UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
       
@@ -124,15 +126,17 @@ namespace VRCTools.World.SynchronizedValues {
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
+    [CustomEvent]
     public void _Clear() { this.State = VRCUrl.Empty; }
 
+    [MustCallBase]
     public override void OnDeserialization() {
-      var updated = !this._previousState.Equals(this.state) && this.StateInitialized;
+      var updated = !this._previousState.Equals(this.state) && this.IsStateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
       
-      var reset = this._previousResetCounterValue != this.resetCounter && this.StateInitialized;
+      var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
       
       if (reset) this._EmitEvent(EVENT_STATE_RESET);

@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -41,7 +43,7 @@ namespace VRCTools.World.Values.UI {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
-        Debug.LogError("[Value Toggle Button] Boolean value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Boolean value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -59,6 +61,7 @@ namespace VRCTools.World.Values.UI {
       if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       var state = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
       this._image.color = state != this.invert ? this.activeColor : this.inactiveColor;
@@ -74,6 +77,7 @@ namespace VRCTools.World.Values.UI {
       }
     }
 
+    [CustomEvent]
     public void _Toggle() { ValueUtility.ToggleValue(this.source, this.localValue, this.synchronizedValue); }
   }
 }

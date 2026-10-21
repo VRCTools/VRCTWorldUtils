@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -33,7 +35,7 @@ namespace VRCTools.World.Values.Applicators {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
-        Debug.LogError("[Object Toggle Applicator] Source value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Source value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -44,6 +46,7 @@ namespace VRCTools.World.Values.Applicators {
       this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       var active = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue) ^ this.invert;
 

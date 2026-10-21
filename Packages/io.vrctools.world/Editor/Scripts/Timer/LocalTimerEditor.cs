@@ -14,13 +14,14 @@
 
 using System;
 using UnityEditor;
+using VRCTools.Common.Attributes;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Timer;
 
 namespace VRCTools.World.Editor.Timer
 {
     [CustomEditor(typeof(LocalTimer))]
-    public class LocalTimerEditor : AbstractCustomUdonEditor
+    public class LocalTimerEditor : AbstractEventEmitterEditor
     {
         protected override string HelpText => "Pausable timer which counts down for a given duration and emits events" +
                                               "when completed.";
@@ -30,8 +31,11 @@ namespace VRCTools.World.Editor.Timer
         private SerializedProperty _defaultDuration;
         private SerializedProperty _targetValue;
 
-        private void OnEnable()
+        [MustCallBase]
+        protected override void OnEnable()
         {
+            base.OnEnable();
+            
             this._activateOnStart = this.serializedObject.FindProperty(nameof(LocalTimer.activateOnStart));
             this._recurring = this.serializedObject.FindProperty(nameof(LocalTimer.recurring));
             this._defaultDuration = this.serializedObject.FindProperty(nameof(LocalTimer.defaultDuration));
@@ -51,6 +55,9 @@ namespace VRCTools.World.Editor.Timer
                     MessageType.Warning);
             }
             EditorGUILayout.PropertyField(this._targetValue);
+            
+            EditorGUILayout.Space(20);
+            base.RenderInspectorGUI();
         }
     }
 }

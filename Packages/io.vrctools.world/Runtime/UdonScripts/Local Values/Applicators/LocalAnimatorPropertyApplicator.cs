@@ -15,6 +15,8 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
 namespace VRCTools.World.LocalValues.Applicators {
@@ -38,7 +40,7 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     private void Start() {
       if (!Utilities.IsValid(this.target)) {
-        Debug.LogError("Local Animator Property Applicator] Animator is invalid - Disabled");
+        UdonDebug.Error(this, "Animator is invalid - Disabled");
         this.enabled = false;
       }
 
@@ -46,9 +48,9 @@ namespace VRCTools.World.LocalValues.Applicators {
       this.localFloats = MappingUtility.CheckCoherentMapping(this.localFloats, this.localFloatParameters, this);
       this.localInts = MappingUtility.CheckCoherentMapping(this.localInts, this.localIntParameters, this);
 
-      this._localBooleanParameterIds = AnimatorPropertyUtility.ResolveParameterIds(this.localBooleanParameters);
-      this._localFloatParameterIds = AnimatorPropertyUtility.ResolveParameterIds(this.localFloatParameters);
-      this._localIntParameterIds = AnimatorPropertyUtility.ResolveParameterIds(this.localIntParameters);
+      this._localBooleanParameterIds = AnimatorUtilities.ResolveParameterIds(this.localBooleanParameters);
+      this._localFloatParameterIds = AnimatorUtilities.ResolveParameterIds(this.localFloatParameters);
+      this._localIntParameterIds = AnimatorUtilities.ResolveParameterIds(this.localIntParameters);
 
       foreach (var value in this.localBooleans) {
         if (!Utilities.IsValid(value)) continue;
@@ -96,7 +98,8 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyUpdatedFloatState(true);
       this._ApplyUpdatedIntState(true);
     }
-
+    
+    [CustomEvent]
     public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
 
     private void _ApplyUpdatedBooleanState(bool force) {
@@ -110,6 +113,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
     }
 
+    [CustomEvent]
     public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
 
     private void _ApplyUpdatedFloatState(bool force) {
@@ -123,6 +127,7 @@ namespace VRCTools.World.LocalValues.Applicators {
       }
     }
 
+    [CustomEvent]
     public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
 
     private void _ApplyUpdatedIntState(bool force) {

@@ -14,23 +14,30 @@
 
 using UnityEditor;
 using UnityEngine;
+using VRCTools.Common.Attributes;
 using VRCTools.World.Editor.Abstractions;
 
 namespace VRCTools.World.Editor.LocalValues {
-  public abstract class AbstractLocalValueEditor : AbstractCustomEditor {
+  public abstract class AbstractLocalValueEditor : AbstractEventEmitterEditor {
     protected virtual string _defaultValuePropertyName => "defaultValue";
 
     protected SerializedProperty _defaultValue;
 
-    protected virtual void OnEnable() {
+    [MustCallBase]
+    protected override void OnEnable() {
+      base.OnEnable();
+      
       this._defaultValue = this.serializedObject.FindProperty(this._defaultValuePropertyName);
     }
 
     protected override void RenderInspectorGUI() {
-      this._RenderDefaults();
+      this.RenderDefaults();
+      EditorGUILayout.Space(20);
+      
+      base.RenderInspectorGUI();
     }
 
-    protected virtual void _RenderDefaults() {
+    protected virtual void RenderDefaults() {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._defaultValue);
     }

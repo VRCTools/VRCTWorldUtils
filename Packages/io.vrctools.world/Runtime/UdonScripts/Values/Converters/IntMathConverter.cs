@@ -15,6 +15,8 @@
 using System;
 using UdonSharp;
 using UnityEngine;
+using VRCTools.Common.Attributes;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -44,7 +46,7 @@ namespace VRCTools.World.Values.Converters {
 
     private void Start() {
       if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
-        Debug.LogError("[Int Math Converter] Target value is invalid - Disabled", this);
+        UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
       }
@@ -55,6 +57,7 @@ namespace VRCTools.World.Values.Converters {
         nameof(this._OnStateUpdated));
     }
 
+    [CustomEvent]
     public void _OnStateUpdated() {
       var a = ValueUtility.GetValue(this.sourceA, this.staticValueA, this.localValueA, this.synchronizedValueA);
       var b = ValueUtility.GetValue(this.sourceB, this.staticValueB, this.localValueB, this.synchronizedValueB);
@@ -73,7 +76,7 @@ namespace VRCTools.World.Values.Converters {
         case IntegralMathOperation.DIVIDE:
           if (b == 0)
           {
-            Debug.LogError("[Int Math Converter] Division by zero is not permitted - Value remains unchanged", this);
+            UdonDebug.Error(this, "Division by zero is not permitted - Value remains unchanged");
             return;
           }
           
@@ -82,14 +85,14 @@ namespace VRCTools.World.Values.Converters {
         case IntegralMathOperation.REM:
           if (b == 0)
           {
-            Debug.LogError("[Int Math Converter] Remainder by zero is not permitted - Value remains unchanged", this);
+            UdonDebug.Error(this, "Remainder by zero is not permitted - Value remains unchanged");
             return;
           }
           
           result = a % b;
           break;
         default:
-          Debug.LogError("[Int Math Converter] Operation is not implemented", this);
+          UdonDebug.Error(this, "Operation is not implemented");
           return;
       }
 

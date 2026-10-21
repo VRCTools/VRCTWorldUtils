@@ -15,6 +15,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Utils;
 
@@ -53,6 +54,7 @@ namespace VRCTools.World.Player {
       this.exitBehaviours = MappingUtility.CheckCoherentMapping(this.exitBehaviours, this.exitBehaviorEventNames, this);
     }
 
+    [MustCallBase]
     public override void OnPlayerTriggerEnter(VRCPlayerApi player) {
       var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
       if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
@@ -70,6 +72,7 @@ namespace VRCTools.World.Player {
       this._EmitEvent(EVENT_PLAYER_ENTER);
     }
 
+    [MustCallBase]
     public override void OnPlayerTriggerExit(VRCPlayerApi player) {
       var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
       if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
