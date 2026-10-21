@@ -20,11 +20,13 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.LocalValues.UI {
+namespace VRCTools.World.LocalValues.UI
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
   [AddComponentMenu("Local Values/UI/Local Int Label")]
-  public class LocalIntLabel : UdonSharpBehaviour {
+  public class LocalIntLabel : UdonSharpBehaviour
+  {
     public LocalInt localValue;
 
     public bool enableMapping;
@@ -37,8 +39,10 @@ namespace VRCTools.World.LocalValues.UI {
 
     private bool AppliesMapping => this.enableMapping && this.localValue.restrictValue;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.localValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.localValue))
+      {
         UdonDebug.Error(this, "Local value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -51,14 +55,16 @@ namespace VRCTools.World.LocalValues.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (!Utilities.IsValid(this.localValue)) return;
 
       this.localValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var value = this.localValue.State;
       if (this.AppliesMapping)
         value = ValueUtility.Remap(value, this.localValue.restrictedMinimumValue,

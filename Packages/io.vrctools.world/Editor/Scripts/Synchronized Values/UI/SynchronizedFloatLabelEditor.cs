@@ -19,9 +19,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.SynchronizedValues.UI;
 
-namespace VRCTools.World.Editor.SynchronizedValues.UI {
+namespace VRCTools.World.Editor.SynchronizedValues.UI
+{
   [CustomEditor(typeof(SynchronizedFloatLabel))]
-  public class SynchronizedFloatLabelEditor : AbstractCustomUdonEditor {
+  public class SynchronizedFloatLabelEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _enableMapping;
     private SerializedProperty _mappingLowerBound;
     private SerializedProperty _mappingUpperBound;
@@ -32,7 +34,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
       "Displays the current value of a synchronized float using a given string template.\n\n" +
       "This script is expected to be combined with a SynchronizedFloat component and will match its current state.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._synchronizedValue = this.serializedObject.FindProperty(nameof(SynchronizedFloatLabel.synchronizedValue));
 
       this._enableMapping = this.serializedObject.FindProperty(nameof(SynchronizedFloatLabel.enableMapping));
@@ -41,7 +44,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
       this._multiplier = this.serializedObject.FindProperty(nameof(SynchronizedFloatLabel.multiplier));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._synchronizedValue);
       var synchronizedValue = (SynchronizedFloat)this._synchronizedValue.objectReferenceValue;
 

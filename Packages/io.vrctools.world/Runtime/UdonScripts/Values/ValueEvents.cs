@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace VRCTools.World.Values {
-  public static class ValueEvents {
+namespace VRCTools.World.Values
+{
+  public static class ValueEvents
+  {
     #region Standard Values (local & synchronized)
+
     public const int STANDARD_STATE_UPDATED = 0;
     public const int STANDARD_STATE_RESET = 1;
     public const int STANDARD_COUNT = 2;
+
     #endregion
 
     #region Persisted Values
+
     public const int PERSISTED_LOADED = STANDARD_COUNT;
     public const int PERSISTED_PERSIST = STANDARD_COUNT + 1;
     public const int PERSISTED_COUNT = STANDARD_COUNT + 2;
+
     #endregion
   }
 }

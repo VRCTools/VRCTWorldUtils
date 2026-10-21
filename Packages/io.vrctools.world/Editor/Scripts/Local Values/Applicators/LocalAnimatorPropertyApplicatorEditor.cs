@@ -19,11 +19,13 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues.Applicators;
 
-namespace VRCTools.World.Editor.LocalValues.Applicators {
+namespace VRCTools.World.Editor.LocalValues.Applicators
+{
   using Applicator = LocalAnimatorPropertyApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class LocalAnimatorPropertyApplicatorEditor : AbstractCustomUdonEditor {
+  public class LocalAnimatorPropertyApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
 
     private SerializedProperty _localBooleans;
@@ -41,7 +43,8 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
 
     protected override string HelpText => "Applies local values to a given set of animator parameters.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(Applicator.target));
 
       this._localBooleans = this.serializedObject.FindProperty(nameof(Applicator.localBooleans));
@@ -64,9 +67,11 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
         this._localInts, new[] { "Parameter Name" }, new[] { this._localIntParameters });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._target);
-      if (!Utilities.IsValid(this._target.objectReferenceValue)) {
+      if (!Utilities.IsValid(this._target.objectReferenceValue))
+      {
         EditorGUILayout.HelpBox(
           "Target animator has not been set or is invalid - Component will disable itself on startup",
           MessageType.Error);

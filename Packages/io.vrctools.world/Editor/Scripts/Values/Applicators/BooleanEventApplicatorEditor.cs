@@ -20,11 +20,13 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.Utils;
 using VRCTools.World.Values.Applicators;
 
-namespace VRCTools.World.Editor.Values.Applicators {
+namespace VRCTools.World.Editor.Values.Applicators
+{
   using Applicator = BooleanEventApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class BooleanEventApplicatorEditor : AbstractCustomUdonEditor {
+  public class BooleanEventApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _source;
     private SerializedProperty _localValue;
     private SerializedProperty _synchronizedValue;
@@ -43,7 +45,8 @@ namespace VRCTools.World.Editor.Values.Applicators {
     private MultiPropertyList _falseEventList;
     private MultiPropertyList _trueEventList;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._source = this.serializedObject.FindProperty(nameof(Applicator.source));
       this._localValue
         = this.serializedObject.FindProperty(nameof(Applicator.localValue));
@@ -76,7 +79,8 @@ namespace VRCTools.World.Editor.Values.Applicators {
         new[] { this._trueEventNames });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Source"), this._source, this._localValue,
         this._synchronizedValue, "Invalid or unspecified local value reference.\n\n" +
                                  "This component will disable itself upon startup.");
@@ -91,7 +95,8 @@ namespace VRCTools.World.Editor.Values.Applicators {
       EditorGUILayout.PropertyField(this._delayMode);
 
       var delayMode = (DelayMode)this._delayMode.enumValueIndex;
-      switch (delayMode) {
+      switch (delayMode)
+      {
         case DelayMode.NONE: return;
         case DelayMode.FRAMES:
           EditorGUILayout.PropertyField(this._delayFrames);

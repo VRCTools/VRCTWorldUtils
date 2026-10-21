@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.PersistedValues;
 
-namespace VRCTools.World.Editor.PersistedValues {
+namespace VRCTools.World.Editor.PersistedValues
+{
   using Value = PersistedBoolean;
 
   [CustomEditor(typeof(Value))]
-  public class PersistedBooleanEditor : AbstractPersistedValueEditor {
+  public class PersistedBooleanEditor : AbstractPersistedValueEditor
+  {
     protected override string HelpText =>
       "Provides a persisted boolean value with event capabilities.\n\n" +
       "You may use this component to create objects, animations or material properties which may be toggled on/off" +

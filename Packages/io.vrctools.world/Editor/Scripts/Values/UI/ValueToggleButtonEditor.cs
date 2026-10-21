@@ -19,9 +19,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues.UI;
 using VRCTools.World.Values.UI;
 
-namespace VRCTools.World.Editor.Values.UI {
+namespace VRCTools.World.Editor.Values.UI
+{
   [CustomEditor(typeof(ValueToggleButton))]
-  public class ValueToggleButtonEditor : AbstractCustomUdonEditor {
+  public class ValueToggleButtonEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _source;
     private SerializedProperty _localValue;
     private SerializedProperty _synchronizedValue;
@@ -40,7 +42,8 @@ namespace VRCTools.World.Editor.Values.UI {
       "This script is meant to be used with a LocalBoolean component and will visually update the attached " +
       "Button component if configured to do so.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._source = this.serializedObject.FindProperty(nameof(ValueToggleButton.source));
       this._localValue = this.serializedObject.FindProperty(nameof(ValueToggleButton.localValue));
       this._synchronizedValue = this.serializedObject.FindProperty(nameof(ValueToggleButton.synchronizedValue));
@@ -54,7 +57,8 @@ namespace VRCTools.World.Editor.Values.UI {
       this._invert = this.serializedObject.FindProperty(nameof(ValueToggleButton.invert));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Source/Target"), this._source, this._localValue,
         this._synchronizedValue, "Invalid or unspecified local value reference.\n\n" +
                                  "This component will disable itself upon startup.");

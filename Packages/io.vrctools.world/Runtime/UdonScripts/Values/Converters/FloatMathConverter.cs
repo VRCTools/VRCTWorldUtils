@@ -21,13 +21,15 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Converters {
+namespace VRCTools.World.Values.Converters
+{
   /// <summary>
   ///   Performs basic math operations on local or synchronized values.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Float Math Converter")]
-  public class FloatMathConverter : UdonSharpBehaviour {
+  public class FloatMathConverter : UdonSharpBehaviour
+  {
     public ValueType target;
     public LocalFloat localTarget;
     public SynchronizedFloat synchronizedTarget;
@@ -47,8 +49,10 @@ namespace VRCTools.World.Values.Converters {
     public bool permitNanPropagation;
     public bool permitInfinityPropagation;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -61,12 +65,14 @@ namespace VRCTools.World.Values.Converters {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var a = ValueUtility.GetValue(this.sourceA, this.staticValueA, this.localValueA, this.synchronizedValueA);
       var b = ValueUtility.GetValue(this.sourceB, this.staticValueB, this.localValueB, this.synchronizedValueB);
 
       float result;
-      switch (this.operation) {
+      switch (this.operation)
+      {
         case FractionalMathOperation.ADD:
           result = a + b;
           break;

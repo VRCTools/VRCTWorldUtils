@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace VRCTools.World.Values {
-  public enum ValueSource {
+namespace VRCTools.World.Values
+{
+  public enum ValueSource
+  {
     STATIC = 0,
     LOCAL = 1,
     SYNCHRONIZED = 2

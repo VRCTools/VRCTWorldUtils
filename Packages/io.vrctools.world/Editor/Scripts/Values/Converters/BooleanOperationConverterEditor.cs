@@ -20,9 +20,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
-namespace VRCTools.World.Editor.Values.Converters {
+namespace VRCTools.World.Editor.Values.Converters
+{
   [CustomEditor(typeof(BooleanOperationConverter))]
-  public class BooleanOperationConverterEditor : AbstractCustomUdonEditor {
+  public class BooleanOperationConverterEditor : AbstractCustomUdonEditor
+  {
     public SerializedProperty _target;
     public SerializedProperty _localTarget;
     public SerializedProperty _synchronizedTarget;
@@ -40,7 +42,8 @@ namespace VRCTools.World.Editor.Values.Converters {
     public SerializedProperty _synchronizedAlphaValue;
     public SerializedProperty _synchronizedBetaValue;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target
         = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.target));
       this._localTarget = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.localTarget));
@@ -62,7 +65,8 @@ namespace VRCTools.World.Editor.Values.Converters {
         = this.serializedObject.FindProperty(nameof(BooleanOperationConverter.synchronizedBetaValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("target"), this._target, this._localTarget,
         this._synchronizedTarget, "Target value is invalid or unset - Component will be disabled on start");
       EditorGUILayout.PropertyField(this._operation);

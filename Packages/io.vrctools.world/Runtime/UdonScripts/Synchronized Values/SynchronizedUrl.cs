@@ -20,13 +20,15 @@ using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.SynchronizedValues {
+namespace VRCTools.World.SynchronizedValues
+{
   /// <summary>
   ///   Encapsulates a synchronized url value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized URL")]
-  public class SynchronizedUrl : AbstractSynchronizedEventEmitter {
+  public class SynchronizedUrl : AbstractSynchronizedEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -44,14 +46,12 @@ namespace VRCTools.World.SynchronizedValues {
     /// <summary>
     ///   Stores the actual synchronized state.
     /// </summary>
-    [UdonSynced]
-    private VRCUrl state = VRCUrl.Empty;
+    [UdonSynced] private VRCUrl state = VRCUrl.Empty;
 
     /// <summary>
     ///   Stores a counter which tracks the number of resets performed on this value.
     /// </summary>
-    [UdonSynced]
-    private int resetCounter;
+    [UdonSynced] private int resetCounter;
 
     public override int EventCount => EVENT_COUNT;
 
@@ -62,9 +62,11 @@ namespace VRCTools.World.SynchronizedValues {
     ///   When setting the value, synchronization and event emission will only take place if the new value differs from
     ///   the current value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public VRCUrl State {
+    public VRCUrl State
+    {
       get => this.state;
-      set {
+      set
+      {
         if (this.state.Equals(value)) return;
 
         if (!this.IsLocallyOwned() && !this.IsStateInitialized)
@@ -86,7 +88,8 @@ namespace VRCTools.World.SynchronizedValues {
     }
 
     [MustCallBase]
-    protected override void Start() {
+    protected override void Start()
+    {
       if (this.defaultValue == null)
         this.state = this._previousState = VRCUrl.Empty;
       else
@@ -107,7 +110,8 @@ namespace VRCTools.World.SynchronizedValues {
     public void _Reset()
     {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
-      if ((this.state == null && this.defaultValue == null) || (this.state != null && this.state.Equals(this.defaultValue)))
+      if ((this.state == null && this.defaultValue == null) ||
+          (this.state != null && this.state.Equals(this.defaultValue)))
       {
         return;
       }
@@ -117,9 +121,9 @@ namespace VRCTools.World.SynchronizedValues {
         UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
-      
+
       this._EnsureOwnership();
-      
+
       this._previousResetCounterValue = ++this.resetCounter;
       this.State = this.defaultValue;
 
@@ -127,18 +131,22 @@ namespace VRCTools.World.SynchronizedValues {
     }
 
     [CustomEvent]
-    public void _Clear() { this.State = VRCUrl.Empty; }
+    public void _Clear()
+    {
+      this.State = VRCUrl.Empty;
+    }
 
     [MustCallBase]
-    public override void OnDeserialization() {
+    public override void OnDeserialization()
+    {
       var updated = !this._previousState.Equals(this.state) && this.IsStateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
-      
+
       var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
-      
+
       if (reset) this._EmitEvent(EVENT_STATE_RESET);
 
       // base has to be invoked last here as it also takes care of flagging the object as initialized thus requiring

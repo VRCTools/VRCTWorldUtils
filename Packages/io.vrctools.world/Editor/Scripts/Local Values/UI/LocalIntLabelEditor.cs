@@ -19,9 +19,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.LocalValues.UI;
 
-namespace VRCTools.World.Editor.LocalValues.UI {
+namespace VRCTools.World.Editor.LocalValues.UI
+{
   [CustomEditor(typeof(LocalIntLabel))]
-  public class LocalIntLabelEditor : AbstractCustomUdonEditor {
+  public class LocalIntLabelEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _enableMapping;
     private SerializedProperty _localValue;
     private SerializedProperty _mappingLowerBound;
@@ -32,7 +34,8 @@ namespace VRCTools.World.Editor.LocalValues.UI {
       "Displays the value of a local int.\n\n" +
       "This script is meant to be used together with a LocalInt component.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._localValue = this.serializedObject.FindProperty(nameof(LocalIntLabel.localValue));
 
       this._enableMapping = this.serializedObject.FindProperty(nameof(LocalIntLabel.enableMapping));
@@ -41,7 +44,8 @@ namespace VRCTools.World.Editor.LocalValues.UI {
       this._multiplier = this.serializedObject.FindProperty(nameof(LocalIntLabel.multiplier));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._localValue);
       var localValue = (LocalInt)this._localValue.objectReferenceValue;
       if (localValue == null)

@@ -19,10 +19,12 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.LocalValues.Applicators {
+namespace VRCTools.World.LocalValues.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Applicators/Local Animator Property Applicator")]
-  public class LocalAnimatorPropertyApplicator : UdonSharpBehaviour {
+  public class LocalAnimatorPropertyApplicator : UdonSharpBehaviour
+  {
     public Animator target;
 
     public LocalBoolean[] localBooleans;
@@ -38,8 +40,10 @@ namespace VRCTools.World.LocalValues.Applicators {
     private int[] _localFloatParameterIds;
     private int[] _localIntParameterIds;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.target)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.target))
+      {
         UdonDebug.Error(this, "Animator is invalid - Disabled");
         this.enabled = false;
       }
@@ -52,19 +56,22 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._localFloatParameterIds = AnimatorUtilities.ResolveParameterIds(this.localFloatParameters);
       this._localIntParameterIds = AnimatorUtilities.ResolveParameterIds(this.localIntParameters);
 
-      foreach (var value in this.localBooleans) {
+      foreach (var value in this.localBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnBooleanStateUpdated));
       }
 
-      foreach (var value in this.localFloats) {
+      foreach (var value in this.localFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalFloat.EVENT_STATE_UPDATED, this, nameof(this._OnFloatStateUpdated));
       }
 
-      foreach (var value in this.localInts) {
+      foreach (var value in this.localInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalInt.EVENT_STATE_UPDATED, this, nameof(this._OnIntStateUpdated));
@@ -73,37 +80,47 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._RefreshAllParameters();
     }
 
-    private void OnDestroy() {
-      foreach (var value in this.localBooleans) {
+    private void OnDestroy()
+    {
+      foreach (var value in this.localBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localFloats) {
+      foreach (var value in this.localFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localInts) {
+      foreach (var value in this.localInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
     }
 
-    private void _RefreshAllParameters() {
+    private void _RefreshAllParameters()
+    {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedFloatState(true);
       this._ApplyUpdatedIntState(true);
     }
-    
-    [CustomEvent]
-    public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
 
-    private void _ApplyUpdatedBooleanState(bool force) {
-      for (var i = 0; i < this.localBooleans.Length; i++) {
+    [CustomEvent]
+    public void _OnBooleanStateUpdated()
+    {
+      this._ApplyUpdatedBooleanState(false);
+    }
+
+    private void _ApplyUpdatedBooleanState(bool force)
+    {
+      for (var i = 0; i < this.localBooleans.Length; i++)
+      {
         var value = this.localBooleans[i];
         var parameterId = this._localBooleanParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -114,10 +131,15 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
+    public void _OnFloatStateUpdated()
+    {
+      this._ApplyUpdatedFloatState(false);
+    }
 
-    private void _ApplyUpdatedFloatState(bool force) {
-      for (var i = 0; i < this.localFloats.Length; i++) {
+    private void _ApplyUpdatedFloatState(bool force)
+    {
+      for (var i = 0; i < this.localFloats.Length; i++)
+      {
         var value = this.localFloats[i];
         var parameterId = this._localFloatParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -128,10 +150,15 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
+    public void _OnIntStateUpdated()
+    {
+      this._ApplyUpdatedIntState(false);
+    }
 
-    private void _ApplyUpdatedIntState(bool force) {
-      for (var i = 0; i < this.localInts.Length; i++) {
+    private void _ApplyUpdatedIntState(bool force)
+    {
+      for (var i = 0; i < this.localInts.Length; i++)
+      {
         var value = this.localInts[i];
         var parameterId = this._localIntParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;

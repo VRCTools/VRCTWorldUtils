@@ -20,13 +20,15 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.Event;
 
-namespace VRCTools.World.Player {
+namespace VRCTools.World.Player
+{
   /// <summary>
   ///   Provides a teleport target to which a local player may be teleported when triggered.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Player/Teleport Target")]
-  public class PlayerTeleportTarget : AbstractEventEmitter {
+  public class PlayerTeleportTarget : AbstractEventEmitter
+  {
     public const int EVENT_TELEPORTED_TO = 0;
     public const int EVENT_COUNT = 1;
 
@@ -34,8 +36,9 @@ namespace VRCTools.World.Player {
 
     public override int EventCount => EVENT_COUNT;
 
-    #if UNITY_EDITOR && !COMPILER_UDONSHARP
-    private void OnDrawGizmos() {
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+    private void OnDrawGizmos()
+    {
       var t = this.target;
       if (!Utilities.IsValid(t)) t = this.transform;
 
@@ -45,10 +48,11 @@ namespace VRCTools.World.Player {
       Gizmos.color = Color.green;
       Gizmos.DrawLine(t.position, t.position + t.forward * .5f);
     }
-    #endif
+#endif
 
     [CustomEvent]
-    public void _TeleportTo() {
+    public void _TeleportTo()
+    {
       var localPlayer = Networking.LocalPlayer;
       var t = this.target;
       if (!Utilities.IsValid(t)) t = this.transform;

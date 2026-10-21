@@ -2,11 +2,13 @@
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues.Converters;
 
-namespace VRCTools.World.Editor.SynchronizedValues.Converters {
+namespace VRCTools.World.Editor.SynchronizedValues.Converters
+{
   using Converter = SynchronizedTexture2DLoaderConverter;
 
   [CustomEditor(typeof(Converter))]
-  public class SynchronizedTexture2DLoaderConverterEditor : AbstractCustomUdonEditor {
+  public class SynchronizedTexture2DLoaderConverterEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _accessDeniedErrorTexture;
 
     private SerializedProperty _defaultTexture;
@@ -27,7 +29,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.Converters {
       "Retrieves images from a web server based on a synchronized url value.\n\n" +
       "This script is expected to be combined with a SynchronizedUrl and LocalTexture2D component.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._localUrl = this.serializedObject.FindProperty(nameof(Converter.synchronizedUrl));
       this._localTexture2D = this.serializedObject.FindProperty(nameof(Converter.localTexture2D));
 
@@ -44,7 +47,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.Converters {
       this._retryPeriod = this.serializedObject.FindProperty(nameof(Converter.retryPeriod));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._localUrl);
       if (this._localUrl.objectReferenceValue == null)
         EditorGUILayout.HelpBox(
@@ -65,7 +69,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.Converters {
       EditorGUILayout.PropertyField(this._errorTexture);
 
       this._errorFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(this._errorFoldout, "Errors");
-      if (this._errorFoldout) {
+      if (this._errorFoldout)
+      {
         EditorGUI.indentLevel++;
         {
           EditorGUILayout.PropertyField(this._accessDeniedErrorTexture);

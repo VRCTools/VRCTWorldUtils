@@ -18,9 +18,11 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values.Converters;
 
-namespace VRCTools.World.Editor.Values.Converters {
+namespace VRCTools.World.Editor.Values.Converters
+{
   [CustomEditor(typeof(ColorAdjustmentConverter))]
-  public class ColorAdjustmentConverterEditor : AbstractCustomUdonEditor {
+  public class ColorAdjustmentConverterEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _source;
     private SerializedProperty _localSource;
     private SerializedProperty _synchronizedSource;
@@ -33,7 +35,8 @@ namespace VRCTools.World.Editor.Values.Converters {
     private SerializedProperty _saturationOffset;
     private SerializedProperty _valueOffset;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._source = this.serializedObject.FindProperty(nameof(ColorAdjustmentConverter.source));
       this._localSource = this.serializedObject.FindProperty(nameof(ColorAdjustmentConverter.localSource));
       this._synchronizedSource
@@ -49,7 +52,8 @@ namespace VRCTools.World.Editor.Values.Converters {
       this._valueOffset = this.serializedObject.FindProperty(nameof(ColorAdjustmentConverter.valueOffset));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Source Value", EditorStyles.boldLabel);
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Source"), this._source, this._localSource,
         this._synchronizedSource, "Source value is invalid or unset - Component will be disabled on startup.");

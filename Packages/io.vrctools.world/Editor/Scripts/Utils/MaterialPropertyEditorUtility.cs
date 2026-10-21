@@ -1,13 +1,17 @@
 ﻿using UnityEditor;
 using VRCTools.World.Values.Applicators;
 
-namespace VRCTools.World.Editor.Utils {
-  public static class MaterialPropertyEditorUtility {
-    public static void DrawTarget(SerializedProperty target, SerializedProperty material, SerializedProperty renderer) {
+namespace VRCTools.World.Editor.Utils
+{
+  public static class MaterialPropertyEditorUtility
+  {
+    public static void DrawTarget(SerializedProperty target, SerializedProperty material, SerializedProperty renderer)
+    {
       EditorGUILayout.PropertyField(target);
       var t = (MaterialPropertyTarget)target.enumValueIndex;
 
-      switch (t) {
+      switch (t)
+      {
         case MaterialPropertyTarget.MATERIAL:
           EditorGUILayout.PropertyField(material);
           break;

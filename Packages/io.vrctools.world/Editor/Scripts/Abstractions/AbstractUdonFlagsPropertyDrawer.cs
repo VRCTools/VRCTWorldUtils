@@ -15,14 +15,18 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace VRCTools.World.Editor.Abstractions {
-  public abstract class AbstractUdonFlagsPropertyDrawer : PropertyDrawer {
+namespace VRCTools.World.Editor.Abstractions
+{
+  public abstract class AbstractUdonFlagsPropertyDrawer : PropertyDrawer
+  {
     protected abstract string Name { get; }
 
     protected abstract string[] EnumNames { get; }
 
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-      if (property.propertyType != SerializedPropertyType.Integer) {
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+      if (property.propertyType != SerializedPropertyType.Integer)
+      {
         EditorGUI.LabelField(position, label.text, $"Use {this.Name} with int");
         return;
       }
@@ -35,7 +39,8 @@ namespace VRCTools.World.Editor.Abstractions {
       var accumulator = 0;
       options[0] = new GUIContent("None");
       optionValues[0] = 0;
-      for (var i = 0; i < this.EnumNames.Length; i++) {
+      for (var i = 0; i < this.EnumNames.Length; i++)
+      {
         options[i + 1] = new GUIContent(this.EnumNames[i]);
         optionValues[i + 1] = 1 << i;
         accumulator |= 1 << i;

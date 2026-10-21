@@ -15,7 +15,10 @@
 using UnityEditor;
 using VRCTools.World.Values.Presets;
 
-namespace VRCTools.World.Editor.Values.Presets {
+namespace VRCTools.World.Editor.Values.Presets
+{
   [CustomEditor(typeof(FloatPreset))]
-  public class FloatPresetEditor : AbstractPresetEditor { }
+  public class FloatPresetEditor : AbstractPresetEditor
+  {
+  }
 }

@@ -20,11 +20,13 @@ using VRCTools.World.SynchronizedValues.Applicators;
 using VRCTools.World.Utils;
 using VRCTools.World.Values.Applicators;
 
-namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
+namespace VRCTools.World.Editor.SynchronizedValues.Applicators
+{
   using Applicator = SynchronizedMaterialPropertyApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class SynchronizedMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor {
+  public class SynchronizedMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
     private SerializedProperty _targetMaterial;
     private SerializedProperty _targetRenderer;
@@ -59,7 +61,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
       " - SynchronizedInt\n" +
       " - SynchronizedVector3";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(Applicator.target));
       this._targetMaterial = this.serializedObject.FindProperty(nameof(Applicator.targetMaterial));
       this._targetRenderer = this.serializedObject.FindProperty(nameof(Applicator.targetRenderer));
@@ -125,7 +128,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
         new[] { this._synchronizedVectorParameters });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Target", EditorStyles.boldLabel);
       MaterialPropertyEditorUtility.DrawTarget(this._target, this._targetMaterial, this._targetRenderer);
 

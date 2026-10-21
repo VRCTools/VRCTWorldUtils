@@ -20,26 +20,29 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.LocalValues.UI {
+namespace VRCTools.World.LocalValues.UI
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(Slider))]
   [AddComponentMenu("Local Values/UI/Local Slider")]
-  public class LocalSlider : UdonSharpBehaviour {
+  public class LocalSlider : UdonSharpBehaviour
+  {
     public LocalFloat localValue;
 
     public bool enableMapping;
     public int mappingLowerBound;
     public int mappingUpperBound = 100;
-    [Min(float.Epsilon)]
-    public float multiplier = 1;
+    [Min(float.Epsilon)] public float multiplier = 1;
 
     private Slider _slider;
     private bool _updating;
 
     private bool AppliesMapping => this.enableMapping && this.localValue.restrictValue;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.localValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.localValue))
+      {
         UdonDebug.Error(this, "Local value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -52,14 +55,16 @@ namespace VRCTools.World.LocalValues.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (!Utilities.IsValid(this.localValue)) return;
 
       this.localValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         var value = this.localValue.State;
@@ -75,7 +80,8 @@ namespace VRCTools.World.LocalValues.UI {
     }
 
     [CustomEvent]
-    public void _OnValueChanged() {
+    public void _OnValueChanged()
+    {
       if (this._updating) return;
 
       var value = this._slider.value / this.multiplier;

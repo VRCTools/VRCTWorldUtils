@@ -16,14 +16,17 @@ using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 
-namespace VRCTools.World.Editor.Shaders {
-  public class FakeSkyboxShaderEditor : AbstractCustomShaderEditor {
+namespace VRCTools.World.Editor.Shaders
+{
+  public class FakeSkyboxShaderEditor : AbstractCustomShaderEditor
+  {
     protected override string HelpText =>
       "Emulates the look of the skybox on any given geometry.\n\n" +
       "This material may be used to create the effect of being able to see the sky without having to expose the actual " +
       "skybox to players by removing geometry.";
 
-    protected override void RenderInspectorGUI(MaterialEditor me, MaterialProperty[] properties) {
+    protected override void RenderInspectorGUI(MaterialEditor me, MaterialProperty[] properties)
+    {
       var mainTex = FindProperty("_MainTex", properties);
       var tint = FindProperty("_Tint", properties);
       var exposure = FindProperty("_Exposure", properties);
@@ -38,7 +41,8 @@ namespace VRCTools.World.Editor.Shaders {
       me.ShaderProperty(rotation, "Rotation");
     }
 
-    protected override void _RenderGenericProperties(MaterialEditor me, MaterialProperty[] properties) {
+    protected override void _RenderGenericProperties(MaterialEditor me, MaterialProperty[] properties)
+    {
       var zWrite = FindProperty("_ZWrite", properties);
       var zTest = FindProperty("_ZTest", properties);
       var culling = FindProperty("_Culling", properties);

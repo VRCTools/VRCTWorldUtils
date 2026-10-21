@@ -16,11 +16,13 @@ using UnityEditor;
 using UnityEngine;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalFloat;
 
   [CustomEditor(typeof(Value))]
-  public class LocalFloatEditor : AbstractLocalValueEditor {
+  public class LocalFloatEditor : AbstractLocalValueEditor
+  {
     private SerializedProperty _minimalUpdateDifference;
 
     private SerializedProperty _preventNuisanceUpdates;
@@ -39,9 +41,10 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For animators use LocalAnimatorApplicator\n\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
-      
+
       this._restrictValue = this.serializedObject.FindProperty(nameof(Value.restrictValue));
       this._restrictedMinimumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMinimumValue));
       this._restrictedMaximumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMaximumValue));
@@ -50,7 +53,8 @@ namespace VRCTools.World.Editor.LocalValues {
       this._minimalUpdateDifference = this.serializedObject.FindProperty(nameof(Value.minimalUpdateDifference));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       this.RenderDefaults();
       EditorGUILayout.Space(20);
 
@@ -80,7 +84,7 @@ namespace VRCTools.World.Editor.LocalValues {
             MessageType.Error);
       }
       EditorGUI.EndDisabledGroup();
-      
+
       EditorGUILayout.Space(20);
       this.RenderAdvancedFoldoutGUI();
     }

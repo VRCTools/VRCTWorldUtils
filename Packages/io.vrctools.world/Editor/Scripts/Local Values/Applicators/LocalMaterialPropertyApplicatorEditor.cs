@@ -18,11 +18,13 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues.Applicators;
 
-namespace VRCTools.World.Editor.LocalValues.Applicators {
+namespace VRCTools.World.Editor.LocalValues.Applicators
+{
   using Applicator = LocalMaterialPropertyApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class LocalMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor {
+  public class LocalMaterialPropertyApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
     private SerializedProperty _targetMaterial;
     private SerializedProperty _targetRenderer;
@@ -60,7 +62,8 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
       " - LocalInt\n" +
       " - LocalVector3";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(Applicator.target));
       this._targetMaterial = this.serializedObject.FindProperty(nameof(Applicator.targetMaterial));
       this._targetRenderer = this.serializedObject.FindProperty(nameof(Applicator.targetRenderer));
@@ -137,7 +140,8 @@ namespace VRCTools.World.Editor.LocalValues.Applicators {
         new[] { this._localVectorParameters });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Target", EditorStyles.boldLabel);
       MaterialPropertyEditorUtility.DrawTarget(this._target, this._targetMaterial, this._targetRenderer);
 

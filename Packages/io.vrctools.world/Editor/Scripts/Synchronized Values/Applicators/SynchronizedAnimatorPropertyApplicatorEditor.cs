@@ -19,11 +19,13 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.SynchronizedValues.Applicators;
 
-namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
+namespace VRCTools.World.Editor.SynchronizedValues.Applicators
+{
   using Applicator = SynchronizedAnimatorPropertyApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class SynchronizedAnimatorPropertyApplicatorEditor : AbstractCustomUdonEditor {
+  public class SynchronizedAnimatorPropertyApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
 
     private SerializedProperty _synchronizedBooleans;
@@ -41,7 +43,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
 
     protected override string HelpText => "Applies synchronized values to a given set of animator parameters.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(Applicator.target));
 
       this._synchronizedBooleans = this.serializedObject.FindProperty(nameof(Applicator.synchronizedBooleans));
@@ -69,9 +72,11 @@ namespace VRCTools.World.Editor.SynchronizedValues.Applicators {
         this._synchronizedInts, new[] { "Parameter Name" }, new[] { this._synchronizedIntParameters });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._target);
-      if (!Utilities.IsValid(this._target.objectReferenceValue)) {
+      if (!Utilities.IsValid(this._target.objectReferenceValue))
+      {
         EditorGUILayout.HelpBox(
           "Target animator has not been set or is invalid - Component will disable itself on startup",
           MessageType.Error);

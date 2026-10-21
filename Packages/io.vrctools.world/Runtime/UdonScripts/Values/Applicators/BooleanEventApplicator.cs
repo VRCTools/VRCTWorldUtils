@@ -22,10 +22,12 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Applicators {
+namespace VRCTools.World.Values.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Applicators/Boolean Event Applicator")]
-  public class BooleanEventApplicator : UdonSharpBehaviour {
+  public class BooleanEventApplicator : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
@@ -38,19 +40,18 @@ namespace VRCTools.World.Values.Applicators {
 
     public DelayMode delayMode;
     public EventTiming delayTiming = EventTiming.Update;
-    [Min(0)]
-    public int delayFrames;
-    [Min(0)]
-    public float delaySeconds;
+    [Min(0)] public int delayFrames;
+    [Min(0)] public float delaySeconds;
 
-    private void Start() {
+    private void Start()
+    {
       if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
       {
         UdonDebug.Error(this, "Source value is invalid - Disabled");
         this.enabled = false;
         return;
       }
-      
+
       this.falseBehaviours = MappingUtility.CheckCoherentMapping(this.falseBehaviours, this.falseEventNames, this);
       this.trueBehaviours = MappingUtility.CheckCoherentMapping(this.trueBehaviours, this.trueEventNames, this);
 
@@ -59,27 +60,32 @@ namespace VRCTools.World.Values.Applicators {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var state = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
 
       var behaviourSource = state ? this.trueBehaviours : this.falseBehaviours;
       var eventNameSource = state ? this.trueEventNames : this.falseEventNames;
 
-      for (var i = 0; i < behaviourSource.Length; ++i) {
+      for (var i = 0; i < behaviourSource.Length; ++i)
+      {
         var behaviour = behaviourSource[i];
         var eventName = eventNameSource[i];
 
-        if (!Utilities.IsValid(behaviour)) {
+        if (!Utilities.IsValid(behaviour))
+        {
           UdonDebug.Warn(this, $"Target behavior for state {state} at index #{i} is no longer valid");
           continue;
         }
 
-        if (string.IsNullOrEmpty(eventName)) {
+        if (string.IsNullOrEmpty(eventName))
+        {
           UdonDebug.Warn(this, $"Target behavior for state {state} at index #{i} has no event name specified");
           continue;
         }
 
-        switch (this.delayMode) {
+        switch (this.delayMode)
+        {
           case DelayMode.NONE:
             behaviour.SendCustomEvent(eventName);
             break;

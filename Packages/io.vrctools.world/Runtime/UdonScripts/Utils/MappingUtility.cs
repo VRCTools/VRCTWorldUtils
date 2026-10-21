@@ -16,11 +16,13 @@ using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace VRCTools.World.Utils {
+namespace VRCTools.World.Utils
+{
   /// <summary>
   ///   Provides a set of utility functions for the purposes of managing 1:1 mappings of arrays within Udon scripts.
   /// </summary>
-  internal static class MappingUtility {
+  internal static class MappingUtility
+  {
     /// <summary>
     ///   Verifies that a set of associated arrays exhibit the same length.
     /// </summary>
@@ -30,10 +32,12 @@ namespace VRCTools.World.Utils {
     /// <typeparam name="A">the type of array a</typeparam>
     /// <typeparam name="B">the type of array B</typeparam>
     /// <returns>an adjusted copy of array a</returns>
-    public static A[] CheckCoherentMapping<A, B>(A[] a, B[] b, Object context) {
+    public static A[] CheckCoherentMapping<A, B>(A[] a, B[] b, Object context)
+    {
       if (a.Length == b.Length) return a;
 
-      if (a.Length < b.Length) {
+      if (a.Length < b.Length)
+      {
         Debug.LogWarning(
           "Incoherent mapping detected - This likely means the component data has been corrupted - Additional parameter names will be ignored",
           context);

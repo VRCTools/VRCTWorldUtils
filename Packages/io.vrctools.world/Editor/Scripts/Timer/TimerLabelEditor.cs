@@ -19,50 +19,51 @@ using VRCTools.World.Timer;
 
 namespace VRCTools.World.Editor.Timer
 {
-    [CustomEditor(typeof(TimerLabel))]
-    public class TimerLabelEditor : AbstractCustomUdonEditor
+  [CustomEditor(typeof(TimerLabel))]
+  public class TimerLabelEditor : AbstractCustomUdonEditor
+  {
+    protected override string HelpText => "Displays the current state of a timer within a Unity UI.";
+
+    private SerializedProperty _localTimer;
+
+    private SerializedProperty _remainingTimeLabel;
+    private SerializedProperty _stateStoppedLabel;
+    private SerializedProperty _statePausedLabel;
+    private SerializedProperty _stateRunningLabel;
+
+    private SerializedProperty _remainingTimeUpdateFrequency;
+    private SerializedProperty _remainingTimeFormat;
+    private SerializedProperty _setActiveRemainingLabel;
+
+    private void OnEnable()
     {
-        protected override string HelpText => "Displays the current state of a timer within a Unity UI.";
+      this._localTimer = this.serializedObject.FindProperty(nameof(TimerLabel.localTimer));
 
-        private SerializedProperty _localTimer;
+      this._remainingTimeLabel = this.serializedObject.FindProperty(nameof(TimerLabel.remainingTimeLabel));
+      this._stateStoppedLabel = this.serializedObject.FindProperty(nameof(TimerLabel.stateStoppedLabel));
+      this._statePausedLabel = this.serializedObject.FindProperty(nameof(TimerLabel.statePausedLabel));
+      this._stateRunningLabel = this.serializedObject.FindProperty(nameof(TimerLabel.stateRunningLabel));
 
-        private SerializedProperty _remainingTimeLabel;
-        private SerializedProperty _stateStoppedLabel;
-        private SerializedProperty _statePausedLabel;
-        private SerializedProperty _stateRunningLabel;
-
-        private SerializedProperty _remainingTimeUpdateFrequency;
-        private SerializedProperty _remainingTimeFormat;
-        private SerializedProperty _setActiveRemainingLabel;
-        
-        private void OnEnable()
-        {
-            this._localTimer = this.serializedObject.FindProperty(nameof(TimerLabel.localTimer));
-
-            this._remainingTimeLabel = this.serializedObject.FindProperty(nameof(TimerLabel.remainingTimeLabel));
-            this._stateStoppedLabel = this.serializedObject.FindProperty(nameof(TimerLabel.stateStoppedLabel));
-            this._statePausedLabel = this.serializedObject.FindProperty(nameof(TimerLabel.statePausedLabel));
-            this._stateRunningLabel = this.serializedObject.FindProperty(nameof(TimerLabel.stateRunningLabel));
-            
-            this._remainingTimeUpdateFrequency = this.serializedObject.FindProperty(nameof(TimerLabel.remainingTimeUpdateFrequency));
-            this._remainingTimeFormat = this.serializedObject.FindProperty(nameof(TimerLabel.remainingTimeFormat));
-            this._setActiveRemainingLabel = this.serializedObject.FindProperty(nameof(TimerLabel.setActiveRemainingLabel));
-        }
-
-        protected override void RenderInspectorGUI()
-        {
-            EditorGUILayout.PropertyField(this._localTimer);
-            EditorGUILayout.Space(20);
-            
-            EditorGUILayout.PropertyField(this._stateStoppedLabel);
-            EditorGUILayout.PropertyField(this._statePausedLabel);
-            EditorGUILayout.PropertyField(this._stateRunningLabel);
-            
-            EditorGUILayout.Space(20);
-            EditorGUILayout.PropertyField(this._remainingTimeUpdateFrequency);
-            EditorGUILayout.PropertyField(this._remainingTimeFormat);
-            EditorGUILayout.PropertyField(this._remainingTimeLabel);
-            EditorGUILayout.PropertyField(this._setActiveRemainingLabel);
-        }
+      this._remainingTimeUpdateFrequency =
+        this.serializedObject.FindProperty(nameof(TimerLabel.remainingTimeUpdateFrequency));
+      this._remainingTimeFormat = this.serializedObject.FindProperty(nameof(TimerLabel.remainingTimeFormat));
+      this._setActiveRemainingLabel = this.serializedObject.FindProperty(nameof(TimerLabel.setActiveRemainingLabel));
     }
+
+    protected override void RenderInspectorGUI()
+    {
+      EditorGUILayout.PropertyField(this._localTimer);
+      EditorGUILayout.Space(20);
+
+      EditorGUILayout.PropertyField(this._stateStoppedLabel);
+      EditorGUILayout.PropertyField(this._statePausedLabel);
+      EditorGUILayout.PropertyField(this._stateRunningLabel);
+
+      EditorGUILayout.Space(20);
+      EditorGUILayout.PropertyField(this._remainingTimeUpdateFrequency);
+      EditorGUILayout.PropertyField(this._remainingTimeFormat);
+      EditorGUILayout.PropertyField(this._remainingTimeLabel);
+      EditorGUILayout.PropertyField(this._setActiveRemainingLabel);
+    }
+  }
 }

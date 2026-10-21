@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace VRCTools.World.Values {
-  public enum IntegralMathOperation {
+namespace VRCTools.World.Values
+{
+  public enum IntegralMathOperation
+  {
     ADD,
     SUBTRACT,
     MULTIPLY,

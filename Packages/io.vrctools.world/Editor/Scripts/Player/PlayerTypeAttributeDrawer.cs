@@ -16,9 +16,11 @@ using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Player;
 
-namespace VRCTools.World.Editor.Player {
+namespace VRCTools.World.Editor.Player
+{
   [CustomPropertyDrawer(typeof(PlayerTypeAttribute))]
-  public class PlayerTypeAttributeDrawer : AbstractUdonFlagsPropertyDrawer {
+  public class PlayerTypeAttributeDrawer : AbstractUdonFlagsPropertyDrawer
+  {
     protected override string Name => "PlayerType";
     protected override string[] EnumNames => new[] { "Local", "Remote" };
   }

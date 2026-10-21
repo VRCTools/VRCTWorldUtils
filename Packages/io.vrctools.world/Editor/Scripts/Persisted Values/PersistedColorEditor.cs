@@ -16,11 +16,13 @@ using UnityEditor;
 using VRCTools.World.Editor.LocalValues;
 using VRCTools.World.PersistedValues;
 
-namespace VRCTools.World.Editor.PersistedValues {
+namespace VRCTools.World.Editor.PersistedValues
+{
   using Value = PersistedColor;
 
   [CustomEditor(typeof(Value))]
-  public class PersistedColorEditor : LocalColorEditor {
+  public class PersistedColorEditor : LocalColorEditor
+  {
     private SerializedProperty _keyProperty;
 
     protected override string HelpText =>
@@ -32,13 +34,15 @@ namespace VRCTools.World.Editor.PersistedValues {
       " - For material properties use LocalMaterialPropertyApplicator\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
 
       this._keyProperty = this.serializedObject.FindProperty(nameof(Value.key));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Persistence", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._keyProperty);
       EditorGUILayout.Space(20);

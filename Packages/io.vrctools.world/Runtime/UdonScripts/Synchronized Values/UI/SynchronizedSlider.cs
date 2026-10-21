@@ -21,27 +21,29 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
+namespace VRCTools.World.SynchronizedValues.UI
+{
   [RequireComponent(typeof(Slider))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Slider")]
-  public class SynchronizedSlider : UdonSharpBehaviour {
-    [FormerlySerializedAs("value")]
-    public SynchronizedFloat synchronizedValue;
+  public class SynchronizedSlider : UdonSharpBehaviour
+  {
+    [FormerlySerializedAs("value")] public SynchronizedFloat synchronizedValue;
 
     public bool enableMapping;
     public int mappingLowerBound;
     public int mappingUpperBound = 100;
-    [Min(float.Epsilon)]
-    public float multiplier = 1;
+    [Min(float.Epsilon)] public float multiplier = 1;
 
     private Slider _slider;
     private bool _updating;
 
     private bool AppliesMapping => this.enableMapping && this.synchronizedValue.restrictValue;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Synchronized value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -54,14 +56,16 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (!Utilities.IsValid(this.synchronizedValue)) return;
 
       this.synchronizedValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         var value = this.synchronizedValue.State;
@@ -77,7 +81,8 @@ namespace VRCTools.World.SynchronizedValues.UI {
     }
 
     [CustomEvent]
-    public void _OnValueChanged() {
+    public void _OnValueChanged()
+    {
       if (this._updating) return;
 
       var value = this._slider.value / this.multiplier;

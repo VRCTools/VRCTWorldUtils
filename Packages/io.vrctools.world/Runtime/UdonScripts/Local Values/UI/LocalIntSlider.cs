@@ -20,18 +20,19 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.LocalValues.UI {
+namespace VRCTools.World.LocalValues.UI
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(Slider))]
   [AddComponentMenu("Local Values/UI/Local Int Slider")]
-  public class LocalIntSlider : UdonSharpBehaviour {
+  public class LocalIntSlider : UdonSharpBehaviour
+  {
     public LocalInt localValue;
 
     public bool enableMapping;
     public int mappingLowerBound;
     public int mappingUpperBound = 100;
-    [Min(1)]
-    public int multiplier = 1;
+    [Min(1)] public int multiplier = 1;
 
     private Slider _slider;
     private bool _updating;
@@ -39,8 +40,10 @@ namespace VRCTools.World.LocalValues.UI {
     private bool RequiresRounding => !this._slider.wholeNumbers;
     private bool AppliesMapping => this.enableMapping && this.localValue.restrictValue;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.localValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.localValue))
+      {
         UdonDebug.Error(this, "Local value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -49,21 +52,23 @@ namespace VRCTools.World.LocalValues.UI {
       this._slider = this.GetComponent<Slider>();
 
       if (!this._slider.wholeNumbers)
-        UdonDebug.Warn(this, 
+        UdonDebug.Warn(this,
           "Slider has not been configured to use whole numbers - Values will be rounded to the closest whole number");
 
       this.localValue._RegisterHandler(LocalInt.EVENT_STATE_UPDATED, this, nameof(this._OnStateUpdated));
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (!Utilities.IsValid(this.localValue)) return;
 
       this.localValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         var value = this.localValue.State;
@@ -79,7 +84,8 @@ namespace VRCTools.World.LocalValues.UI {
     }
 
     [CustomEvent]
-    public void _OnValueChanged() {
+    public void _OnValueChanged()
+    {
       if (this._updating) return;
 
       int value;

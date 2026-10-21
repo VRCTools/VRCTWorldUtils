@@ -12,14 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace VRCTools.World.Player {
-  public static class PlayerType {
+namespace VRCTools.World.Player
+{
+  public static class PlayerType
+  {
     public const int NONE = 0;
     public const int LOCAL = 1;
     public const int REMOTE = 2;
     public const int ALL = 3;
 
-    public static bool HasFlag(int value, int mask) {
+    public static bool HasFlag(int value, int mask)
+    {
       if (mask == ALL) return value != 0;
 
       if (mask == NONE) return value == 0;

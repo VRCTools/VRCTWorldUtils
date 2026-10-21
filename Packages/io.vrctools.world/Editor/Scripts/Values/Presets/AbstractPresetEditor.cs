@@ -18,15 +18,18 @@ using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 
-namespace VRCTools.World.Editor.Values.Presets {
-  public abstract class AbstractPresetEditor : AbstractCustomUdonEditor {
+namespace VRCTools.World.Editor.Values.Presets
+{
+  public abstract class AbstractPresetEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
     private SerializedProperty _localTarget;
     private SerializedProperty _synchronizedTarget;
 
     private SerializedProperty _preset;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       // typically we use nameof to not cause too much trouble during refactors - this is an exception since all presets
       // share the same basic pattern which we cannot share purely due to limitations within the Udon# compiler
       this._target = this.serializedObject.FindProperty("target");
@@ -36,7 +39,8 @@ namespace VRCTools.World.Editor.Values.Presets {
       this._preset = this.serializedObject.FindProperty("preset");
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Target"), this._target, this._localTarget,
         this._synchronizedTarget, "Target reference is invalid or unspecified - Component will be disabled on startup");
       EditorGUILayout.Space(20);

@@ -21,27 +21,34 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Presets {
+namespace VRCTools.World.Values.Presets
+{
   /// <summary>
   ///   Stores a preset which may be applied to a given Vector3 value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Presets/Vector3 Preset")]
-  public class Vector3Preset : UdonSharpBehaviour {
+  public class Vector3Preset : UdonSharpBehaviour
+  {
     public ValueType type;
     public LocalVector3 localTarget;
     public SynchronizedVector3 synchronizedTarget;
 
     public Vector3 preset;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.type, this.localTarget, this.synchronizedTarget)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.type, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Value target is invalid - Disabled");
         this.enabled = false;
       }
     }
 
     [CustomEvent]
-    public void _Apply() { ValueUtility.SetValue(this.type, this.localTarget, this.synchronizedTarget, this.preset); }
+    public void _Apply()
+    {
+      ValueUtility.SetValue(this.type, this.localTarget, this.synchronizedTarget, this.preset);
+    }
   }
 }

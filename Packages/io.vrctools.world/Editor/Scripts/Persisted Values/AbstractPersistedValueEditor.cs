@@ -15,26 +15,31 @@
 using UnityEditor;
 using VRCTools.World.Editor.LocalValues;
 
-namespace VRCTools.World.Editor.PersistedValues {
-  public abstract class AbstractPersistedValueEditor : AbstractLocalValueEditor {
+namespace VRCTools.World.Editor.PersistedValues
+{
+  public abstract class AbstractPersistedValueEditor : AbstractLocalValueEditor
+  {
     protected virtual string _keyPropertyName => "key";
 
     private SerializedProperty _keyProperty;
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
 
       this._keyProperty = this.serializedObject.FindProperty(this._keyPropertyName);
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       this._RenderPersistenceProperties();
       EditorGUILayout.Space(20);
 
       base.RenderInspectorGUI();
     }
 
-    protected virtual void _RenderPersistenceProperties() {
+    protected virtual void _RenderPersistenceProperties()
+    {
       EditorGUILayout.LabelField("Persistence", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._keyProperty);
     }

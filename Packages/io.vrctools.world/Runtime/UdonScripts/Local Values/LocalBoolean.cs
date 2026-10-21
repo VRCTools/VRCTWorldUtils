@@ -18,13 +18,15 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.LocalValues {
+namespace VRCTools.World.LocalValues
+{
   /// <summary>
   ///   Encapsulates a local boolean value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Boolean")]
-  public class LocalBoolean : AbstractEventEmitter {
+  public class LocalBoolean : AbstractEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -46,9 +48,11 @@ namespace VRCTools.World.LocalValues {
     ///   When setting the value, event emission will only take place if the new value differs from the current
     ///   value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public virtual bool State {
+    public virtual bool State
+    {
       get => this._state;
-      set {
+      set
+      {
         if (this._state == value) return;
 
         this._state = value;
@@ -57,7 +61,8 @@ namespace VRCTools.World.LocalValues {
     }
 
     [MustCallBase]
-    protected virtual void Start() {
+    protected virtual void Start()
+    {
       this._state = this.defaultValue;
 
       this._EmitEvent(EVENT_STATE_UPDATED);
@@ -69,13 +74,14 @@ namespace VRCTools.World.LocalValues {
     /// </summary>
     [CustomEvent]
     [MustCallBase]
-    public virtual void _Reset() {
+    public virtual void _Reset()
+    {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
       if (this._state == this.defaultValue)
       {
         return;
       }
-      
+
       this.State = this.defaultValue;
       this._EmitEvent(EVENT_STATE_RESET);
     }
@@ -85,20 +91,29 @@ namespace VRCTools.World.LocalValues {
     ///   true).
     /// </summary>
     [CustomEvent]
-    public void _Toggle() { this.State = !this.State; }
+    public void _Toggle()
+    {
+      this.State = !this.State;
+    }
 
     /// <summary>
     ///   Sets the local value to true.
     ///   When the local value is already true, no event emission takes place.
     /// </summary>
     [CustomEvent]
-    public void _SetTrue() { this.State = true; }
+    public void _SetTrue()
+    {
+      this.State = true;
+    }
 
     /// <summary>
     ///   Sets the local value to false.
     ///   When the local value is already false, no event emission takes place.
     /// </summary>
     [CustomEvent]
-    public void _SetFalse() { this.State = false; }
+    public void _SetFalse()
+    {
+      this.State = false;
+    }
   }
 }

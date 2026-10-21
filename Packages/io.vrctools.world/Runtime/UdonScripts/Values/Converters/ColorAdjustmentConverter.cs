@@ -20,10 +20,12 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Converters {
+namespace VRCTools.World.Values.Converters
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Converters/Color Adjustment Converter")]
-  public class ColorAdjustmentConverter : UdonSharpBehaviour {
+  public class ColorAdjustmentConverter : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalColor localSource;
     public SynchronizedColor synchronizedSource;
@@ -32,21 +34,21 @@ namespace VRCTools.World.Values.Converters {
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
 
-    [Range(-1, 1)]
-    public float hueOffset;
-    [Range(-1, 1)]
-    public float saturationOffset;
-    [Range(-1, 1)]
-    public float valueOffset;
+    [Range(-1, 1)] public float hueOffset;
+    [Range(-1, 1)] public float saturationOffset;
+    [Range(-1, 1)] public float valueOffset;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localSource, this.synchronizedSource)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localSource, this.synchronizedSource))
+      {
         UdonDebug.Error(this, "Source is not valid - Disabled");
         this.enabled = false;
         return;
       }
 
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Target is not valid - Disabled");
         this.enabled = false;
         return;
@@ -59,7 +61,8 @@ namespace VRCTools.World.Values.Converters {
     }
 
     [CustomEvent]
-    public void _OnSourceUpdated() {
+    public void _OnSourceUpdated()
+    {
       var color = ValueUtility.GetValue(this.source, this.localSource, this.synchronizedSource);
 
       Color.RGBToHSV(color, out var h, out var s, out var v);

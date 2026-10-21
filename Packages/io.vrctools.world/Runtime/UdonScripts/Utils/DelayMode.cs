@@ -1,5 +1,7 @@
-﻿namespace VRCTools.World.Utils {
-  public enum DelayMode {
+﻿namespace VRCTools.World.Utils
+{
+  public enum DelayMode
+  {
     NONE,
     FRAMES,
     SECONDS

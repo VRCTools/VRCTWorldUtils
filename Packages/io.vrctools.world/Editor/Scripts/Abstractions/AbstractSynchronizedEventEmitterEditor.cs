@@ -18,26 +18,30 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Editor.Utils;
 
-namespace VRCTools.World.Editor.Abstractions {
+namespace VRCTools.World.Editor.Abstractions
+{
   /// <summary>
   ///   Provides a specialized extension to the custom Udon editor which handles the fields and functionality provide
   ///   within <see cref="AbstractSynchronizedEventEmitter" />.
   /// </summary>
-  public abstract class AbstractSynchronizedEventEmitterEditor : AbstractEventEmitterEditor {
+  public abstract class AbstractSynchronizedEventEmitterEditor : AbstractEventEmitterEditor
+  {
     private SerializedProperty _synchronizationBackoff;
     private SerializedProperty _synchronizationDebugging;
 
     [MustCallBase]
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
-      
+
       this._synchronizationBackoff
         = this.serializedObject.FindProperty(nameof(AbstractSynchronizedEventEmitter.synchronizationBackoff));
       this._synchronizationDebugging
         = this.serializedObject.FindProperty(nameof(AbstractSynchronizedEventEmitter.synchronizationDebugging));
     }
 
-    protected override void RenderInspectorHeader() {
+    protected override void RenderInspectorHeader()
+    {
       base.RenderInspectorHeader();
 
       var targetObject = this.serializedObject.targetObject;
@@ -45,10 +49,11 @@ namespace VRCTools.World.Editor.Abstractions {
         CustomEditorUtility.DrawManualSynchronizationWarning(component.gameObject);
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Networking", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._synchronizationBackoff, new GUIContent("Synchronization Backoff"));
-      
+
       base.RenderInspectorGUI();
     }
 

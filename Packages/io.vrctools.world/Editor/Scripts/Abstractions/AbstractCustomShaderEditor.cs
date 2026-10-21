@@ -2,8 +2,10 @@
 using UnityEngine.Rendering;
 using VRCTools.World.Editor.Utils;
 
-namespace VRCTools.World.Editor.Abstractions {
-  public abstract class AbstractCustomShaderEditor : ShaderGUI {
+namespace VRCTools.World.Editor.Abstractions
+{
+  public abstract class AbstractCustomShaderEditor : ShaderGUI
+  {
     /// <summary>
     ///   Defines a help text which will be shown at the very end of the inspector within a special foldout.
     /// </summary>
@@ -11,7 +13,8 @@ namespace VRCTools.World.Editor.Abstractions {
 
     private bool _helpFoldout;
 
-    public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties) {
+    public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
+    {
       materialEditor.SetDefaultGUIWidths();
 
       this.RenderInspectorGUI(materialEditor, properties);
@@ -20,7 +23,8 @@ namespace VRCTools.World.Editor.Abstractions {
 
     protected abstract void RenderInspectorGUI(MaterialEditor me, MaterialProperty[] properties);
 
-    protected virtual void RenderInspectorFooter(MaterialEditor me, MaterialProperty[] properties) {
+    protected virtual void RenderInspectorFooter(MaterialEditor me, MaterialProperty[] properties)
+    {
       EditorGUILayout.Space(20);
       EditorGUILayout.LabelField("Shader Settings", EditorStyles.boldLabel);
       this._RenderGenericProperties(me, properties);
@@ -29,7 +33,8 @@ namespace VRCTools.World.Editor.Abstractions {
       CustomEditorUtility.DrawSupporterLinks();
     }
 
-    protected virtual void _RenderGenericProperties(MaterialEditor me, MaterialProperty[] properties) {
+    protected virtual void _RenderGenericProperties(MaterialEditor me, MaterialProperty[] properties)
+    {
       if (SupportedRenderingFeatures.active.editableMaterialRenderQueue)
         me.RenderQueueField();
 
@@ -37,7 +42,8 @@ namespace VRCTools.World.Editor.Abstractions {
       me.DoubleSidedGIField();
     }
 
-    protected virtual void _RenderHelpText() {
+    protected virtual void _RenderHelpText()
+    {
       var helpText = this.HelpText;
       if (string.IsNullOrEmpty(helpText)) return;
 

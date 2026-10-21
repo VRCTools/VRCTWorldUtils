@@ -18,13 +18,15 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.LocalValues {
+namespace VRCTools.World.LocalValues
+{
   /// <summary>
   ///   Encapsulates a local float value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Float")]
-  public class LocalFloat : AbstractEventEmitter {
+  public class LocalFloat : AbstractEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -73,10 +75,14 @@ namespace VRCTools.World.LocalValues {
     ///   When setting the value, event emission will only take place if the new value differs from the current
     ///   value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public virtual float State {
+    public virtual float State
+    {
       get => this._state;
-      set {
-        var newValue = this.restrictValue ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) : value;
+      set
+      {
+        var newValue = this.restrictValue
+          ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue)
+          : value;
 
         if (Mathf.Abs(newValue - this._state) <
             (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon))
@@ -100,19 +106,22 @@ namespace VRCTools.World.LocalValues {
     }
 
     [MustCallBase]
-    protected virtual void Start() {
-      if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
+    protected virtual void Start()
+    {
+      if (this.restrictedMinimumValue > this.restrictedMaximumValue)
+      {
         Debug.LogError(
           $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored",
           this);
         this.restrictValue = false;
       }
-      
-      this._state = this.restrictValue ?
-        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) :
-        this.defaultValue;
 
-      if (this.minimalUpdateDifference < Mathf.Epsilon) {
+      this._state = this.restrictValue
+        ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
+        : this.defaultValue;
+
+      if (this.minimalUpdateDifference < Mathf.Epsilon)
+      {
         Debug.LogError(
           $"Minimum update difference of {this.minimalUpdateDifference} falls short of smallest permitted value of {Mathf.Epsilon} - Value will be clamped",
           this);
@@ -132,20 +141,23 @@ namespace VRCTools.World.LocalValues {
       var defaultValue = this.restrictValue
         ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
         : this.defaultValue;
-      
+
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
-      var currentlyDefault = Mathf.Abs(this._state - defaultValue) < 
+      var currentlyDefault = Mathf.Abs(this._state - defaultValue) <
                              (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
       if (currentlyDefault)
       {
         return;
       }
-      
+
       this.State = defaultValue;
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
     [CustomEvent]
-    public void _Zero() { this.State = 0; }
+    public void _Zero()
+    {
+      this.State = 0;
+    }
   }
 }

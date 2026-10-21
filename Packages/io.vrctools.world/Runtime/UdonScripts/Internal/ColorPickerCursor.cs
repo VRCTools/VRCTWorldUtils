@@ -21,7 +21,8 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.Event;
 
-namespace VRCTools.World.Internal {
+namespace VRCTools.World.Internal
+{
   /// <summary>
   ///   Implements a simple cursor for use within color picker components.
   ///   This script practically permits the placement of a 3D pickup on a 2D surface within the bounds of the color
@@ -33,7 +34,8 @@ namespace VRCTools.World.Internal {
   [RequireComponent(typeof(VRCPickup))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("")] // invisible as this component is internal
-  public class ColorPickerCursor : AbstractEventEmitter {
+  public class ColorPickerCursor : AbstractEventEmitter
+  {
     public const int EVENT_POSITION_UPDATED = 0;
     public const int EVENT_COUNT = 1;
 
@@ -63,8 +65,10 @@ namespace VRCTools.World.Internal {
 
     public override int EventCount => EVENT_COUNT;
 
-    public Vector2 Position {
-      get {
+    public Vector2 Position
+    {
+      get
+      {
         var pos = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
         pos /= this._maxPosition;
         pos += Vector2.one;
@@ -72,7 +76,8 @@ namespace VRCTools.World.Internal {
         pos.x = 1 - pos.x;
         return pos;
       }
-      set {
+      set
+      {
         var pos = new Vector2(Mathf.Clamp01(value.x), Mathf.Clamp01(value.y));
         pos.x = 1 - pos.x;
         pos *= 2;
@@ -86,8 +91,10 @@ namespace VRCTools.World.Internal {
       }
     }
 
-    protected void Start() {
-      if (!Utilities.IsValid(this.uiCursor)) {
+    protected void Start()
+    {
+      if (!Utilities.IsValid(this.uiCursor))
+      {
         UdonDebug.Error(this, "Invalid cursor reference - Disabled");
         this.enabled = false;
         return;
@@ -102,16 +109,21 @@ namespace VRCTools.World.Internal {
       this._maxPosition = new Vector2(bounds, bounds);
     }
 
-    protected void Update() {
+    protected void Update()
+    {
       if (!this._held) return;
 
       this._UpdateUI();
     }
 
     [MustCallBase]
-    public override void OnPickup() { this._held = true; }
+    public override void OnPickup()
+    {
+      this._held = true;
+    }
 
-    private void _UpdateUI() {
+    private void _UpdateUI()
+    {
       var localPos = this.transform.localPosition;
 
       var pos = new Vector2(localPos.x, localPos.y);
@@ -123,7 +135,8 @@ namespace VRCTools.World.Internal {
     }
 
     [MustCallBase]
-    public override void OnDrop() {
+    public override void OnDrop()
+    {
       this._held = false;
 
       var localPos = this.transform.localPosition;

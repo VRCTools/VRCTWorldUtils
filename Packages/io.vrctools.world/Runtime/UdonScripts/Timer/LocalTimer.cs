@@ -19,44 +19,45 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Timer {
+namespace VRCTools.World.Timer
+{
   /// <summary>
   /// Counts down to zero from a given or pre-defined start value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Timer/Local Timer")]
-  public class LocalTimer : AbstractEventEmitter {
-    
+  public class LocalTimer : AbstractEventEmitter
+  {
     /// <summary>
     /// Signifies that the timer has started counting down (resulting in a state transition to
     /// <see cref="TimerState.Running"/>).
     /// </summary>
     public const int EVENT_START = TimerEvents.STANDARD_EVENT_START;
-    
+
     /// <summary>
     /// Signifies that the timer has been paused and will not proceed until resumed (resulting in a state transition
     /// to <see cref="TimerState.Paused"/>).
     /// </summary>
     public const int EVENT_PAUSE = TimerEvents.STANDARD_EVENT_PAUSE;
-    
+
     /// <summary>
     /// Signifies that the timer has been resumed and will proceed counting down from its prior position (resulting in
     /// a state transition to <see cref="TimerState.Running"/>).
     /// </summary>
     public const int EVENT_RESUME = TimerEvents.STANDARD_EVENT_RESUME;
-    
+
     /// <summary>
     /// Signifies that a timer has finished (resulting in a state transition to either
     /// <see cref="TimerState.Running"/> or <see cref="TimerState.Stopped"/> depending on whether this timer
     /// is recurring or not).
     /// </summary>
     public const int EVENT_FINISH = TimerEvents.STANDARD_EVENT_FINISH;
-    
+
     /// <summary>
     /// Signifies that the timer has stopped (resulting in a state transition to <see cref="TimerState.Stopped"/>).
     /// </summary>
     public const int EVENT_STOP = TimerEvents.STANDARD_EVENT_STOPPED;
-    
+
     /// <summary>
     /// Signifies that the timer has been reset.
     ///
@@ -71,18 +72,17 @@ namespace VRCTools.World.Timer {
     /// Defines whether the timer will automatically start when the component becomes active for the first time.
     /// </summary>
     public bool activateOnStart;
-    
+
     /// <summary>
     /// Defines whether the timer shall automatically reset back to zero and count down again when it reaches its
     /// end.
     /// </summary>
     public bool recurring;
-    
+
     /// <summary>
     /// Defines the duration with which this timer will be initialized if none is explicitly given.
     /// </summary>
-    [Min(float.Epsilon)]
-    public float defaultDuration = 10;
+    [Min(float.Epsilon)] public float defaultDuration = 10;
 
     /// <summary>
     /// Selects a value objects to which the remaining duration is written.
@@ -96,7 +96,7 @@ namespace VRCTools.World.Timer {
     /// Identifies the current state the timer is in.
     /// </summary>
     public TimerState State { get; private set; }
-    
+
     /// <summary>
     /// Identifies the time remaining within the timer (in seconds).
     /// </summary>
@@ -134,7 +134,8 @@ namespace VRCTools.World.Timer {
     private float _remainingTime = 0f;
     private float _latestDuration;
 
-    private void Start() {
+    private void Start()
+    {
       if (!this.activateOnStart)
       {
         // since this timer is not immediately activated on start, the target value needs to be populated with the
@@ -143,14 +144,15 @@ namespace VRCTools.World.Timer {
         {
           this.targetValue.State = 0f;
         }
-        
+
         return;
       }
-      
+
       this._Start();
     }
 
-    private void Update() {
+    private void Update()
+    {
       if (!this.IsRunning) return;
 
       this.RemainingTime -= Time.deltaTime;
@@ -158,7 +160,7 @@ namespace VRCTools.World.Timer {
       {
         return;
       }
-      
+
       if (this.recurring)
       {
         // when this timer is set to be recurring, we'll simply reset the internal time field back to the last
@@ -172,7 +174,7 @@ namespace VRCTools.World.Timer {
         this.State = TimerState.Stopped;
         this.RemainingTime = 0f;
       }
-        
+
       // either way listeners will need to be notified that a cycle has finished - it is up to listeners to check the
       // recurring option if this matters to their respective logic
       this._EmitEvent(EVENT_FINISH);
@@ -184,12 +186,14 @@ namespace VRCTools.World.Timer {
     /// When a timer is already active, it will be reset and the associated events will be invoked.
     /// </summary>
     /// <param name="duration">a timer duration</param>
-    public void _Start(float duration) {
-      if (duration <= 0) {
+    public void _Start(float duration)
+    {
+      if (duration <= 0)
+      {
         Debug.LogWarning("[Local Timer] Zero or negative timer duration given - Ignored", this);
         return;
       }
-      
+
       var previousState = this.State;
 
       // as part of the starting process, we also make sure to note the latest selected duration as this is relevant
@@ -230,7 +234,10 @@ namespace VRCTools.World.Timer {
     /// When a timer is already active, it will be reset and the associated events will be invoked.
     /// </summary>
     [CustomEvent]
-    public void _Start() { this._Start(this.defaultDuration); }
+    public void _Start()
+    {
+      this._Start(this.defaultDuration);
+    }
 
     /// <summary>
     /// Pauses a currently running timer temporarily (leaving its remaining time untouched).
@@ -239,8 +246,10 @@ namespace VRCTools.World.Timer {
     /// are expected to check before invoking these methods.
     /// </summary>
     [CustomEvent]
-    public void _Pause() {
-      if (!this.IsRunning) {
+    public void _Pause()
+    {
+      if (!this.IsRunning)
+      {
         Debug.LogWarning("[Local Timer] Attempted to pause stopped or already paused timer - Ignored", this);
         return;
       }
@@ -256,8 +265,10 @@ namespace VRCTools.World.Timer {
     /// expected to check before invoking these methods.
     /// </summary>
     [CustomEvent]
-    public void _Resume() {
-      if (!this.IsPaused) {
+    public void _Resume()
+    {
+      if (!this.IsPaused)
+      {
         Debug.LogWarning("[Local Timer] Attempted to resume active or stopped timer - Ignored", this);
         return;
       }
@@ -274,8 +285,10 @@ namespace VRCTools.World.Timer {
     /// reset back to <see cref="defaultDuration"/> or the given duration depending on the chosen overload.
     /// </summary>
     [CustomEvent]
-    public void _Stop() {
-      if (this.IsStopped) {
+    public void _Stop()
+    {
+      if (this.IsStopped)
+      {
         Debug.LogWarning("[Local Timer] Attempted to stop already stopped timer - Ignored", this);
         return;
       }
@@ -296,13 +309,14 @@ namespace VRCTools.World.Timer {
     /// If invoked on a stopped timer, this method basically acts as a noop. No events will be emitted.
     /// </summary>
     [CustomEvent]
-    public void _Reset() {
+    public void _Reset()
+    {
       // if the timer is stopped, there is nothing to do here - the state will remain as is and nothing is modified
       if (this.State == TimerState.Stopped)
       {
         return;
       }
-      
+
       // we reset the timer back to its initial duration regardless of the current state meaning:
       //
       //  - if the timer is currently running, it will keep running but reset back to the start again
@@ -311,7 +325,7 @@ namespace VRCTools.World.Timer {
       // meaning that callers need to explicitly decide whether they wish to resume a timer when invoking this
       // method
       this.RemainingTime = this._latestDuration;
-      
+
       // regardless of which change we perform, we want to emit a RESET event to notify listeners that something out of
       // the ordinary has just happened, and they'll need to verify their internal copy of our state
       this._EmitEvent(EVENT_RESET);

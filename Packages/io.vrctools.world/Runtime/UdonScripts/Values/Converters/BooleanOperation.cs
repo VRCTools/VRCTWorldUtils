@@ -1,5 +1,7 @@
-﻿namespace VRCTools.World.Values.Converters {
-  public enum BooleanOperation {
+﻿namespace VRCTools.World.Values.Converters
+{
+  public enum BooleanOperation
+  {
     NOT = 0,
     AND = 1,
     OR = 2,

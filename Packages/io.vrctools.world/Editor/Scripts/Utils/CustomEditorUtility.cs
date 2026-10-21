@@ -23,12 +23,13 @@ using VRC.Udon;
 using Assembly = System.Reflection.Assembly;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
-namespace VRCTools.World.Editor.Utils {
+namespace VRCTools.World.Editor.Utils
+{
   /// <summary>
   ///   Provides various simple functions for use within custom editor implementations.
   /// </summary>
-  internal static class CustomEditorUtility {
-    
+  internal static class CustomEditorUtility
+  {
     /// <summary>
     ///   Retrieves the package metadata for the calling assembly (if possible).
     /// </summary>
@@ -36,7 +37,7 @@ namespace VRCTools.World.Editor.Utils {
 
     private static readonly string LogoPath = $"{LocalPackageInfo.assetPath}/Editor/Textures/logo.png";
     private static readonly string LightLogoPath = $"{LocalPackageInfo.assetPath}/Editor/Textures/logo-light.png";
-    
+
     private static Texture2D _logo;
 
     private static Texture2D Logo
@@ -47,40 +48,48 @@ namespace VRCTools.World.Editor.Utils {
         {
           return _logo;
         }
-        
+
         _logo = AssetDatabase.LoadAssetAtPath<Texture2D>(EditorGUIUtility.isProSkin ? LogoPath : LightLogoPath);
         return _logo;
       }
     }
 
-    internal static string PackageName {
-      get {
+    internal static string PackageName
+    {
+      get
+      {
         var package = LocalPackageInfo;
         return package == null ? "Unknown" : package.displayName;
       }
     }
 
-    internal static string PackageVersion {
-      get {
+    internal static string PackageVersion
+    {
+      get
+      {
         var package = LocalPackageInfo;
         return package == null ? "dev" : package.version;
       }
     }
 
-    internal static void ValidateIntBounds(SerializedProperty lowerBound, SerializedProperty upperBound) {
+    internal static void ValidateIntBounds(SerializedProperty lowerBound, SerializedProperty upperBound)
+    {
       if (lowerBound.intValue > upperBound.intValue) upperBound.intValue = lowerBound.intValue;
     }
 
-    internal static void ValidateFloatBounds(SerializedProperty lowerBound, SerializedProperty upperBound) {
+    internal static void ValidateFloatBounds(SerializedProperty lowerBound, SerializedProperty upperBound)
+    {
       if (lowerBound.floatValue > upperBound.floatValue) upperBound.floatValue = lowerBound.floatValue;
     }
 
-    internal static void DrawLine(Color color) {
+    internal static void DrawLine(Color color)
+    {
       var rect = EditorGUILayout.GetControlRect();
       EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, 1), color);
     }
 
-    internal static void DrawPropertiesSideBySide(GUIContent label, params SerializedProperty[] properties) {
+    internal static void DrawPropertiesSideBySide(GUIContent label, params SerializedProperty[] properties)
+    {
       EditorGUILayout.BeginHorizontal();
       EditorGUILayout.PrefixLabel(label);
       foreach (var property in properties) EditorGUILayout.PropertyField(property, GUIContent.none);
@@ -95,7 +104,8 @@ namespace VRCTools.World.Editor.Utils {
     ///   synchronization with others.
     /// </summary>
     /// <param name="gameObject"></param>
-    internal static void DrawManualSynchronizationWarning(GameObject gameObject) {
+    internal static void DrawManualSynchronizationWarning(GameObject gameObject)
+    {
       var behaviours = gameObject.GetComponents<Component>();
       if (behaviours.Length <= 1) return;
 
@@ -108,14 +118,20 @@ namespace VRCTools.World.Editor.Utils {
       }
 
       var mismatch = false;
-      foreach (var behaviour in behaviours) {
+      foreach (var behaviour in behaviours)
+      {
         Networking.SyncType syncMethod;
-        if (behaviour is UdonBehaviour udonBehaviour) {
+        if (behaviour is UdonBehaviour udonBehaviour)
+        {
           syncMethod = udonBehaviour.SyncMethod;
-        } else if (behaviour is UdonSharpBehaviour udonSharpBehaviour) {
+        }
+        else if (behaviour is UdonSharpBehaviour udonSharpBehaviour)
+        {
           var backingBehaviour = UdonSharpEditorUtility.GetBackingUdonBehaviour(udonSharpBehaviour);
           syncMethod = backingBehaviour.SyncMethod;
-        } else {
+        }
+        else
+        {
           // catch-all for SDK network objects
           syncMethod = Networking.SyncType.Continuous;
         }
@@ -131,7 +147,8 @@ namespace VRCTools.World.Editor.Utils {
         MessageType.Error);
     }
 
-    public static void DrawSupporterLinks() {
+    public static void DrawSupporterLinks()
+    {
       GUILayout.Space(20);
       DrawLine(Color.gray);
 
@@ -139,16 +156,16 @@ namespace VRCTools.World.Editor.Utils {
       {
         var iconRect = GUILayoutUtility.GetRect(20f, 20f, GUILayout.ExpandWidth(false));
         GUI.DrawTexture(iconRect, Logo, ScaleMode.ScaleToFit);
-        
+
         EditorGUIUtility.AddCursorRect(iconRect, MouseCursor.Link);
         if (UnityEngine.Event.current.type == EventType.MouseUp &&
             iconRect.Contains(UnityEngine.Event.current.mousePosition))
         {
           Application.OpenURL("https://vrctools.io");
         }
-        
+
         GUILayout.Label($"{PackageName} v{PackageVersion}");
-        
+
         if (EditorGUILayout.LinkButton("Documentation")) Application.OpenURL("https://vrctools.io/docs/world-utils/");
 
         if (EditorGUILayout.LinkButton("Discord")) Application.OpenURL("https://discord.gg/FGrt9wv5CF");

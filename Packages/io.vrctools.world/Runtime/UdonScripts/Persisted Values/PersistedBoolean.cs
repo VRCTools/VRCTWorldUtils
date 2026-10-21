@@ -21,10 +21,12 @@ using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.PersistedValues {
+namespace VRCTools.World.PersistedValues
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Persisted Values/Persisted Boolean")]
-  public class PersistedBoolean : LocalBoolean {
+  public class PersistedBoolean : LocalBoolean
+  {
     public new const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public new const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_LOADED = ValueEvents.PERSISTED_LOADED;
@@ -43,10 +45,13 @@ namespace VRCTools.World.PersistedValues {
     ///   When setting the value, event emission will only take place if the new value differs from the current
     ///   value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public override bool State {
+    public override bool State
+    {
       get => this._state;
-      set {
-        if (!this.Loaded) {
+      set
+      {
+        if (!this.Loaded)
+        {
           UdonDebug.Warn(this,
             "Attempted to update value prior to OnPlayerRestored event being invoked - State change has been ignored");
           return;
@@ -67,8 +72,10 @@ namespace VRCTools.World.PersistedValues {
 
     [CustomEvent]
     [MustCallBase]
-    public override void _Reset() {
-      if (!this.Loaded) {
+    public override void _Reset()
+    {
+      if (!this.Loaded)
+      {
         UdonDebug.Warn(this, "Attempted to reset value prior to OnPlayerRestored event being invoked");
         return;
       }
@@ -80,13 +87,16 @@ namespace VRCTools.World.PersistedValues {
     ///   Persists the current value to the local player store.
     /// </summary>
     [CustomEvent]
-    public void _Persist() {
-      if (!this.Loaded) {
+    public void _Persist()
+    {
+      if (!this.Loaded)
+      {
         UdonDebug.Warn(this, "Attempted to persist value prior to OnPlayerRestored event being invoked");
         return;
       }
 
-      if (string.IsNullOrEmpty(this.key)) {
+      if (string.IsNullOrEmpty(this.key))
+      {
         UdonDebug.Error(this, "Attempted to persist value without key");
         return;
       }
@@ -95,14 +105,18 @@ namespace VRCTools.World.PersistedValues {
       PlayerData.SetBool(this.key, this.State);
       this._EmitEvent(EVENT_PERSIST);
     }
-    
+
     [MustCallBase]
-    public override void OnPlayerRestored(VRCPlayerApi player) {
-      if (!player.isLocal) {
+    public override void OnPlayerRestored(VRCPlayerApi player)
+    {
+      if (!player.isLocal)
+      {
         return;
       }
 
-      this._state = PlayerData.TryGetBool(Networking.LocalPlayer, this.key, out var stored) ? stored : this.defaultValue;
+      this._state = PlayerData.TryGetBool(Networking.LocalPlayer, this.key, out var stored)
+        ? stored
+        : this.defaultValue;
 
       UdonDebug.Info(this, $"Restored boolean value for key {this.key}");
       this.Loaded = true;

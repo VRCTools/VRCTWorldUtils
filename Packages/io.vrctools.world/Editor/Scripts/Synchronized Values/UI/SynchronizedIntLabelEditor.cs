@@ -19,9 +19,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.SynchronizedValues.UI;
 
-namespace VRCTools.World.Editor.SynchronizedValues.UI {
+namespace VRCTools.World.Editor.SynchronizedValues.UI
+{
   [CustomEditor(typeof(SynchronizedIntLabel))]
-  public class SynchronizedIntLabelEditor : AbstractCustomUdonEditor {
+  public class SynchronizedIntLabelEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _enableMapping;
     private SerializedProperty _mappingLowerBound;
     private SerializedProperty _mappingUpperBound;
@@ -32,7 +34,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
       "Displays the value of a synchronized int.\n\n" +
       "This script is meant to be used together with a SynchronizedInt component.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._synchronizedValue = this.serializedObject.FindProperty(nameof(SynchronizedIntLabel.synchronizedValue));
 
       this._enableMapping = this.serializedObject.FindProperty(nameof(SynchronizedIntLabel.enableMapping));
@@ -41,7 +44,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
       this._multiplier = this.serializedObject.FindProperty(nameof(SynchronizedIntLabel.multiplier));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._synchronizedValue);
       var synchronizedValue = (SynchronizedInt)this._synchronizedValue.objectReferenceValue;
       if (synchronizedValue == null)

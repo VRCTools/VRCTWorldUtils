@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalBoolean;
 
   [CustomEditor(typeof(Value))]
-  public class LocalBooleanEditor : AbstractLocalValueEditor {
+  public class LocalBooleanEditor : AbstractLocalValueEditor
+  {
     protected override string HelpText =>
       "Provides a local boolean value with event capabilities.\n\n" +
       "You may use this component to create objects, animations or material properties which may be toggled on/off" +

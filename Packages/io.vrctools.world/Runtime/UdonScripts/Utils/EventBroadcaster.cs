@@ -20,41 +20,47 @@ using VRC.Udon.Common.Enums;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 
-namespace VRCTools.World.Utils {
+namespace VRCTools.World.Utils
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Utilities/Event Broadcaster")]
-  public class EventBroadcaster : UdonSharpBehaviour {
+  public class EventBroadcaster : UdonSharpBehaviour
+  {
     public UdonSharpBehaviour[] behaviours;
     public string[] eventNames;
 
     public DelayMode delayMode;
     public EventTiming delayTiming = EventTiming.Update;
-    [Min(0)]
-    public int delayFrames;
-    [Min(0)]
-    public float delaySeconds;
+    [Min(0)] public int delayFrames;
+    [Min(0)] public float delaySeconds;
 
-    private void Start() {
+    private void Start()
+    {
       this.behaviours = MappingUtility.CheckCoherentMapping(this.behaviours, this.eventNames, this);
     }
 
     [CustomEvent]
-    public void _Trigger() {
-      for (var i = 0; i < this.behaviours.Length; ++i) {
+    public void _Trigger()
+    {
+      for (var i = 0; i < this.behaviours.Length; ++i)
+      {
         var behaviour = this.behaviours[i];
         var eventName = this.eventNames[i];
 
-        if (!Utilities.IsValid(behaviour)) {
+        if (!Utilities.IsValid(behaviour))
+        {
           UdonDebug.Error(this, $"Behaviour at index #{i} is invalid - Skipped");
           continue;
         }
 
-        if (string.IsNullOrEmpty(eventName)) {
+        if (string.IsNullOrEmpty(eventName))
+        {
           UdonDebug.Error(this, $"Event name for behaviour at index #{i} has not been set - Skipped");
           continue;
         }
 
-        switch (this.delayMode) {
+        switch (this.delayMode)
+        {
           case DelayMode.NONE:
             behaviour.SendCustomEvent(eventName);
             break;

@@ -19,17 +19,21 @@ using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 
-namespace VRCTools.World.LocalValues.Applicators {
+namespace VRCTools.World.LocalValues.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(RawImage))]
   [AddComponentMenu("Local Values/Applicators/Local Raw Image Texture2D Applicator")]
-  public class LocalRawImageTexture2DApplicator : UdonSharpBehaviour {
+  public class LocalRawImageTexture2DApplicator : UdonSharpBehaviour
+  {
     public LocalTexture2D localValue;
 
     private RawImage _image;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.localValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.localValue))
+      {
         UdonDebug.Error(this, "Invalid local value reference - Disabled");
         this.enabled = false;
         return;
@@ -42,6 +46,9 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() { this._image.texture = this.localValue.State; }
+    public void _OnStateUpdated()
+    {
+      this._image.texture = this.localValue.State;
+    }
   }
 }

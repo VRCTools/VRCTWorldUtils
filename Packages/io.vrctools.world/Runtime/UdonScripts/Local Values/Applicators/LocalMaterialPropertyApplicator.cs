@@ -21,15 +21,16 @@ using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 using VRCTools.World.Values.Applicators;
 
-namespace VRCTools.World.LocalValues.Applicators {
+namespace VRCTools.World.LocalValues.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Applicators/Local Material Property Applicator")]
-  public class LocalMaterialPropertyApplicator : UdonSharpBehaviour {
+  public class LocalMaterialPropertyApplicator : UdonSharpBehaviour
+  {
     public MaterialPropertyTarget target;
     public Renderer targetRenderer;
 
-    [FormerlySerializedAs("material")]
-    public Material targetMaterial;
+    [FormerlySerializedAs("material")] public Material targetMaterial;
 
     public LocalBoolean[] localBooleans;
     public string[] localBooleanParameters;
@@ -58,8 +59,10 @@ namespace VRCTools.World.LocalValues.Applicators {
 
     private MaterialPropertyBlock _materialPropertyBlock;
 
-    private void Start() {
-      if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
+    private void Start()
+    {
+      if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer))
+      {
         UdonDebug.Error(this, "Renderer is invalid - Disabled");
         this.enabled = false;
         return;
@@ -89,37 +92,43 @@ namespace VRCTools.World.LocalValues.Applicators {
 
       // we handle each value separately to minimize unnecessary updates to materials which could potentially cause
       // some congestion for more frequently  local values
-      foreach (var value in this.localBooleans) {
+      foreach (var value in this.localBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnBooleanStateUpdated));
       }
 
-      foreach (var value in this.localColors) {
+      foreach (var value in this.localColors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalColor.EVENT_STATE_UPDATED, this, nameof(this._OnColorStateUpdated));
       }
 
-      foreach (var value in this.localFloats) {
+      foreach (var value in this.localFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalFloat.EVENT_STATE_UPDATED, this, nameof(this._OnFloatStateUpdated));
       }
 
-      foreach (var value in this.localInts) {
+      foreach (var value in this.localInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalInt.EVENT_STATE_UPDATED, this, nameof(this._OnIntStateUpdated));
       }
 
-      foreach (var value in this.localTextures) {
+      foreach (var value in this.localTextures)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalTexture2D.EVENT_STATE_UPDATED, this, nameof(this._OnTextureStateUpdated));
       }
 
-      foreach (var value in this.localVectors) {
+      foreach (var value in this.localVectors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(LocalVector3.EVENT_STATE_UPDATED, this, nameof(this._OnVectorStateUpdated));
@@ -128,38 +137,45 @@ namespace VRCTools.World.LocalValues.Applicators {
       this.SendCustomEventDelayedFrames(nameof(this._RefreshAllParameters), 1);
     }
 
-    private void OnDestroy() {
-      foreach (var value in this.localBooleans) {
+    private void OnDestroy()
+    {
+      foreach (var value in this.localBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localColors) {
+      foreach (var value in this.localColors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localFloats) {
+      foreach (var value in this.localFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localInts) {
+      foreach (var value in this.localInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localTextures) {
+      foreach (var value in this.localTextures)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.localVectors) {
+      foreach (var value in this.localVectors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
@@ -167,7 +183,8 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _RefreshAllParameters() {
+    public void _RefreshAllParameters()
+    {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedColorState(true);
       this._ApplyUpdatedFloatState(true);
@@ -176,7 +193,8 @@ namespace VRCTools.World.LocalValues.Applicators {
       this._ApplyUpdatedVectorState(true);
     }
 
-    private void _EnsureMaterialBlock() {
+    private void _EnsureMaterialBlock()
+    {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
       if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
@@ -191,7 +209,8 @@ namespace VRCTools.World.LocalValues.Applicators {
       this.targetRenderer.GetPropertyBlock(this._materialPropertyBlock);
     }
 
-    private void _ApplyMaterialBlock() {
+    private void _ApplyMaterialBlock()
+    {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
       if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
@@ -200,12 +219,17 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
+    public void _OnBooleanStateUpdated()
+    {
+      this._ApplyUpdatedBooleanState(false);
+    }
 
-    private void _ApplyUpdatedBooleanState(bool force) {
+    private void _ApplyUpdatedBooleanState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.localBooleans.Length; i++) {
+      for (var i = 0; i < this.localBooleans.Length; i++)
+      {
         var value = this.localBooleans[i];
         var parameterId = this._localBooleanParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -218,12 +242,17 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnColorStateUpdated() { this._ApplyUpdatedColorState(false); }
+    public void _OnColorStateUpdated()
+    {
+      this._ApplyUpdatedColorState(false);
+    }
 
-    private void _ApplyUpdatedColorState(bool force) {
+    private void _ApplyUpdatedColorState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.localColors.Length; ++i) {
+      for (var i = 0; i < this.localColors.Length; ++i)
+      {
         var value = this.localColors[i];
         var parameterId = this._localColorParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -236,12 +265,17 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
+    public void _OnFloatStateUpdated()
+    {
+      this._ApplyUpdatedFloatState(false);
+    }
 
-    private void _ApplyUpdatedFloatState(bool force) {
+    private void _ApplyUpdatedFloatState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.localFloats.Length; ++i) {
+      for (var i = 0; i < this.localFloats.Length; ++i)
+      {
         var value = this.localFloats[i];
         var parameterId = this._localFloatParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -254,12 +288,17 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
+    public void _OnIntStateUpdated()
+    {
+      this._ApplyUpdatedIntState(false);
+    }
 
-    private void _ApplyUpdatedIntState(bool force) {
+    private void _ApplyUpdatedIntState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.localInts.Length; ++i) {
+      for (var i = 0; i < this.localInts.Length; ++i)
+      {
         var value = this.localInts[i];
         var parameterId = this._localIntParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -272,12 +311,17 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnTextureStateUpdated() { this._ApplyUpdatedTextureState(false); }
+    public void _OnTextureStateUpdated()
+    {
+      this._ApplyUpdatedTextureState(false);
+    }
 
-    private void _ApplyUpdatedTextureState(bool force) {
+    private void _ApplyUpdatedTextureState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.localTextures.Length; ++i) {
+      for (var i = 0; i < this.localTextures.Length; ++i)
+      {
         var value = this.localTextures[i];
         var parameterId = this._localTextureParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -290,12 +334,17 @@ namespace VRCTools.World.LocalValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnVectorStateUpdated() { this._ApplyUpdatedVectorState(false); }
+    public void _OnVectorStateUpdated()
+    {
+      this._ApplyUpdatedVectorState(false);
+    }
 
-    private void _ApplyUpdatedVectorState(bool force) {
+    private void _ApplyUpdatedVectorState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.localVectors.Length; ++i) {
+      for (var i = 0; i < this.localVectors.Length; ++i)
+      {
         var value = this.localVectors[i];
         var parameterId = this._localVectorParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;

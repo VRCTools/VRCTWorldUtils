@@ -18,9 +18,11 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values.UI;
 
-namespace VRCTools.World.Editor.Values.UI {
+namespace VRCTools.World.Editor.Values.UI
+{
   [CustomEditor(typeof(ValueInputField))]
-  public class ValueInputFieldEditor : AbstractCustomUdonEditor {
+  public class ValueInputFieldEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _localValue;
     private SerializedProperty _source;
     private SerializedProperty _synchronizedValue;
@@ -29,13 +31,15 @@ namespace VRCTools.World.Editor.Values.UI {
       "Permits the control of a local string value via an InputField.\n\n" +
       "This script is expected to be combined with a LocalString component and will match its current state.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._source = this.serializedObject.FindProperty(nameof(ValueInputField.source));
       this._localValue = this.serializedObject.FindProperty(nameof(ValueInputField.localValue));
       this._synchronizedValue = this.serializedObject.FindProperty(nameof(ValueInputField.synchronizedValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Source/Target"), this._source, this._localValue,
         this._synchronizedValue,
         "Invalid or unspecified local value reference.\n\n" +

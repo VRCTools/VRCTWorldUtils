@@ -18,9 +18,11 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values.UI;
 
-namespace VRCTools.World.Editor.Values.UI {
+namespace VRCTools.World.Editor.Values.UI
+{
   [CustomEditor(typeof(ValueUrlLabel))]
-  public class ValueUrlLabelEditor : AbstractCustomUdonEditor {
+  public class ValueUrlLabelEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _source;
     private SerializedProperty _localValue;
     private SerializedProperty _synchronizedValue;
@@ -29,13 +31,15 @@ namespace VRCTools.World.Editor.Values.UI {
       "Displays the current value of a local url using a given string template.\n\n" +
       "This script is expected to be combined with a LocalUrl component and will match its current state.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._source = this.serializedObject.FindProperty(nameof(ValueUrlLabel.source));
       this._localValue = this.serializedObject.FindProperty(nameof(ValueUrlLabel.localValue));
       this._synchronizedValue = this.serializedObject.FindProperty(nameof(ValueUrlLabel.synchronizedValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Source"), this._source, this._localValue,
         this._synchronizedValue, "Invalid or unspecified local value reference.\n\n" +
                                  "This component will disable itself upon startup.");

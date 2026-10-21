@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.PersistedValues;
 
-namespace VRCTools.World.Editor.PersistedValues {
+namespace VRCTools.World.Editor.PersistedValues
+{
   using Value = PersistedVector3;
 
   [CustomEditor(typeof(Value))]
-  public class PersistedVector3Editor : AbstractPersistedValueEditor {
+  public class PersistedVector3Editor : AbstractPersistedValueEditor
+  {
     protected override string HelpText =>
       "Provides a persisted 3D vector value with event capabilities.\n\n" +
       "You may use this component to create objects, animations or material properties which may be toggled " +

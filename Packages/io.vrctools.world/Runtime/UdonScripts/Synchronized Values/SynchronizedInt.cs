@@ -20,13 +20,15 @@ using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.SynchronizedValues {
+namespace VRCTools.World.SynchronizedValues
+{
   /// <summary>
   ///   Encapsulates a synchronized int value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized Int")]
-  public class SynchronizedInt : AbstractSynchronizedEventEmitter {
+  public class SynchronizedInt : AbstractSynchronizedEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -59,14 +61,12 @@ namespace VRCTools.World.SynchronizedValues {
     /// <summary>
     ///   Stores the actual synchronized state.
     /// </summary>
-    [UdonSynced]
-    private int state;
+    [UdonSynced] private int state;
 
     /// <summary>
     ///   Stores a counter which tracks the number of resets performed on this value.
     /// </summary>
-    [UdonSynced]
-    private int resetCounter;
+    [UdonSynced] private int resetCounter;
 
     public override int EventCount => EVENT_COUNT;
 
@@ -77,7 +77,8 @@ namespace VRCTools.World.SynchronizedValues {
     ///   When setting the value, synchronization and event emission will only take place if the new value differs from
     ///   the current value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public int State {
+    public int State
+    {
       get => this.state;
       set
       {
@@ -86,10 +87,10 @@ namespace VRCTools.World.SynchronizedValues {
           UdonDebug.Warn(this, "Attempted state update prior to initialization - Ignored");
           return;
         }
-        
-        var newValue = this.restrictValue ? 
-          Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) :
-          value;
+
+        var newValue = this.restrictValue
+          ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue)
+          : value;
 
         if (this.state == newValue) return;
 
@@ -101,16 +102,18 @@ namespace VRCTools.World.SynchronizedValues {
     }
 
     [MustCallBase]
-    protected override void Start() {
-      if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
+    protected override void Start()
+    {
+      if (this.restrictedMinimumValue > this.restrictedMaximumValue)
+      {
         UdonDebug.Error(this,
           $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored");
         this.restrictValue = false;
       }
-      
-      this.state = this._previousState = (this.restrictValue ?
-        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) :
-        this.defaultValue);
+
+      this.state = this._previousState = (this.restrictValue
+        ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
+        : this.defaultValue);
 
       base.Start();
     }
@@ -132,44 +135,54 @@ namespace VRCTools.World.SynchronizedValues {
         UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
-      
-      var defaultValue = this.restrictValue ? 
-        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) : 
-        this.defaultValue;
-      
+
+      var defaultValue = this.restrictValue
+        ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
+        : this.defaultValue;
+
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
       if (this.state == defaultValue)
       {
         return;
       }
-      
+
       this._EnsureOwnership();
-      
+
       this._previousResetCounterValue = ++this.resetCounter;
       this.State = defaultValue;
-      
+
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
     [CustomEvent]
-    public void _Zero() { this.State = 0; }
+    public void _Zero()
+    {
+      this.State = 0;
+    }
 
     [CustomEvent]
-    public void _Increment() { this.State++; }
+    public void _Increment()
+    {
+      this.State++;
+    }
 
     [CustomEvent]
-    public void _Decrement() { this.State--; }
+    public void _Decrement()
+    {
+      this.State--;
+    }
 
     [MustCallBase]
-    public override void OnDeserialization() {
+    public override void OnDeserialization()
+    {
       var updated = this._previousState != this.state && this.IsStateInitialized;
       this._previousState = this.state;
 
       if (updated) this._EmitEvent(EVENT_STATE_UPDATED);
-      
+
       var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
-      
+
       if (reset) this._EmitEvent(EVENT_STATE_RESET);
 
       // base has to be invoked last here as it also takes care of flagging the object as initialized thus requiring

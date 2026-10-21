@@ -19,7 +19,8 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Player {
+namespace VRCTools.World.Player
+{
   /// <summary>
   ///   Provides a generic trigger volume capable of invoking another script when a player enters (or leaves) a given
   ///   volume.
@@ -27,7 +28,8 @@ namespace VRCTools.World.Player {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(Collider))]
   [AddComponentMenu("Player/Trigger Volume")]
-  public class PlayerTriggerVolume : AbstractEventEmitter {
+  public class PlayerTriggerVolume : AbstractEventEmitter
+  {
     public const int EVENT_PLAYER_ENTER = 0;
     public const int EVENT_PLAYER_EXIT = 1;
     public const int EVENT_COUNT = 2;
@@ -38,8 +40,7 @@ namespace VRCTools.World.Player {
     public UdonSharpBehaviour[] exitBehaviours;
     public string[] exitBehaviorEventNames;
 
-    [PlayerType]
-    public int acceptedPlayerTypes = PlayerType.ALL;
+    [PlayerType] public int acceptedPlayerTypes = PlayerType.ALL;
 
     public override int EventCount => EVENT_COUNT;
 
@@ -48,20 +49,23 @@ namespace VRCTools.World.Player {
     /// </summary>
     public VRCPlayerApi LastPlayer { get; private set; }
 
-    private void Start() {
+    private void Start()
+    {
       this.enterBehaviours
         = MappingUtility.CheckCoherentMapping(this.enterBehaviours, this.enterBehaviorEventNames, this);
       this.exitBehaviours = MappingUtility.CheckCoherentMapping(this.exitBehaviours, this.exitBehaviorEventNames, this);
     }
 
     [MustCallBase]
-    public override void OnPlayerTriggerEnter(VRCPlayerApi player) {
+    public override void OnPlayerTriggerEnter(VRCPlayerApi player)
+    {
       var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
       if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
 
       this.LastPlayer = player;
 
-      for (var i = 0; i < this.enterBehaviours.Length; i++) {
+      for (var i = 0; i < this.enterBehaviours.Length; i++)
+      {
         var behaviour = this.enterBehaviours[i];
         var eventName = this.enterBehaviorEventNames[i];
         if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) continue;
@@ -73,13 +77,15 @@ namespace VRCTools.World.Player {
     }
 
     [MustCallBase]
-    public override void OnPlayerTriggerExit(VRCPlayerApi player) {
+    public override void OnPlayerTriggerExit(VRCPlayerApi player)
+    {
       var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
       if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
 
       this.LastPlayer = player;
 
-      for (var i = 0; i < this.exitBehaviours.Length; i++) {
+      for (var i = 0; i < this.exitBehaviours.Length; i++)
+      {
         var behaviour = this.exitBehaviours[i];
         var eventName = this.exitBehaviorEventNames[i];
         if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) continue;

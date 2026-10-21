@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.PersistedValues;
 
-namespace VRCTools.World.Editor.PersistedValues {
+namespace VRCTools.World.Editor.PersistedValues
+{
   using Value = PersistedString;
 
   [CustomEditor(typeof(Value))]
-  public class PersistedStringEditor : AbstractPersistedValueEditor {
+  public class PersistedStringEditor : AbstractPersistedValueEditor
+  {
     protected override string HelpText =>
       "Provides a persisted string value with event capabilities.\n\n" +
       "You may use this component to define local string values which may be changed on the fly " +

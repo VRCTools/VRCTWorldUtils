@@ -20,11 +20,13 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
-namespace VRCTools.World.Editor.Values.Converters {
+namespace VRCTools.World.Editor.Values.Converters
+{
   using Converter = IntMathConverter;
 
   [CustomEditor(typeof(Converter))]
-  public class IntMathConverterEditor : AbstractCustomUdonEditor {
+  public class IntMathConverterEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
     private SerializedProperty _localTarget;
     private SerializedProperty _synchronizedTarget;
@@ -44,7 +46,8 @@ namespace VRCTools.World.Editor.Values.Converters {
     protected override string HelpText => "Performs simple math operations on two values and writes the result to a" +
                                           "given target.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(Converter.target));
       this._localTarget = this.serializedObject.FindProperty(nameof(Converter.localTarget));
       this._synchronizedTarget = this.serializedObject.FindProperty(nameof(Converter.synchronizedTarget));
@@ -62,7 +65,8 @@ namespace VRCTools.World.Editor.Values.Converters {
       this._synchronizedValueB = this.serializedObject.FindProperty(nameof(Converter.synchronizedValueB));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("target"), this._target, this._localTarget,
         this._synchronizedTarget, "Target value is invalid or unset - Component will be disabled on start");
       EditorGUILayout.Space(20);
@@ -79,7 +83,8 @@ namespace VRCTools.World.Editor.Values.Converters {
         this._localValueA, this._synchronizedValueA);
 
       formula += " ";
-      switch (operation) {
+      switch (operation)
+      {
         case IntegralMathOperation.ADD:
           formula += "+";
           break;

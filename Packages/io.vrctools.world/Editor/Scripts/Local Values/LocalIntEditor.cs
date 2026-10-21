@@ -16,11 +16,13 @@ using UnityEditor;
 using UnityEngine;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalInt;
 
   [CustomEditor(typeof(Value))]
-  public class LocalIntEditor : AbstractLocalValueEditor {
+  public class LocalIntEditor : AbstractLocalValueEditor
+  {
     private SerializedProperty _restrictedMaximumValue;
     private SerializedProperty _restrictedMinimumValue;
 
@@ -36,15 +38,17 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For animators use LocalAnimatorApplicator\n\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
-      
+
       this._restrictValue = this.serializedObject.FindProperty(nameof(Value.restrictValue));
       this._restrictedMinimumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMinimumValue));
       this._restrictedMaximumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMaximumValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       this.RenderDefaults();
       EditorGUILayout.Space(20);
 
@@ -60,7 +64,7 @@ namespace VRCTools.World.Editor.LocalValues {
             MessageType.Error);
       }
       EditorGUI.EndDisabledGroup();
-      
+
       EditorGUILayout.Space(20);
       this.RenderAdvancedFoldoutGUI();
     }

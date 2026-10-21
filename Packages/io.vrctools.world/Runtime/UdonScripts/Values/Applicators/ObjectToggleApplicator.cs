@@ -21,10 +21,12 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Applicators {
+namespace VRCTools.World.Values.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Applicators/Object Toggle Applicator")]
-  public class ObjectToggleApplicator : UdonSharpBehaviour {
+  public class ObjectToggleApplicator : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
@@ -33,8 +35,10 @@ namespace VRCTools.World.Values.Applicators {
 
     public GameObject[] targets;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Source value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -42,15 +46,17 @@ namespace VRCTools.World.Values.Applicators {
 
       ValueUtility.RegisterUpdateHandler(this.source, this.localValue, this.synchronizedValue, this,
         nameof(this._OnStateUpdated));
-      
+
       this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var active = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue) ^ this.invert;
 
-      foreach (var obj in this.targets) {
+      foreach (var obj in this.targets)
+      {
         if (!Utilities.IsValid(obj)) continue;
 
         obj.SetActive(active);

@@ -19,11 +19,13 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values.Applicators;
 
-namespace VRCTools.World.Editor.Values.Applicators {
+namespace VRCTools.World.Editor.Values.Applicators
+{
   using Applicator = ObjectToggleApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class ObjectToggleApplicatorEditor : AbstractCustomUdonEditor {
+  public class ObjectToggleApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _invert;
     private SerializedProperty _localValue;
     private SerializedProperty _source;
@@ -33,7 +35,8 @@ namespace VRCTools.World.Editor.Values.Applicators {
 
     private SerializedProperty _targets;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._source = this.serializedObject.FindProperty(nameof(Applicator.source));
       this._localValue
         = this.serializedObject.FindProperty(nameof(Applicator.localValue));
@@ -43,14 +46,16 @@ namespace VRCTools.World.Editor.Values.Applicators {
 
       this._invert = this.serializedObject.FindProperty(nameof(Applicator.invert));
 
-      this._targetList = new ReorderableList(this.serializedObject, this._targets, true, true, true, true) {
+      this._targetList = new ReorderableList(this.serializedObject, this._targets, true, true, true, true)
+      {
         drawHeaderCallback = this._OnDrawHeader,
         elementHeightCallback = this._CalculateElementHeight,
         drawElementCallback = this._OnDrawElement
       };
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Source"), this._source, this._localValue,
         this._synchronizedValue, "Invalid or unspecified local value reference.\n\n" +
                                  "This component will disable itself upon startup.");
@@ -62,14 +67,19 @@ namespace VRCTools.World.Editor.Values.Applicators {
       EditorGUILayout.PropertyField(this._invert);
     }
 
-    private float _CalculateElementHeight(int index) {
+    private float _CalculateElementHeight(int index)
+    {
       var element = this._targets.GetArrayElementAtIndex(index);
       return EditorGUI.GetPropertyHeight(element);
     }
 
-    private void _OnDrawHeader(Rect rect) { EditorGUI.LabelField(rect, "Targets", EditorStyles.boldLabel); }
+    private void _OnDrawHeader(Rect rect)
+    {
+      EditorGUI.LabelField(rect, "Targets", EditorStyles.boldLabel);
+    }
 
-    private void _OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+    private void _OnDrawElement(Rect rect, int index, bool isActive, bool isFocused)
+    {
       var element = this._targets.GetArrayElementAtIndex(index);
       EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), element);
     }

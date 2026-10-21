@@ -20,9 +20,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
-namespace VRCTools.World.Editor.Values.Converters {
+namespace VRCTools.World.Editor.Values.Converters
+{
   [CustomEditor(typeof(ColorComponentConverter))]
-  public class ColorComponentConverterEditor : AbstractCustomUdonEditor {
+  public class ColorComponentConverterEditor : AbstractCustomUdonEditor
+  {
     public SerializedProperty _target;
     public SerializedProperty _localTarget;
     public SerializedProperty _synchronizedTarget;
@@ -47,7 +49,8 @@ namespace VRCTools.World.Editor.Values.Converters {
     public SerializedProperty _localAlphaValue;
     public SerializedProperty _synchronizedAlphaValue;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(ColorComponentConverter.target));
       this._localTarget = this.serializedObject.FindProperty(nameof(ColorComponentConverter.localTarget));
       this._synchronizedTarget = this.serializedObject.FindProperty(nameof(ColorComponentConverter.synchronizedTarget));
@@ -77,7 +80,8 @@ namespace VRCTools.World.Editor.Values.Converters {
         = this.serializedObject.FindProperty(nameof(ColorComponentConverter.synchronizedAlphaValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("target"), this._target, this._localTarget,
         this._synchronizedTarget, "Target value is invalid or unset - Component will be disabled on start");
 

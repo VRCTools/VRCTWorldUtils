@@ -20,9 +20,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.LocalValues.UI;
 
-namespace VRCTools.World.Editor.LocalValues.UI {
+namespace VRCTools.World.Editor.LocalValues.UI
+{
   [CustomEditor(typeof(LocalIntSlider))]
-  public class LocalIntSliderEditor : AbstractCustomUdonEditor {
+  public class LocalIntSliderEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _enableMapping;
     private SerializedProperty _localValue;
     private SerializedProperty _mappingLowerBound;
@@ -33,7 +35,8 @@ namespace VRCTools.World.Editor.LocalValues.UI {
       "Provides a slider which synchronizes its value to a local int component.\n\n" +
       "This script is meant to be used together with a LocalInt component.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._localValue = this.serializedObject.FindProperty(nameof(LocalIntSlider.localValue));
 
       this._enableMapping = this.serializedObject.FindProperty(nameof(LocalIntSlider.enableMapping));
@@ -42,14 +45,16 @@ namespace VRCTools.World.Editor.LocalValues.UI {
       this._multiplier = this.serializedObject.FindProperty(nameof(LocalIntSlider.multiplier));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       var intSlider = this.target as LocalIntSlider;
       var slider = intSlider.gameObject.GetComponent<Slider>();
 
       EditorGUILayout.PropertyField(this._localValue);
       var localValue = (LocalInt)this._localValue.objectReferenceValue;
 
-      if (localValue != null) {
+      if (localValue != null)
+      {
         if (!localValue.restrictValue)
           EditorGUILayout.HelpBox(
             "Specified local value has no bounds set.\n\n" +
@@ -68,7 +73,9 @@ namespace VRCTools.World.Editor.LocalValues.UI {
             "It is generally recommended to set the slider range to the same range as the local value or enable" +
             "mapping between the differing bounds in order to avoid issues",
             MessageType.Warning);
-      } else {
+      }
+      else
+      {
         EditorGUILayout.HelpBox(
           "Invalid or unspecified local value reference.\n\n" +
           "This component will disable itself upon startup.",

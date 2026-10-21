@@ -16,25 +16,28 @@ using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Player;
 
-namespace VRCTools.World.Editor.Player {
+namespace VRCTools.World.Editor.Player
+{
   [CustomEditor(typeof(PlayerTeleportTarget))]
-  public class PlayerTeleportTargetEditor : AbstractEventEmitterEditor {
+  public class PlayerTeleportTargetEditor : AbstractEventEmitterEditor
+  {
     private SerializedProperty _target;
 
     protected override void OnEnable()
     {
       base.OnEnable();
-      
+
       this._target = this.serializedObject.FindProperty(nameof(PlayerTeleportTarget.target));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._target);
       if (this._target.objectReferenceValue == null)
         EditorGUILayout.HelpBox(
           "No target has been assigned - Teleport target will match the position and rotation of this game object.",
           MessageType.Info);
-      
+
       EditorGUILayout.Space();
       base.RenderInspectorGUI();
     }

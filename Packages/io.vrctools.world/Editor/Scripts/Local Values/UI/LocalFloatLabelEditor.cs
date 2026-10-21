@@ -19,9 +19,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.LocalValues.UI;
 
-namespace VRCTools.World.Editor.LocalValues.UI {
+namespace VRCTools.World.Editor.LocalValues.UI
+{
   [CustomEditor(typeof(LocalFloatLabel))]
-  public class LocalFloatLabelEditor : AbstractCustomUdonEditor {
+  public class LocalFloatLabelEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _enableMapping;
     private SerializedProperty _localValue;
     private SerializedProperty _mappingLowerBound;
@@ -32,7 +34,8 @@ namespace VRCTools.World.Editor.LocalValues.UI {
       "Displays the current value of a local float using a given string template.\n\n" +
       "This script is expected to be combined with a LocalFloat component and will match its current state.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._localValue = this.serializedObject.FindProperty(nameof(LocalFloatLabel.localValue));
 
       this._enableMapping = this.serializedObject.FindProperty(nameof(LocalFloatLabel.enableMapping));
@@ -41,7 +44,8 @@ namespace VRCTools.World.Editor.LocalValues.UI {
       this._multiplier = this.serializedObject.FindProperty(nameof(LocalFloatLabel.multiplier));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._localValue);
       var localValue = (LocalFloat)this._localValue.objectReferenceValue;
 

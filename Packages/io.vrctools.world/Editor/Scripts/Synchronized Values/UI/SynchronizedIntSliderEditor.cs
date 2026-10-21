@@ -20,9 +20,11 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.SynchronizedValues.UI;
 
-namespace VRCTools.World.Editor.SynchronizedValues.UI {
+namespace VRCTools.World.Editor.SynchronizedValues.UI
+{
   [CustomEditor(typeof(SynchronizedIntSlider))]
-  public class SynchronizedIntSliderEditor : AbstractCustomUdonEditor {
+  public class SynchronizedIntSliderEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _enableMapping;
     private SerializedProperty _mappingLowerBound;
     private SerializedProperty _mappingUpperBound;
@@ -33,7 +35,8 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
       "Provides a slider which synchronizes its value to a synchronized int component.\n\n" +
       "This script is meant to be used together with a SynchronizedInt component.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._synchronizedValue = this.serializedObject.FindProperty(nameof(SynchronizedIntSlider.synchronizedValue));
 
       this._enableMapping = this.serializedObject.FindProperty(nameof(SynchronizedIntSlider.enableMapping));
@@ -42,14 +45,16 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
       this._multiplier = this.serializedObject.FindProperty(nameof(SynchronizedIntSlider.multiplier));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       var intSlider = this.target as SynchronizedIntSlider;
       var slider = intSlider.gameObject.GetComponent<Slider>();
 
       EditorGUILayout.PropertyField(this._synchronizedValue);
       var synchronizedValue = (SynchronizedInt)this._synchronizedValue.objectReferenceValue;
 
-      if (synchronizedValue != null) {
+      if (synchronizedValue != null)
+      {
         if (!synchronizedValue.restrictValue)
           EditorGUILayout.HelpBox(
             "Specified synchronized value has no bounds set.\n\n" +
@@ -68,7 +73,9 @@ namespace VRCTools.World.Editor.SynchronizedValues.UI {
             "It is generally recommended to set the slider range to the same range as the synchronized value or enable" +
             "mapping between the differing bounds in order to avoid issues",
             MessageType.Warning);
-      } else {
+      }
+      else
+      {
         EditorGUILayout.HelpBox(
           "Invalid or unspecified synchronized value reference.\n\n" +
           "This component will disable itself upon startup.",

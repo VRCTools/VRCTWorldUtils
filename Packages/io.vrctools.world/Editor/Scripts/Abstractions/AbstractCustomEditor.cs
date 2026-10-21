@@ -17,11 +17,13 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using VRCTools.World.Editor.Utils;
 
-namespace VRCTools.World.Editor.Abstractions {
+namespace VRCTools.World.Editor.Abstractions
+{
   /// <summary>
   ///   Provides a base implementation for custom editors within the assembly.
   /// </summary>
-  public abstract class AbstractCustomEditor : UnityEditor.Editor {
+  public abstract class AbstractCustomEditor : UnityEditor.Editor
+  {
     private bool _helpFoldout;
 
     /// <summary>
@@ -29,7 +31,8 @@ namespace VRCTools.World.Editor.Abstractions {
     /// </summary>
     protected virtual string HelpText => string.Empty;
 
-    public override void OnInspectorGUI() {
+    public override void OnInspectorGUI()
+    {
       this.serializedObject.Update();
 
       EditorGUI.BeginChangeCheck();
@@ -41,16 +44,20 @@ namespace VRCTools.World.Editor.Abstractions {
       if (EditorGUI.EndChangeCheck()) this.OnPropertiesChanged();
     }
 
-    protected virtual void RenderInspectorHeader() { }
+    protected virtual void RenderInspectorHeader()
+    {
+    }
 
     protected abstract void RenderInspectorGUI();
 
-    protected virtual void RenderInspectorFooter() {
+    protected virtual void RenderInspectorFooter()
+    {
       this._RenderHelpText();
       CustomEditorUtility.DrawSupporterLinks();
     }
 
-    private void _RenderHelpText() {
+    private void _RenderHelpText()
+    {
       var helpText = this.HelpText;
       if (string.IsNullOrEmpty(helpText)) return;
 
@@ -61,6 +68,9 @@ namespace VRCTools.World.Editor.Abstractions {
       EditorGUILayout.HelpBox(helpText, MessageType.None);
     }
 
-    protected virtual void OnPropertiesChanged() { this.serializedObject.ApplyModifiedProperties(); }
+    protected virtual void OnPropertiesChanged()
+    {
+      this.serializedObject.ApplyModifiedProperties();
+    }
   }
 }

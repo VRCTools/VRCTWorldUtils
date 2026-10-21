@@ -21,13 +21,15 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Converters {
+namespace VRCTools.World.Values.Converters
+{
   /// <summary>
   ///   Performs basic math operations on local or synchronized values.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Int Math Converter")]
-  public class IntMathConverter : UdonSharpBehaviour {
+  public class IntMathConverter : UdonSharpBehaviour
+  {
     public ValueType target;
     public LocalInt localTarget;
     public SynchronizedInt synchronizedTarget;
@@ -44,8 +46,10 @@ namespace VRCTools.World.Values.Converters {
     public LocalInt localValueB;
     public SynchronizedInt synchronizedValueB;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -58,12 +62,14 @@ namespace VRCTools.World.Values.Converters {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var a = ValueUtility.GetValue(this.sourceA, this.staticValueA, this.localValueA, this.synchronizedValueA);
       var b = ValueUtility.GetValue(this.sourceB, this.staticValueB, this.localValueB, this.synchronizedValueB);
 
       int result;
-      switch (this.operation) {
+      switch (this.operation)
+      {
         case IntegralMathOperation.ADD:
           result = a + b;
           break;
@@ -79,7 +85,7 @@ namespace VRCTools.World.Values.Converters {
             UdonDebug.Error(this, "Division by zero is not permitted - Value remains unchanged");
             return;
           }
-          
+
           result = a / b;
           break;
         case IntegralMathOperation.REM:
@@ -88,7 +94,7 @@ namespace VRCTools.World.Values.Converters {
             UdonDebug.Error(this, "Remainder by zero is not permitted - Value remains unchanged");
             return;
           }
-          
+
           result = a % b;
           break;
         default:

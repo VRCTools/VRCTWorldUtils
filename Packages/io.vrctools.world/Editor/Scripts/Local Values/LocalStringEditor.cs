@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalString;
 
   [CustomEditor(typeof(Value))]
-  public class LocalStringEditor : AbstractLocalValueEditor {
+  public class LocalStringEditor : AbstractLocalValueEditor
+  {
     protected override string HelpText =>
       "Provides a local string value with event capabilities.\n\n" +
       "You may use this component to define local string values which may be changed on the fly " +

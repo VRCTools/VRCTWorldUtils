@@ -20,11 +20,13 @@ using VRCTools.World.Editor.Utils;
 using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
-namespace VRCTools.World.Editor.Values.Converters {
+namespace VRCTools.World.Editor.Values.Converters
+{
   using Converter = FloatMathConverter;
 
   [CustomEditor(typeof(Converter))]
-  public class FloatMathConverterEditor : AbstractCustomUdonEditor {
+  public class FloatMathConverterEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _target;
     private SerializedProperty _localTarget;
     private SerializedProperty _synchronizedTarget;
@@ -47,7 +49,8 @@ namespace VRCTools.World.Editor.Values.Converters {
     protected override string HelpText => "Performs simple math operations on two values and writes the result to a" +
                                           "given target.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._target = this.serializedObject.FindProperty(nameof(Converter.target));
       this._localTarget = this.serializedObject.FindProperty(nameof(Converter.localTarget));
       this._synchronizedTarget = this.serializedObject.FindProperty(nameof(Converter.synchronizedTarget));
@@ -63,12 +66,13 @@ namespace VRCTools.World.Editor.Values.Converters {
       this._staticValueB = this.serializedObject.FindProperty(nameof(Converter.staticValueB));
       this._localValueB = this.serializedObject.FindProperty(nameof(Converter.localValueB));
       this._synchronizedValueB = this.serializedObject.FindProperty(nameof(Converter.synchronizedValueB));
-      
+
       this._permitNanPropagation = this.serializedObject.FindProperty(nameof(Converter.permitNanPropagation));
       this._permitInfinityPropagation = this.serializedObject.FindProperty(nameof(Converter.permitInfinityPropagation));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("target"), this._target, this._localTarget,
         this._synchronizedTarget, "Target value is invalid or unset - Component will be disabled on start");
       EditorGUILayout.Space(20);
@@ -85,7 +89,8 @@ namespace VRCTools.World.Editor.Values.Converters {
         this._localValueA, this._synchronizedValueA);
 
       formula += " ";
-      switch (operation) {
+      switch (operation)
+      {
         case FractionalMathOperation.ADD:
           formula += "+";
           break;
@@ -120,7 +125,7 @@ namespace VRCTools.World.Editor.Values.Converters {
       ValueEditorUtility.DrawSourceProperty(new GUIContent("Value"), this._sourceB, this._staticValueB,
         this._localValueB, this._synchronizedValueB,
         "Parameter is invalid or unset - It will be set to zero");
-      
+
       EditorGUILayout.Space(20);
       EditorGUILayout.LabelField("Propagation", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._permitNanPropagation);

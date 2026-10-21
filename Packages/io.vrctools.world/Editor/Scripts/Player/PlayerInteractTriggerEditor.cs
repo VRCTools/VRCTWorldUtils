@@ -19,17 +19,20 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.Player;
 
-namespace VRCTools.World.Editor.Player {
+namespace VRCTools.World.Editor.Player
+{
   [CustomEditor(typeof(PlayerInteractTrigger))]
-  public class PlayerInteractTriggerEditor : AbstractEventEmitterEditor {
+  public class PlayerInteractTriggerEditor : AbstractEventEmitterEditor
+  {
     private SerializedProperty _behaviours;
     private MultiPropertyList _behavioursList;
     private SerializedProperty _eventNames;
 
     [MustCallBase]
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
-      
+
       this._behaviours = this.serializedObject.FindProperty(nameof(PlayerInteractTrigger.behaviours));
       this._eventNames = this.serializedObject.FindProperty(nameof(PlayerInteractTrigger.eventNames));
 
@@ -42,10 +45,11 @@ namespace VRCTools.World.Editor.Player {
         new[] { this._eventNames });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.Space(20);
       this._behavioursList.DoLayout();
-      
+
       EditorGUILayout.Space(20);
       base.RenderInspectorGUI();
     }

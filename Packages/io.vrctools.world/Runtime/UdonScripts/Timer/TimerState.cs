@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace VRCTools.World.Timer {
+namespace VRCTools.World.Timer
+{
   /// <summary>
   /// Identifies the states in which a countdown may reside.
   /// </summary>
-  public enum TimerState {
+  public enum TimerState
+  {
     Stopped = 0,
     Running = 1,
     Paused = 2

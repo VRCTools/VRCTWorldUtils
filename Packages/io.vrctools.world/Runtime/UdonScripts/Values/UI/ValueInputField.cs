@@ -22,11 +22,13 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.UI {
+namespace VRCTools.World.Values.UI
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TMP_InputField))]
   [AddComponentMenu("Values/UI/Value Input Field")]
-  public class ValueInputField : UdonSharpBehaviour {
+  public class ValueInputField : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalString localValue;
     public SynchronizedString synchronizedValue;
@@ -34,8 +36,10 @@ namespace VRCTools.World.Values.UI {
     private TMP_InputField _inputField;
     private bool _updating;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
+      {
         UdonDebug.Error(this, "String value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -48,14 +52,16 @@ namespace VRCTools.World.Values.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
 
       if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         this._inputField.text = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);
@@ -64,7 +70,8 @@ namespace VRCTools.World.Values.UI {
     }
 
     [CustomEvent]
-    public void _OnValueChanged() {
+    public void _OnValueChanged()
+    {
       if (this._updating) return;
 
       ValueUtility.SetValue(this.source, this.localValue, this.synchronizedValue, this._inputField.text);

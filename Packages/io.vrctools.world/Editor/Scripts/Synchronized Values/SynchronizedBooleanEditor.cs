@@ -16,11 +16,13 @@ using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
-namespace VRCTools.World.Editor.SynchronizedValues {
+namespace VRCTools.World.Editor.SynchronizedValues
+{
   using Value = SynchronizedBoolean;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedBooleanEditor : AbstractSynchronizedEventEmitterEditor {
+  public class SynchronizedBooleanEditor : AbstractSynchronizedEventEmitterEditor
+  {
     private SerializedProperty _defaultValue;
 
     protected override string HelpText =>
@@ -34,13 +36,15 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       " - For animators use AnimatorParameter\n\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
 
       this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._defaultValue);
       EditorGUILayout.Space(20);

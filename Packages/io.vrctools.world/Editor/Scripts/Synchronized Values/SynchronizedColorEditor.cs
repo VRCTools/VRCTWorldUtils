@@ -17,11 +17,13 @@ using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
-namespace VRCTools.World.Editor.SynchronizedValues {
+namespace VRCTools.World.Editor.SynchronizedValues
+{
   using Value = SynchronizedColor;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedColorEditor : AbstractSynchronizedEventEmitterEditor {
+  public class SynchronizedColorEditor : AbstractSynchronizedEventEmitterEditor
+  {
     private SerializedProperty _defaultValue;
     private SerializedProperty _permitAlpha;
     private SerializedProperty _permitHDR;
@@ -37,7 +39,8 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       " - For material properties use MaterialParameter\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
 
       this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
@@ -45,16 +48,19 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       this._permitHDR = this.serializedObject.FindProperty(nameof(Value.permitHDR));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       var permitAlpha = this._permitAlpha.boolValue;
       var permitHDR = this._permitHDR.boolValue;
 
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"), this._defaultValue.colorValue, true, permitAlpha,
+      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"),
+        this._defaultValue.colorValue, true, permitAlpha,
         permitHDR);
 
       this._colorTypeFoldout = EditorGUILayout.Foldout(this._colorTypeFoldout, "Color Type");
-      if (this._colorTypeFoldout) {
+      if (this._colorTypeFoldout)
+      {
         EditorGUI.indentLevel++;
         {
           EditorGUILayout.PropertyField(this._permitAlpha);
@@ -62,7 +68,7 @@ namespace VRCTools.World.Editor.SynchronizedValues {
         }
         EditorGUI.indentLevel--;
       }
-      
+
       EditorGUILayout.Space(20);
 
       base.RenderInspectorGUI();

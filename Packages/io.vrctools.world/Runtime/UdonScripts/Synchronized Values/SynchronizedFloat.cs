@@ -20,13 +20,15 @@ using VRCTools.Common.Utils;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.SynchronizedValues {
+namespace VRCTools.World.SynchronizedValues
+{
   /// <summary>
   ///   Encapsulates a synchronized float value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized Float")]
-  public class SynchronizedFloat : AbstractSynchronizedEventEmitter {
+  public class SynchronizedFloat : AbstractSynchronizedEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -71,14 +73,12 @@ namespace VRCTools.World.SynchronizedValues {
     /// <summary>
     ///   Stores the actual synchronized state.
     /// </summary>
-    [UdonSynced]
-    private float state;
+    [UdonSynced] private float state;
 
     /// <summary>
     ///   Stores a counter which tracks the number of resets performed on this value.
     /// </summary>
-    [UdonSynced]
-    private int resetCounter;
+    [UdonSynced] private int resetCounter;
 
     public override int EventCount => EVENT_COUNT;
 
@@ -89,10 +89,14 @@ namespace VRCTools.World.SynchronizedValues {
     ///   When setting the value, synchronization and event emission will only take place if the new value differs from
     ///   the current value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public float State {
+    public float State
+    {
       get => this.state;
-      set {
-        var newValue = this.restrictValue ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue) : value;
+      set
+      {
+        var newValue = this.restrictValue
+          ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue)
+          : value;
 
         if (!this.IsLocallyOwned() && !this.IsStateInitialized)
         {
@@ -100,8 +104,8 @@ namespace VRCTools.World.SynchronizedValues {
           return;
         }
 
-        if (Mathf.Abs(newValue - this.state) < (this.preventNuisanceUpdates ? 
-              this.minimalUpdateDifference : Mathf.Epsilon))
+        if (Mathf.Abs(newValue - this.state) <
+            (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon))
         {
           return;
         }
@@ -115,7 +119,7 @@ namespace VRCTools.World.SynchronizedValues {
         {
           return;
         }
-        
+
         this._EnsureOwnership();
         this.state = this._previousState = newValue;
         this._TrySynchronize();
@@ -124,18 +128,21 @@ namespace VRCTools.World.SynchronizedValues {
     }
 
     [MustCallBase]
-    protected override void Start() {
-      if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
+    protected override void Start()
+    {
+      if (this.restrictedMinimumValue > this.restrictedMaximumValue)
+      {
         UdonDebug.Error(this,
           $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored");
         this.restrictValue = false;
       }
-      
-      this.state = this._previousState = (this.restrictValue ? 
-        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) :
-        this.defaultValue);
 
-      if (this.minimalUpdateDifference < Mathf.Epsilon) {
+      this.state = this._previousState = (this.restrictValue
+        ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
+        : this.defaultValue);
+
+      if (this.minimalUpdateDifference < Mathf.Epsilon)
+      {
         UdonDebug.Error(this,
           $"Minimum update difference of {this.minimalUpdateDifference} falls short of smallest permitted value of {Mathf.Epsilon} - Value will be clamped");
         this.minimalUpdateDifference = Mathf.Epsilon;
@@ -161,45 +168,51 @@ namespace VRCTools.World.SynchronizedValues {
         UdonDebug.Warn(this, "Attempted state reset prior to initialization - Ignored");
         return;
       }
-      
+
       var defaultValue = this.restrictValue
         ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
         : this.defaultValue;
-      
+
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
-      var currentlyDefault = Mathf.Abs(this.state - defaultValue) < 
+      var currentlyDefault = Mathf.Abs(this.state - defaultValue) <
                              (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon);
       if (currentlyDefault)
       {
         return;
       }
-      
+
       this._EnsureOwnership();
-      
+
       this._previousResetCounterValue = ++this.resetCounter;
       this.State = defaultValue;
-      
+
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
     [CustomEvent]
-    public void _Zero() { this.State = 0; }
-    
+    public void _Zero()
+    {
+      this.State = 0;
+    }
+
     [MustCallBase]
-    public override void OnDeserialization() {
+    public override void OnDeserialization()
+    {
       var updated = Mathf.Abs(this.state - this._previousState) >=
-                    (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon) && this.IsStateInitialized;
+        (this.preventNuisanceUpdates ? this.minimalUpdateDifference : Mathf.Epsilon) && this.IsStateInitialized;
       if (!this.IsStateInitialized || updated)
       {
         this._previousState = this.state;
       }
-      if (updated) {
+
+      if (updated)
+      {
         this._EmitEvent(EVENT_STATE_UPDATED);
       }
 
       var reset = this._previousResetCounterValue != this.resetCounter && this.IsStateInitialized;
       this._previousResetCounterValue = this.resetCounter;
-      
+
       if (reset) this._EmitEvent(EVENT_STATE_RESET);
 
       // base has to be invoked last here as it also takes care of flagging the object as initialized thus requiring

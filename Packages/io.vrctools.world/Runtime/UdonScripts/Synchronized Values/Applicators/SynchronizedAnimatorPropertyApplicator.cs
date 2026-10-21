@@ -19,10 +19,12 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.Applicators {
+namespace VRCTools.World.SynchronizedValues.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Animator Property Applicator")]
-  public class SynchronizedAnimatorPropertyApplicator : UdonSharpBehaviour {
+  public class SynchronizedAnimatorPropertyApplicator : UdonSharpBehaviour
+  {
     public Animator target;
 
     public SynchronizedBoolean[] synchronizedBooleans;
@@ -38,33 +40,41 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     private int[] _synchronizedFloatParameterIds;
     private int[] _synchronizedIntParameterIds;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.target)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.target))
+      {
         UdonDebug.Error(this, "Animator is invalid - Disabled");
         this.enabled = false;
       }
 
-      this.synchronizedBooleans = MappingUtility.CheckCoherentMapping(this.synchronizedBooleans, this.synchronizedBooleanParameters, this);
-      this.synchronizedFloats = MappingUtility.CheckCoherentMapping(this.synchronizedFloats, this.synchronizedFloatParameters, this);
-      this.synchronizedInts = MappingUtility.CheckCoherentMapping(this.synchronizedInts, this.synchronizedIntParameters, this);
+      this.synchronizedBooleans =
+        MappingUtility.CheckCoherentMapping(this.synchronizedBooleans, this.synchronizedBooleanParameters, this);
+      this.synchronizedFloats =
+        MappingUtility.CheckCoherentMapping(this.synchronizedFloats, this.synchronizedFloatParameters, this);
+      this.synchronizedInts =
+        MappingUtility.CheckCoherentMapping(this.synchronizedInts, this.synchronizedIntParameters, this);
 
       this._synchronizedBooleanParameterIds = AnimatorUtilities.ResolveParameterIds(this.synchronizedBooleanParameters);
       this._synchronizedFloatParameterIds = AnimatorUtilities.ResolveParameterIds(this.synchronizedFloatParameters);
       this._synchronizedIntParameterIds = AnimatorUtilities.ResolveParameterIds(this.synchronizedIntParameters);
 
-      foreach (var value in this.synchronizedBooleans) {
+      foreach (var value in this.synchronizedBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnBooleanStateUpdated));
       }
 
-      foreach (var value in this.synchronizedFloats) {
+      foreach (var value in this.synchronizedFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedFloat.EVENT_STATE_UPDATED, this, nameof(this._OnFloatStateUpdated));
       }
 
-      foreach (var value in this.synchronizedInts) {
+      foreach (var value in this.synchronizedInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedInt.EVENT_STATE_UPDATED, this, nameof(this._OnIntStateUpdated));
@@ -73,37 +83,47 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this._RefreshAllParameters();
     }
 
-    private void OnDestroy() {
-      foreach (var value in this.synchronizedBooleans) {
+    private void OnDestroy()
+    {
+      foreach (var value in this.synchronizedBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.synchronizedFloats) {
+      foreach (var value in this.synchronizedFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.synchronizedInts) {
+      foreach (var value in this.synchronizedInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
     }
 
-    private void _RefreshAllParameters() {
+    private void _RefreshAllParameters()
+    {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedFloatState(true);
       this._ApplyUpdatedIntState(true);
     }
 
     [CustomEvent]
-    public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
+    public void _OnBooleanStateUpdated()
+    {
+      this._ApplyUpdatedBooleanState(false);
+    }
 
-    private void _ApplyUpdatedBooleanState(bool force) {
-      for (var i = 0; i < this.synchronizedBooleans.Length; i++) {
+    private void _ApplyUpdatedBooleanState(bool force)
+    {
+      for (var i = 0; i < this.synchronizedBooleans.Length; i++)
+      {
         var value = this.synchronizedBooleans[i];
         var parameterId = this._synchronizedBooleanParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -114,10 +134,15 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
+    public void _OnFloatStateUpdated()
+    {
+      this._ApplyUpdatedFloatState(false);
+    }
 
-    private void _ApplyUpdatedFloatState(bool force) {
-      for (var i = 0; i < this.synchronizedFloats.Length; i++) {
+    private void _ApplyUpdatedFloatState(bool force)
+    {
+      for (var i = 0; i < this.synchronizedFloats.Length; i++)
+      {
         var value = this.synchronizedFloats[i];
         var parameterId = this._synchronizedFloatParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
@@ -128,10 +153,15 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
+    public void _OnIntStateUpdated()
+    {
+      this._ApplyUpdatedIntState(false);
+    }
 
-    private void _ApplyUpdatedIntState(bool force) {
-      for (var i = 0; i < this.synchronizedInts.Length; i++) {
+    private void _ApplyUpdatedIntState(bool force)
+    {
+      for (var i = 0; i < this.synchronizedInts.Length; i++)
+      {
         var value = this.synchronizedInts[i];
         var parameterId = this._synchronizedIntParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;

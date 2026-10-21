@@ -23,11 +23,13 @@ using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.Values.UI {
+namespace VRCTools.World.Values.UI
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(Toggle))]
   [AddComponentMenu("Values/UI/Value Toggle")]
-  public class ValueToggle : UdonSharpBehaviour {
+  public class ValueToggle : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
@@ -37,8 +39,10 @@ namespace VRCTools.World.Values.UI {
     private Toggle _toggle;
     private bool _updating;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Boolean value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -51,14 +55,16 @@ namespace VRCTools.World.Values.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
 
       if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         this._toggle.isOn = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue) ^ this.invert;
@@ -67,7 +73,8 @@ namespace VRCTools.World.Values.UI {
     }
 
     [CustomEvent]
-    public void _OnValueChanged() {
+    public void _OnValueChanged()
+    {
       if (this._updating) return;
 
       ValueUtility.SetValue(this.source, this.localValue, this.synchronizedValue, this._toggle.isOn ^ this.invert);

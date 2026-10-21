@@ -16,11 +16,13 @@ using UnityEditor;
 using UnityEngine;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalColor;
 
   [CustomEditor(typeof(Value))]
-  public class LocalColorEditor : AbstractLocalValueEditor {
+  public class LocalColorEditor : AbstractLocalValueEditor
+  {
     private SerializedProperty _permitAlpha;
     private SerializedProperty _permitHDR;
 
@@ -35,14 +37,16 @@ namespace VRCTools.World.Editor.LocalValues {
       " - For material properties use LocalMaterialPropertyApplicator\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
 
       this._permitAlpha = this.serializedObject.FindProperty(nameof(Value.permitAlpha));
       this._permitHDR = this.serializedObject.FindProperty(nameof(Value.permitHDR));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       var permitAlpha = this._permitAlpha.boolValue;
       var permitHDR = this._permitHDR.boolValue;
 
@@ -60,7 +64,7 @@ namespace VRCTools.World.Editor.LocalValues {
         EditorGUILayout.PropertyField(this._permitHDR);
       }
       EditorGUI.indentLevel--;
-      
+
       EditorGUILayout.Space(20);
       this.RenderAdvancedFoldoutGUI();
     }

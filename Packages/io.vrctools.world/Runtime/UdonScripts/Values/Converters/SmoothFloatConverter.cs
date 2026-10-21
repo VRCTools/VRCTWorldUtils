@@ -21,13 +21,15 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Converters {
+namespace VRCTools.World.Values.Converters
+{
   /// <summary>
   ///   Smoothly transitions values based on a source.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Smooth Float Converter")]
-  public class SmoothFloatConverter : UdonSharpBehaviour {
+  public class SmoothFloatConverter : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalFloat localSource;
     public SynchronizedFloat synchronizedSource;
@@ -43,14 +45,17 @@ namespace VRCTools.World.Values.Converters {
     private bool _active;
     private float _velocity;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localSource, this.synchronizedSource)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localSource, this.synchronizedSource))
+      {
         UdonDebug.Error(this, "Source value is invalid - Disabled");
         this.enabled = false;
         return;
       }
 
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -60,17 +65,20 @@ namespace VRCTools.World.Values.Converters {
         nameof(this._OnStateUpdated));
     }
 
-    private void Update() {
-      if (!this._active) {
+    private void Update()
+    {
+      if (!this._active)
+      {
         return;
       }
 
       var targetValue = ValueUtility.GetValue(this.source, this.localSource, this.synchronizedSource);
       var currentValue = ValueUtility.GetValue(this.target, this.localTarget, this.synchronizedTarget);
-      
+
       // if either target value or current value become NaN or infinity for whatever reason, we will no longer be able
       // to perform smoothing and should immediately adopt the target value before de-activating ourselves
-      if (float.IsNaN(targetValue) || float.IsInfinity(targetValue) || float.IsNaN(currentValue) || float.IsInfinity(currentValue))
+      if (float.IsNaN(targetValue) || float.IsInfinity(targetValue) || float.IsNaN(currentValue) ||
+          float.IsInfinity(currentValue))
       {
         ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, targetValue);
         this._active = false;
@@ -85,18 +93,20 @@ namespace VRCTools.World.Values.Converters {
       // doing nothing; float.Epsilon is the absolute minimum difference supported by us
       var targetDifference = Mathf.Abs(writtenValue - targetValue);
       var writtenDifference = Mathf.Abs(writtenValue - newValue);
-      if (targetDifference <= Mathf.Max(float.Epsilon, this.minDifference) || writtenDifference > Mathf.Epsilon) {
+      if (targetDifference <= Mathf.Max(float.Epsilon, this.minDifference) || writtenDifference > Mathf.Epsilon)
+      {
         this._active = false;
       }
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       if (this._active)
       {
         return;
       }
-      
+
       // this converter is special as we do not directly update the targets from here, instead this method merely
       // indicates that there is work to be done for Update() which will then slowly adjust the target until the end
       // condition is met

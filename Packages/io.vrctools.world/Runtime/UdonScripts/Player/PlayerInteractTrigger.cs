@@ -19,13 +19,15 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Player {
+namespace VRCTools.World.Player
+{
   /// <summary>
   ///   Invokes a number of handlers when an object is interacted with by a player.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Player/Player Interact Trigger")]
-  public class PlayerInteractTrigger : AbstractEventEmitter {
+  public class PlayerInteractTrigger : AbstractEventEmitter
+  {
     public const int EVENT_INTERACT = 0;
     public const int EVENT_COUNT = 1;
 
@@ -34,13 +36,16 @@ namespace VRCTools.World.Player {
 
     public override int EventCount => EVENT_COUNT;
 
-    private void Start() {
+    private void Start()
+    {
       this.behaviours = MappingUtility.CheckCoherentMapping(this.behaviours, this.eventNames, this);
     }
 
     [MustCallBase]
-    public override void Interact() {
-      for (var i = 0; i < this.behaviours.Length; i++) {
+    public override void Interact()
+    {
+      for (var i = 0; i < this.behaviours.Length; i++)
+      {
         var behaviour = this.behaviours[i];
         var eventName = this.eventNames[i];
         if (!Utilities.IsValid(behaviour) || string.IsNullOrEmpty(eventName)) continue;

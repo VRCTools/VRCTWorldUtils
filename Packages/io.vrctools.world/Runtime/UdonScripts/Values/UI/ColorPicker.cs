@@ -23,14 +23,16 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.UI {
+namespace VRCTools.World.Values.UI
+{
   /// <summary>
   ///   Provides a color picker component which may be paired with a <see cref="LocalColor" /> component in order
   ///   to permit dynamic color changes.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/UI/Color Picker")]
-  public class ColorPicker : UdonSharpBehaviour {
+  public class ColorPicker : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalColor localValue;
     public SynchronizedColor synchronizedValue;
@@ -40,14 +42,17 @@ namespace VRCTools.World.Values.UI {
 
     private bool _updating;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Invalid local value reference - Disabled");
         this.enabled = false;
         return;
       }
 
-      if (!Utilities.IsValid(this.cursor)) {
+      if (!Utilities.IsValid(this.cursor))
+      {
         UdonDebug.Error(this, "Invalid cursor reference - Disabled");
         this.enabled = false;
         return;
@@ -59,7 +64,8 @@ namespace VRCTools.World.Values.UI {
       this.cursor._RegisterHandler(ColorPickerCursor.EVENT_POSITION_UPDATED, this, nameof(this._OnPositionUpdated));
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (Utilities.IsValid(this.cursor)) this.cursor._UnregisterHandler(this);
 
       if (Utilities.IsValid(this.localValue)) this.localValue._UnregisterHandler(this);
@@ -67,7 +73,8 @@ namespace VRCTools.World.Values.UI {
       if (Utilities.IsValid(this.synchronizedValue)) this.synchronizedValue._UnregisterHandler(this);
     }
 
-    private void _UpdateColor(Color color) {
+    private void _UpdateColor(Color color)
+    {
       ValueUtility.SetValue(this.source, this.localValue, this.synchronizedValue, color);
 
       if (Utilities.IsValid(this.crosshair))
@@ -75,7 +82,8 @@ namespace VRCTools.World.Values.UI {
     }
 
     [CustomEvent]
-    public void _OnPositionUpdated() {
+    public void _OnPositionUpdated()
+    {
       if (this._updating) return;
 
       var pos = this.cursor.Position;
@@ -83,7 +91,8 @@ namespace VRCTools.World.Values.UI {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         var color = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue);

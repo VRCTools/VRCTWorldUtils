@@ -19,9 +19,11 @@ using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
 using VRCTools.World.Player;
 
-namespace VRCTools.World.Editor.Player {
+namespace VRCTools.World.Editor.Player
+{
   [CustomEditor(typeof(PlayerTriggerVolume))]
-  public class PlayerTriggerVolumeEditor : AbstractEventEmitterEditor {
+  public class PlayerTriggerVolumeEditor : AbstractEventEmitterEditor
+  {
     private SerializedProperty _acceptedPlayerTypes;
     private MultiPropertyList _enterBehaviorList;
     private SerializedProperty _enterBehaviourEventNames;
@@ -32,9 +34,10 @@ namespace VRCTools.World.Editor.Player {
     private SerializedProperty _exitBehaviours;
 
     [MustCallBase]
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
-      
+
       this._enterBehaviours = this.serializedObject.FindProperty(nameof(PlayerTriggerVolume.enterBehaviours));
       this._enterBehaviourEventNames
         = this.serializedObject.FindProperty(nameof(PlayerTriggerVolume.enterBehaviorEventNames));
@@ -62,7 +65,8 @@ namespace VRCTools.World.Editor.Player {
         new[] { this._exitBehaviourEventNames });
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       // ReorderableLists look weird when placed at the very start of the inspector
       EditorGUILayout.Space(20);
       this._enterBehaviorList.DoLayout();
@@ -71,7 +75,7 @@ namespace VRCTools.World.Editor.Player {
 
       EditorGUILayout.LabelField("Advanced Settings", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._acceptedPlayerTypes);
-      
+
       EditorGUILayout.Space(20);
       base.RenderInspectorGUI();
     }

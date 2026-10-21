@@ -21,10 +21,12 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Converters {
+namespace VRCTools.World.Values.Converters
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Boolean Operation Converter")]
-  public class BooleanOperationConverter : UdonSharpBehaviour {
+  public class BooleanOperationConverter : UdonSharpBehaviour
+  {
     public ValueType target;
     public LocalBoolean localTarget;
     public SynchronizedBoolean synchronizedTarget;
@@ -41,8 +43,10 @@ namespace VRCTools.World.Values.Converters {
     public LocalBoolean localBetaValue;
     public SynchronizedBoolean synchronizedBetaValue;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -57,19 +61,22 @@ namespace VRCTools.World.Values.Converters {
     private void _RegisterHandler(
       ValueSource source,
       LocalBoolean localValue,
-      SynchronizedBoolean synchronizedValue) {
+      SynchronizedBoolean synchronizedValue)
+    {
       ValueUtility.RegisterUpdateHandler(source, localValue, synchronizedValue, this, nameof(this._OnComponentUpdated));
     }
 
     [CustomEvent]
-    public void _OnComponentUpdated() {
+    public void _OnComponentUpdated()
+    {
       var alpha = ValueUtility.GetValue(this.sourceAlpha, this.staticAlphaValue, this.localAlphaValue,
         this.synchronizedAlphaValue);
       var beta = ValueUtility.GetValue(this.sourceBeta, this.staticBetaValue, this.localBetaValue,
         this.synchronizedBetaValue);
 
       var newValue = false;
-      switch (this.operation) {
+      switch (this.operation)
+      {
         case BooleanOperation.NOT:
           newValue = !alpha;
           break;

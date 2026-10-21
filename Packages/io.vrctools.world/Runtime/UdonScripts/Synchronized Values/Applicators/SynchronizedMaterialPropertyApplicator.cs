@@ -21,7 +21,8 @@ using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 using VRCTools.World.Values.Applicators;
 
-namespace VRCTools.World.SynchronizedValues.Applicators {
+namespace VRCTools.World.SynchronizedValues.Applicators
+{
   /// <summary>
   ///   Applies a set of synchronized values to material parameters.
   ///   This script can run in either traditional material mode (e.g. all changes are directly applied to a given
@@ -31,11 +32,11 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Material Property Applicator")]
-  public class SynchronizedMaterialPropertyApplicator : UdonSharpBehaviour {
+  public class SynchronizedMaterialPropertyApplicator : UdonSharpBehaviour
+  {
     public MaterialPropertyTarget target;
 
-    [FormerlySerializedAs("material")]
-    public Material targetMaterial;
+    [FormerlySerializedAs("material")] public Material targetMaterial;
 
     public Renderer targetRenderer;
 
@@ -62,8 +63,10 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     private int[] _synchronizedIntParameterIds;
     private int[] _synchronizedVectorParameterIds;
 
-    private void Start() {
-      if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer)) {
+    private void Start()
+    {
+      if (!MaterialPropertyUtility.IsValid(this.target, this.targetMaterial, this.targetRenderer))
+      {
         UdonDebug.Error(this, "Target is invalid - Disabled");
         this.enabled = false;
         return;
@@ -95,31 +98,36 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
 
       // we handle each value separately to minimize unnecessary updates to materials which could potentially cause
       // some congestion for more frequently  synchronized values
-      foreach (var value in this.synchronizedBooleans) {
+      foreach (var value in this.synchronizedBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, this, nameof(this._OnBooleanStateUpdated));
       }
 
-      foreach (var value in this.synchronizedColors) {
+      foreach (var value in this.synchronizedColors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedColor.EVENT_STATE_UPDATED, this, nameof(this._OnColorStateUpdated));
       }
 
-      foreach (var value in this.synchronizedFloats) {
+      foreach (var value in this.synchronizedFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedFloat.EVENT_STATE_UPDATED, this, nameof(this._OnFloatStateUpdated));
       }
 
-      foreach (var value in this.synchronizedInts) {
+      foreach (var value in this.synchronizedInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedInt.EVENT_STATE_UPDATED, this, nameof(this._OnIntStateUpdated));
       }
 
-      foreach (var value in this.synchronizedVectors) {
+      foreach (var value in this.synchronizedVectors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._RegisterHandler(SynchronizedVector3.EVENT_STATE_UPDATED, this, nameof(this._OnVectorStateUpdated));
@@ -128,32 +136,38 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this.SendCustomEventDelayedFrames(nameof(this._RefreshAllParameters), 1);
     }
 
-    private void OnDestroy() {
-      foreach (var value in this.synchronizedBooleans) {
+    private void OnDestroy()
+    {
+      foreach (var value in this.synchronizedBooleans)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.synchronizedColors) {
+      foreach (var value in this.synchronizedColors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.synchronizedFloats) {
+      foreach (var value in this.synchronizedFloats)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.synchronizedInts) {
+      foreach (var value in this.synchronizedInts)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
       }
 
-      foreach (var value in this.synchronizedVectors) {
+      foreach (var value in this.synchronizedVectors)
+      {
         if (!Utilities.IsValid(value)) continue;
 
         value._UnregisterHandler(this);
@@ -161,7 +175,8 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     }
 
     [CustomEvent]
-    public void _RefreshAllParameters() {
+    public void _RefreshAllParameters()
+    {
       this._ApplyUpdatedBooleanState(true);
       this._ApplyUpdatedColorState(true);
       this._ApplyUpdatedFloatState(true);
@@ -169,7 +184,8 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this._ApplyUpdatedVectorState(true);
     }
 
-    private void _EnsureMaterialBlock() {
+    private void _EnsureMaterialBlock()
+    {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
       if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
@@ -184,7 +200,8 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
       this.targetRenderer.GetPropertyBlock(this._materialPropertyBlock);
     }
 
-    private void _ApplyMaterialBlock() {
+    private void _ApplyMaterialBlock()
+    {
       // for convenience this method is called every time we update a given type of parameter - if material blocks are
       // disabled, we'll just NOOP
       if (this.target != MaterialPropertyTarget.PROPERTY_BLOCK) return;
@@ -193,85 +210,115 @@ namespace VRCTools.World.SynchronizedValues.Applicators {
     }
 
     [CustomEvent]
-    public void _OnBooleanStateUpdated() { this._ApplyUpdatedBooleanState(false); }
+    public void _OnBooleanStateUpdated()
+    {
+      this._ApplyUpdatedBooleanState(false);
+    }
 
-    private void _ApplyUpdatedBooleanState(bool force) {
+    private void _ApplyUpdatedBooleanState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.synchronizedBooleans.Length; i++) {
+      for (var i = 0; i < this.synchronizedBooleans.Length; i++)
+      {
         var value = this.synchronizedBooleans[i];
         var parameterId = this._synchronizedBooleanParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
     }
 
     [CustomEvent]
-    public void _OnColorStateUpdated() { this._ApplyUpdatedColorState(false); }
+    public void _OnColorStateUpdated()
+    {
+      this._ApplyUpdatedColorState(false);
+    }
 
-    private void _ApplyUpdatedColorState(bool force) {
+    private void _ApplyUpdatedColorState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.synchronizedColors.Length; ++i) {
+      for (var i = 0; i < this.synchronizedColors.Length; ++i)
+      {
         var value = this.synchronizedColors[i];
         var parameterId = this._synchronizedColorParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
     }
 
     [CustomEvent]
-    public void _OnFloatStateUpdated() { this._ApplyUpdatedFloatState(false); }
+    public void _OnFloatStateUpdated()
+    {
+      this._ApplyUpdatedFloatState(false);
+    }
 
-    private void _ApplyUpdatedFloatState(bool force) {
+    private void _ApplyUpdatedFloatState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.synchronizedFloats.Length; ++i) {
+      for (var i = 0; i < this.synchronizedFloats.Length; ++i)
+      {
         var value = this.synchronizedFloats[i];
         var parameterId = this._synchronizedFloatParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
     }
 
     [CustomEvent]
-    public void _OnIntStateUpdated() { this._ApplyUpdatedIntState(false); }
+    public void _OnIntStateUpdated()
+    {
+      this._ApplyUpdatedIntState(false);
+    }
 
-    private void _ApplyUpdatedIntState(bool force) {
+    private void _ApplyUpdatedIntState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.synchronizedInts.Length; ++i) {
+      for (var i = 0; i < this.synchronizedInts.Length; ++i)
+      {
         var value = this.synchronizedInts[i];
         var parameterId = this._synchronizedIntParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();
     }
 
     [CustomEvent]
-    public void _OnVectorStateUpdated() { this._ApplyUpdatedVectorState(false); }
+    public void _OnVectorStateUpdated()
+    {
+      this._ApplyUpdatedVectorState(false);
+    }
 
-    private void _ApplyUpdatedVectorState(bool force) {
+    private void _ApplyUpdatedVectorState(bool force)
+    {
       this._EnsureMaterialBlock();
 
-      for (var i = 0; i < this.synchronizedVectors.Length; ++i) {
+      for (var i = 0; i < this.synchronizedVectors.Length; ++i)
+      {
         var value = this.synchronizedVectors[i];
         var parameterId = this._synchronizedVectorParameterIds[i];
         if (!force && !value.IsUpdatingHandlers) continue;
 
-        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId, value.State);
+        MaterialPropertyUtility.SetParameter(this.target, this.targetMaterial, this._materialPropertyBlock, parameterId,
+          value.State);
       }
 
       this._ApplyMaterialBlock();

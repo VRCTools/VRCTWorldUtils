@@ -15,7 +15,10 @@
 using UnityEditor;
 using VRCTools.World.Values.Presets;
 
-namespace VRCTools.World.Editor.Values.Presets {
+namespace VRCTools.World.Editor.Values.Presets
+{
   [CustomEditor(typeof(UrlPreset))]
-  public class UrlPresetEditor : AbstractPresetEditor { }
+  public class UrlPresetEditor : AbstractPresetEditor
+  {
+  }
 }

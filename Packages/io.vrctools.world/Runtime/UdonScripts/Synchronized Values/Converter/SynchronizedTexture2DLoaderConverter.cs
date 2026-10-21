@@ -21,10 +21,12 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.SynchronizedValues;
 
-namespace VRCTools.World.LocalValues.Converters {
+namespace VRCTools.World.LocalValues.Converters
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Converter/Synchronized Texture2D Loader Converter")]
-  public class SynchronizedTexture2DLoaderConverter : UdonSharpBehaviour {
+  public class SynchronizedTexture2DLoaderConverter : UdonSharpBehaviour
+  {
     public SynchronizedUrl synchronizedUrl;
 
     public LocalTexture2D localTexture2D;
@@ -47,14 +49,17 @@ namespace VRCTools.World.LocalValues.Converters {
 
     private float _retryTimer = -1;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.synchronizedUrl)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.synchronizedUrl))
+      {
         UdonDebug.Error(this, "Invalid synchronized url reference - Disabled");
         this.enabled = false;
         return;
       }
 
-      if (!Utilities.IsValid(this.localTexture2D)) {
+      if (!Utilities.IsValid(this.localTexture2D))
+      {
         UdonDebug.Error(this, "Invalid local texture reference - Disabled");
         this.enabled = false;
         return;
@@ -67,7 +72,8 @@ namespace VRCTools.World.LocalValues.Converters {
       this.SendCustomEventDelayedFrames(nameof(this._OnStateUpdated), 1);
     }
 
-    private void Update() {
+    private void Update()
+    {
       if (this._retryTimer <= 0) return;
 
       this._retryTimer -= Time.deltaTime;
@@ -76,7 +82,8 @@ namespace VRCTools.World.LocalValues.Converters {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       // before we destroy the image downloader, we'll swap the texture to the configured default as the texture should
       // be destroyed as a result of the image downloader being destroyed
       if (Utilities.IsValid(this.localTexture2D)) this.localTexture2D.State = this.defaultTexture;
@@ -90,8 +97,10 @@ namespace VRCTools.World.LocalValues.Converters {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
-      if (this._loading) {
+    public void _OnStateUpdated()
+    {
+      if (this._loading)
+      {
         UdonDebug.Warn(this, "Image download in process - Queued update");
         this._downloadQueued = true;
         return;
@@ -101,7 +110,8 @@ namespace VRCTools.World.LocalValues.Converters {
       this._retryTimer = -1;
 
       var url = this.synchronizedUrl.State;
-      if (VRCUrl.IsNullOrEmpty(url)) {
+      if (VRCUrl.IsNullOrEmpty(url))
+      {
         this._loading = false;
 
         this.localTexture2D.State = this.defaultTexture;
@@ -115,7 +125,8 @@ namespace VRCTools.World.LocalValues.Converters {
     }
 
     [MustCallBase]
-    public override void OnImageLoadSuccess(IVRCImageDownload result) {
+    public override void OnImageLoadSuccess(IVRCImageDownload result)
+    {
       UdonDebug.Info(this, $"Image download from \"{result.Url}\" successful");
       this.localTexture2D.State = result.Result;
 
@@ -123,11 +134,13 @@ namespace VRCTools.World.LocalValues.Converters {
     }
 
     [MustCallBase]
-    public override void OnImageLoadError(IVRCImageDownload result) {
+    public override void OnImageLoadError(IVRCImageDownload result)
+    {
       UdonDebug.Warn(this, $"Failed to load texture from \"{result.Url}\": {result.ErrorMessage}");
 
       var texture = this.errorTexture;
-      switch (result.Error) {
+      switch (result.Error)
+      {
         case VRCImageDownloadError.AccessDenied:
           texture = this.accessDeniedErrorTexture;
           break;
@@ -151,13 +164,15 @@ namespace VRCTools.World.LocalValues.Converters {
 
       this._OnImageLoadFinished();
 
-      if (result.Error == VRCImageDownloadError.TooManyRequests) {
+      if (result.Error == VRCImageDownloadError.TooManyRequests)
+      {
         this._retryTimer = this.retryPeriod;
         UdonDebug.Info(this, $"Scheduling retry in {this.retryPeriod} seconds");
       }
     }
 
-    private void _OnImageLoadFinished() {
+    private void _OnImageLoadFinished()
+    {
       this._loading = false;
       this._retryTimer = -1;
 

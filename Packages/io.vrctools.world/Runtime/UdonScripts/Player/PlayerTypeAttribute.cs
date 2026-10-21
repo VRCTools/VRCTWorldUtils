@@ -14,6 +14,9 @@
 
 using UnityEngine;
 
-namespace VRCTools.World.Player {
-  public class PlayerTypeAttribute : PropertyAttribute { }
+namespace VRCTools.World.Player
+{
+  public class PlayerTypeAttribute : PropertyAttribute
+  {
+  }
 }

@@ -18,13 +18,15 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.LocalValues {
+namespace VRCTools.World.LocalValues
+{
   /// <summary>
   ///   Encapsulates a local color value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Color")]
-  public class LocalColor : AbstractEventEmitter {
+  public class LocalColor : AbstractEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -56,9 +58,11 @@ namespace VRCTools.World.LocalValues {
     ///   When setting the value, event emission will only take place if the new value differs from the current
     ///   value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public virtual Color State {
+    public virtual Color State
+    {
       get => this._state;
-      set {
+      set
+      {
         if (this._state == value) return;
 
         this._state = value;
@@ -67,25 +71,27 @@ namespace VRCTools.World.LocalValues {
     }
 
     [MustCallBase]
-    protected virtual void Start() {
+    protected virtual void Start()
+    {
       this._state = this.defaultValue;
 
       this._EmitEvent(EVENT_STATE_UPDATED);
       this._EmitEvent(EVENT_STATE_RESET);
     }
-    
+
     /// <summary>
     ///   Reverts the current value back to the default value.
     /// </summary>
     [CustomEvent]
     [MustCallBase]
-    public virtual void _Reset() {
+    public virtual void _Reset()
+    {
       // ignore if the current state already reflects defaults as we do not wish to notify anyone in this case
       if (this._state == this.defaultValue)
       {
         return;
       }
-      
+
       this.State = this.defaultValue;
       this._EmitEvent(EVENT_STATE_RESET);
     }

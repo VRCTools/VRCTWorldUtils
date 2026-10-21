@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalTexture2D;
 
   [CustomEditor(typeof(Value))]
-  public class LocalTexture2DEditor : AbstractLocalValueEditor {
+  public class LocalTexture2DEditor : AbstractLocalValueEditor
+  {
     protected override string HelpText =>
       "Provides a local Texture2D value with event capabilities.\n\n" +
       "You may use this component to create objects which may be updated on the fly within an instance of this " +

@@ -17,11 +17,13 @@ using UnityEngine;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
-namespace VRCTools.World.Editor.SynchronizedValues {
+namespace VRCTools.World.Editor.SynchronizedValues
+{
   using Value = SynchronizedFloat;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedFloatEditor : AbstractSynchronizedEventEmitterEditor {
+  public class SynchronizedFloatEditor : AbstractSynchronizedEventEmitterEditor
+  {
     private SerializedProperty _defaultValue;
     private SerializedProperty _minimalUpdateDifference;
 
@@ -41,7 +43,8 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       " - For animators use AnimatorParameter\n\n" +
       "Additional compatible scripts may be available within this package.";
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
       base.OnEnable();
 
       this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
@@ -54,7 +57,8 @@ namespace VRCTools.World.Editor.SynchronizedValues {
       this._minimalUpdateDifference = this.serializedObject.FindProperty(nameof(Value.minimalUpdateDifference));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._defaultValue);
       EditorGUILayout.Space(20);

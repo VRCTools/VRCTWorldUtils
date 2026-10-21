@@ -18,13 +18,15 @@ using VRCTools.Common.Attributes;
 using VRCTools.Event;
 using VRCTools.World.Values;
 
-namespace VRCTools.World.LocalValues {
+namespace VRCTools.World.LocalValues
+{
   /// <summary>
   ///   Encapsulates a local int value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Int")]
-  public class LocalInt : AbstractEventEmitter {
+  public class LocalInt : AbstractEventEmitter
+  {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;
     public const int EVENT_STATE_RESET = ValueEvents.STANDARD_STATE_RESET;
     public const int EVENT_COUNT = ValueEvents.STANDARD_COUNT;
@@ -61,13 +63,15 @@ namespace VRCTools.World.LocalValues {
     ///   When setting the value, event emission will only take place if the new value differs from the current
     ///   value. Otherwise, the operation effectively acts as a noop.
     /// </summary>
-    public virtual int State {
+    public virtual int State
+    {
       get => this._state;
-      set {
+      set
+      {
         var newValue = this.restrictValue
           ? Mathf.Clamp(value, this.restrictedMinimumValue, this.restrictedMaximumValue)
           : value;
-        
+
         if (this._state == newValue) return;
 
         this._state = newValue;
@@ -76,17 +80,19 @@ namespace VRCTools.World.LocalValues {
     }
 
     [MustCallBase]
-    protected virtual void Start() {
-      if (this.restrictedMinimumValue > this.restrictedMaximumValue) {
+    protected virtual void Start()
+    {
+      if (this.restrictedMinimumValue > this.restrictedMaximumValue)
+      {
         Debug.LogError(
           $"Minimum value of {this.restrictedMinimumValue} exceeds maximum value of {this.restrictedMaximumValue} - Restriction will be ignored",
           this);
         this.restrictValue = false;
       }
-      
-      this._state = this.restrictValue ? 
-        Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue) :
-        this.defaultValue;
+
+      this._state = this.restrictValue
+        ? Mathf.Clamp(this.defaultValue, this.restrictedMinimumValue, this.restrictedMaximumValue)
+        : this.defaultValue;
 
       this._EmitEvent(EVENT_STATE_UPDATED);
     }
@@ -107,18 +113,27 @@ namespace VRCTools.World.LocalValues {
       {
         return;
       }
-      
+
       this.State = defaultValue;
       this._EmitEvent(EVENT_STATE_RESET);
     }
 
     [CustomEvent]
-    public void _Zero() { this.State = 0; }
+    public void _Zero()
+    {
+      this.State = 0;
+    }
 
     [CustomEvent]
-    public void _Increment() { this.State++; }
+    public void _Increment()
+    {
+      this.State++;
+    }
 
     [CustomEvent]
-    public void _Decrement() { this.State--; }
+    public void _Decrement()
+    {
+      this.State--;
+    }
   }
 }

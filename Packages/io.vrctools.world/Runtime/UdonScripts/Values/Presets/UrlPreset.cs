@@ -21,27 +21,34 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Presets {
+namespace VRCTools.World.Values.Presets
+{
   /// <summary>
   ///   Stores a preset which may be applied to a given URL value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Presets/URL Preset")]
-  public class UrlPreset : UdonSharpBehaviour {
+  public class UrlPreset : UdonSharpBehaviour
+  {
     public ValueType target;
     public LocalUrl localTarget;
     public SynchronizedUrl synchronizedTarget;
 
     public VRCUrl preset = VRCUrl.Empty;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Value target is invalid - Disabled");
         this.enabled = false;
       }
     }
 
     [CustomEvent]
-    public void _Apply() { ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, this.preset); }
+    public void _Apply()
+    {
+      ValueUtility.SetValue(this.target, this.localTarget, this.synchronizedTarget, this.preset);
+    }
   }
 }

@@ -19,37 +19,39 @@ using VRCTools.Event;
 
 namespace VRCTools.World.Editor.Abstractions
 {
-    public abstract class AbstractEventEmitterEditor : AbstractCustomUdonEditor
+  public abstract class AbstractEventEmitterEditor : AbstractCustomUdonEditor
+  {
+    private bool _advancedFoldout;
+    private SerializedProperty _eventEmitterDebugging;
+
+    [MustCallBase]
+    protected virtual void OnEnable()
     {
-        private bool _advancedFoldout;
-        private SerializedProperty _eventEmitterDebugging;
-
-        [MustCallBase]
-        protected virtual void OnEnable()
-        {
-            this._eventEmitterDebugging = this.serializedObject.FindProperty(nameof(AbstractEventEmitter.eventEmitterDebugging));
-        }
-        
-        protected override void RenderInspectorGUI()
-        {
-            this.RenderAdvancedFoldoutGUI();
-        }
-
-        protected virtual void RenderAdvancedFoldoutGUI()
-        {
-            this._advancedFoldout = EditorGUILayout.Foldout(this._advancedFoldout, "Advanced Settings");
-            if (this._advancedFoldout) {
-                EditorGUI.indentLevel++;
-                {
-                    this.RenderAdvancedInspectorGUI();
-                }
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        protected virtual void RenderAdvancedInspectorGUI()
-        {
-            EditorGUILayout.PropertyField(this._eventEmitterDebugging, new GUIContent("Enable Event Logging"));
-        }
+      this._eventEmitterDebugging =
+        this.serializedObject.FindProperty(nameof(AbstractEventEmitter.eventEmitterDebugging));
     }
+
+    protected override void RenderInspectorGUI()
+    {
+      this.RenderAdvancedFoldoutGUI();
+    }
+
+    protected virtual void RenderAdvancedFoldoutGUI()
+    {
+      this._advancedFoldout = EditorGUILayout.Foldout(this._advancedFoldout, "Advanced Settings");
+      if (this._advancedFoldout)
+      {
+        EditorGUI.indentLevel++;
+        {
+          this.RenderAdvancedInspectorGUI();
+        }
+        EditorGUI.indentLevel--;
+      }
+    }
+
+    protected virtual void RenderAdvancedInspectorGUI()
+    {
+      EditorGUILayout.PropertyField(this._eventEmitterDebugging, new GUIContent("Enable Event Logging"));
+    }
+  }
 }

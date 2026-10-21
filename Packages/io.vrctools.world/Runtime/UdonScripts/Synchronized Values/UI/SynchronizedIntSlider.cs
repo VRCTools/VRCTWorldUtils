@@ -20,18 +20,19 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
+namespace VRCTools.World.SynchronizedValues.UI
+{
   [RequireComponent(typeof(Slider))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Int Slider")]
-  public class SynchronizedIntSlider : UdonSharpBehaviour {
+  public class SynchronizedIntSlider : UdonSharpBehaviour
+  {
     public SynchronizedInt synchronizedValue;
 
     public bool enableMapping;
     public int mappingLowerBound;
     public int mappingUpperBound = 100;
-    [Min(1)]
-    public int multiplier = 1;
+    [Min(1)] public int multiplier = 1;
 
     private Slider _slider;
     private bool _updating;
@@ -39,8 +40,10 @@ namespace VRCTools.World.SynchronizedValues.UI {
     private bool RequiresRounding => !this._slider.wholeNumbers;
     private bool AppliesMapping => this.enableMapping && this.synchronizedValue.restrictValue;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Synchronized value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -56,14 +59,16 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (!Utilities.IsValid(this.synchronizedValue)) return;
 
       this.synchronizedValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       this._updating = true;
       {
         var value = this.synchronizedValue.State;
@@ -79,7 +84,8 @@ namespace VRCTools.World.SynchronizedValues.UI {
     }
 
     [CustomEvent]
-    public void _OnValueChanged() {
+    public void _OnValueChanged()
+    {
       if (this._updating) return;
 
       int value;

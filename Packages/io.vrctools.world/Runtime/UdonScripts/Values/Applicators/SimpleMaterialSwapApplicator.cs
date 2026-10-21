@@ -21,10 +21,12 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Applicators {
+namespace VRCTools.World.Values.Applicators
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Applicators/Simple Material Swap Applicator")]
-  public class SimpleMaterialSwapApplicator : UdonSharpBehaviour {
+  public class SimpleMaterialSwapApplicator : UdonSharpBehaviour
+  {
     public ValueType source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
@@ -37,8 +39,10 @@ namespace VRCTools.World.Values.Applicators {
 
     private Material[] _originalMaterials;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.source, this.localValue, this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Invalid value reference - Disabled");
         this.enabled = false;
         return;
@@ -48,11 +52,13 @@ namespace VRCTools.World.Values.Applicators {
       this.renderers = MappingUtility.CheckCoherentMapping(this.renderers, this.replacementMaterials, this);
 
       this._originalMaterials = new Material[this.renderers.Length];
-      for (var i = 0; i < this.renderers.Length; i++) {
+      for (var i = 0; i < this.renderers.Length; i++)
+      {
         var r = this.renderers[i];
         var slot = this.slotIndices[i];
 
-        if (slot >= r.sharedMaterials.Length) {
+        if (slot >= r.sharedMaterials.Length)
+        {
           UdonDebug.Warn(this, $"Desired slot {slot} exceeds allocated material list length");
           continue;
         }
@@ -67,10 +73,12 @@ namespace VRCTools.World.Values.Applicators {
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var value = ValueUtility.GetValue(this.source, this.localValue, this.synchronizedValue) ^ this.invert;
 
-      for (var i = 0; i < this.renderers.Length; i++) {
+      for (var i = 0; i < this.renderers.Length; i++)
+      {
         var r = this.renderers[i];
         var slot = this.slotIndices[i];
         var replacementMaterial = this.replacementMaterials[slot];
@@ -78,7 +86,8 @@ namespace VRCTools.World.Values.Applicators {
 
         if (!Utilities.IsValid(r) || slot < 0) continue;
 
-        if (slot >= r.sharedMaterials.Length) {
+        if (slot >= r.sharedMaterials.Length)
+        {
           UdonDebug.Warn(this, $"Desired slot {slot} exceeds allocated material list length");
           continue;
         }

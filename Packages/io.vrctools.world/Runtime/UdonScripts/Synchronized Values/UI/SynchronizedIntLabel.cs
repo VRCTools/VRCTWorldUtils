@@ -20,11 +20,13 @@ using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.SynchronizedValues.UI {
+namespace VRCTools.World.SynchronizedValues.UI
+{
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Int Label")]
-  public class SynchronizedIntLabel : UdonSharpBehaviour {
+  public class SynchronizedIntLabel : UdonSharpBehaviour
+  {
     public SynchronizedInt synchronizedValue;
 
     public bool enableMapping;
@@ -37,8 +39,10 @@ namespace VRCTools.World.SynchronizedValues.UI {
 
     private bool AppliesMapping => this.enableMapping && this.synchronizedValue.restrictValue;
 
-    private void Start() {
-      if (!Utilities.IsValid(this.synchronizedValue)) {
+    private void Start()
+    {
+      if (!Utilities.IsValid(this.synchronizedValue))
+      {
         UdonDebug.Error(this, "Synchronized value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -51,14 +55,16 @@ namespace VRCTools.World.SynchronizedValues.UI {
       this._OnStateUpdated();
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
       if (!Utilities.IsValid(this.synchronizedValue)) return;
 
       this.synchronizedValue._UnregisterHandler(this);
     }
 
     [CustomEvent]
-    public void _OnStateUpdated() {
+    public void _OnStateUpdated()
+    {
       var value = this.synchronizedValue.State;
       if (this.AppliesMapping)
         value = ValueUtility.Remap(value, this.synchronizedValue.restrictedMinimumValue,

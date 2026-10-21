@@ -15,11 +15,13 @@
 using UnityEditor;
 using VRCTools.World.LocalValues;
 
-namespace VRCTools.World.Editor.LocalValues {
+namespace VRCTools.World.Editor.LocalValues
+{
   using Value = LocalVector3;
 
   [CustomEditor(typeof(Value))]
-  public class LocalVector3Editor : AbstractLocalValueEditor {
+  public class LocalVector3Editor : AbstractLocalValueEditor
+  {
     protected override string HelpText =>
       "Provides a local 3D vector value with event capabilities.\n\n" +
       "You may use this component to create objects, animations or material properties which may be toggled " +

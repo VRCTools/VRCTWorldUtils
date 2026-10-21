@@ -6,20 +6,24 @@ using VRCTools.World.Utils;
 using VRCTools.World.Values;
 using ValueType = VRCTools.World.Values.ValueType;
 
-namespace VRCTools.World.Editor.Utils {
-  public static class ValueEditorUtility {
+namespace VRCTools.World.Editor.Utils
+{
+  public static class ValueEditorUtility
+  {
     public static void DrawSourceProperty(
       GUIContent label,
       SerializedProperty sourceProperty,
       SerializedProperty staticProperty,
       SerializedProperty localProperty,
       SerializedProperty synchronizedProperty,
-      string unsetErrorMessage) {
+      string unsetErrorMessage)
+    {
       EditorGUILayout.PropertyField(sourceProperty, new GUIContent("Type"));
       var s = (ValueSource)sourceProperty.enumValueIndex;
 
       SerializedProperty property = null;
-      switch (s) {
+      switch (s)
+      {
         case ValueSource.STATIC:
           property = staticProperty;
           break;
@@ -42,12 +46,14 @@ namespace VRCTools.World.Editor.Utils {
       SerializedProperty sourceProperty,
       SerializedProperty localProperty,
       SerializedProperty synchronizedProperty,
-      string unsetErrorMessage) {
+      string unsetErrorMessage)
+    {
       EditorGUILayout.PropertyField(sourceProperty, new GUIContent("Type"));
       var s = (ValueType)sourceProperty.enumValueIndex;
 
       SerializedProperty property = null;
-      switch (s) {
+      switch (s)
+      {
         case ValueType.LOCAL:
           property = localProperty;
           break;
@@ -64,8 +70,10 @@ namespace VRCTools.World.Editor.Utils {
     public static string GetTargetDisplayValue(
       ValueType type,
       SerializedProperty localValue,
-      SerializedProperty synchronizedValue) {
-      switch (type) {
+      SerializedProperty synchronizedValue)
+    {
+      switch (type)
+      {
         case ValueType.LOCAL:
           return GetObjectDisplayName(localValue);
         case ValueType.SYNCHRONIZED:
@@ -78,7 +86,8 @@ namespace VRCTools.World.Editor.Utils {
     public static string GetTargetDisplayValue(
       SerializedProperty type,
       SerializedProperty localValue,
-      SerializedProperty synchronizedValue) {
+      SerializedProperty synchronizedValue)
+    {
       var typeValue = (ValueType)type.enumValueIndex;
       return GetTargetDisplayValue(typeValue, localValue, synchronizedValue);
     }
@@ -87,8 +96,10 @@ namespace VRCTools.World.Editor.Utils {
       ValueSource source,
       string staticValue,
       SerializedProperty localValue,
-      SerializedProperty synchronizedValue) {
-      switch (source) {
+      SerializedProperty synchronizedValue)
+    {
+      switch (source)
+      {
         case ValueSource.STATIC:
           return staticValue;
         case ValueSource.LOCAL:
@@ -104,22 +115,27 @@ namespace VRCTools.World.Editor.Utils {
       SerializedProperty source,
       string staticValue,
       SerializedProperty localValue,
-      SerializedProperty synchronizedValue) {
+      SerializedProperty synchronizedValue)
+    {
       var sourceValue = (ValueSource)source.enumValueIndex;
       return GetSourceDisplayValue(sourceValue, staticValue, localValue, synchronizedValue);
     }
 
-    public static string GetObjectDisplayName(SerializedProperty property) {
+    public static string GetObjectDisplayName(SerializedProperty property)
+    {
       var obj = property.objectReferenceValue;
-      if (obj == null) {
+      if (obj == null)
+      {
         return "null";
       }
 
-      if (obj is UdonSharpBehaviour) {
+      if (obj is UdonSharpBehaviour)
+      {
         return $"\"{obj.name}\"";
       }
 
-      if (obj is Component) {
+      if (obj is Component)
+      {
         return $"\"{obj.name}\"";
       }
 

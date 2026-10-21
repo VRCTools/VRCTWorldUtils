@@ -16,23 +16,27 @@ using UnityEditor;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.LocalValues.Applicators;
 
-namespace VRCTools.World.Editor.LocalValues.Applicators {
+namespace VRCTools.World.Editor.LocalValues.Applicators
+{
   using Applicator = LocalRawImageTexture2DApplicator;
 
   [CustomEditor(typeof(Applicator))]
-  public class LocalRawImageTexture2DApplicatorEditor : AbstractCustomUdonEditor {
+  public class LocalRawImageTexture2DApplicatorEditor : AbstractCustomUdonEditor
+  {
     private SerializedProperty _localValue;
 
     protected override string HelpText =>
       "Applies a given texture to a RawImage component.\n\n" +
       "This script is expected to be combined with a LocalTexture2D component.";
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       this._localValue
         = this.serializedObject.FindProperty(nameof(Applicator.localValue));
     }
 
-    protected override void RenderInspectorGUI() {
+    protected override void RenderInspectorGUI()
+    {
       EditorGUILayout.PropertyField(this._localValue);
       if (this._localValue.objectReferenceValue == null)
         EditorGUILayout.HelpBox(

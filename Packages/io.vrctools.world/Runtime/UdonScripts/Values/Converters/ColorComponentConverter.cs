@@ -20,13 +20,15 @@ using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
 
-namespace VRCTools.World.Values.Converters {
+namespace VRCTools.World.Values.Converters
+{
   /// <summary>
   ///   Encapsulates a synchronized boolean value.
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Converters/Color Component Converter")]
-  public class ColorComponentConverter : UdonSharpBehaviour {
+  public class ColorComponentConverter : UdonSharpBehaviour
+  {
     public ValueType target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
@@ -51,8 +53,10 @@ namespace VRCTools.World.Values.Converters {
     public LocalFloat localAlphaValue;
     public SynchronizedFloat synchronizedAlphaValue;
 
-    private void Start() {
-      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget)) {
+    private void Start()
+    {
+      if (!ValueUtility.IsValid(this.target, this.localTarget, this.synchronizedTarget))
+      {
         UdonDebug.Error(this, "Target value is invalid - Disabled");
         this.enabled = false;
         return;
@@ -70,7 +74,8 @@ namespace VRCTools.World.Values.Converters {
       string channel,
       ValueSource source,
       LocalFloat localValue,
-      SynchronizedFloat synchronizedValue) {
+      SynchronizedFloat synchronizedValue)
+    {
       if (!ValueUtility.IsValid(source, localValue, synchronizedValue))
         UdonDebug.Error(this, $"{channel} source is invalid - Component will be set to zero");
 
@@ -78,7 +83,8 @@ namespace VRCTools.World.Values.Converters {
     }
 
     [CustomEvent]
-    public void _OnComponentUpdated() {
+    public void _OnComponentUpdated()
+    {
       var red = ValueUtility.GetValue(this.redSource, this.staticRedValue, this.localRedValue,
         this.synchronizedRedValue);
       var green = ValueUtility.GetValue(this.greenSource, this.staticGreenValue, this.localGreenValue,
