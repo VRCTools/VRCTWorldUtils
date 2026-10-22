@@ -6732,6 +6732,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 681866599}
+  eventEmitterDebugging: 0
   enterBehaviours:
   - {fileID: 720922662}
   enterBehaviorEventNames:
@@ -9571,6 +9572,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 720922661}
   synchronizationBackoff: 2
   synchronizationDebugging: 0
+  eventEmitterDebugging: 0
   defaultValue: 0
   restrictValue: 1
   restrictedMinimumValue: 0
@@ -11833,6 +11835,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1042555726}
+  eventEmitterDebugging: 0
   enterBehaviours:
   - {fileID: 1042555733}
   enterBehaviorEventNames:
@@ -11977,6 +11980,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1042555732}
+  eventEmitterDebugging: 0
   defaultValue: 0
 --- !u!114 &1042555734
 MonoBehaviour:
@@ -17053,6 +17057,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1517711285}
+  eventEmitterDebugging: 0
   defaultValue: 0
 --- !u!114 &1517711287
 MonoBehaviour:
@@ -18723,6 +18728,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1858449932}
+  eventEmitterDebugging: 0
   defaultValue: 1
 --- !u!114 &1858449934
 MonoBehaviour:
@@ -19799,6 +19805,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1943041260}
+  eventEmitterDebugging: 0
   defaultValue: 0
 --- !u!114 &1943041262
 MonoBehaviour:
@@ -19848,6 +19855,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1943041262}
+  eventEmitterDebugging: 0
   enterBehaviours:
   - {fileID: 1943041261}
   enterBehaviorEventNames:
@@ -21669,6 +21677,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2144054120}
+  eventEmitterDebugging: 0
   defaultValue: 0
 --- !u!114 &2144054122
 MonoBehaviour:
