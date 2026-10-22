@@ -14,10 +14,8 @@
 
 using UnityEditor;
 using UnityEngine;
-using VRC.SDKBase;
 using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.Editor.Utils;
-using VRCTools.World.Values;
 using VRCTools.World.Values.Converters;
 
 namespace VRCTools.World.Editor.Values.Converters
