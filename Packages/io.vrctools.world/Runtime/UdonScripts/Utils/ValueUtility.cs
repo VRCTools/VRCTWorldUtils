@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Values;
@@ -98,6 +100,32 @@ namespace VRCTools.World.Utils
     public static bool IsValid(ValueType type, object localValue, object synchronizedValue)
     {
       return IsValid(ToSource(type), localValue, synchronizedValue);
+    }
+
+    public static bool IsLocallyOwned(ValueType type,
+      UdonSharpBehaviour synchronizedValue)
+    {
+      switch (type)
+      {
+        case ValueType.LOCAL:
+          return true;
+        case ValueType.SYNCHRONIZED:
+          return synchronizedValue.IsLocallyOwned();
+        default:
+          Debug.LogError($"Received unknown value type {type}");
+          return true;
+      }
+    }
+
+    public static bool IsLocallyOwned(ValueSource source,
+      UdonSharpBehaviour synchronizedValue)
+    {
+      if (source == ValueSource.SYNCHRONIZED)
+      {
+        return synchronizedValue.IsLocallyOwned();
+      }
+
+      return true;
     }
 
     public static void RegisterUpdateHandler(
