@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using UnityEditor;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
 namespace VRCTools.World.Editor.SynchronizedValues
@@ -21,10 +20,8 @@ namespace VRCTools.World.Editor.SynchronizedValues
   using Value = SynchronizedBoolean;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedBooleanEditor : AbstractSynchronizedEventEmitterEditor
+  public class SynchronizedBooleanEditor : AbstractSynchronizedValueEditor
   {
-    private SerializedProperty _defaultValue;
-
     protected override string HelpText =>
       "Provides a synchronized boolean value with event capabilities.\n\n" +
       "You may use this component to create objects, animations or material properties which may be toggled on/off" +
@@ -35,21 +32,5 @@ namespace VRCTools.World.Editor.SynchronizedValues
       " - For material replacements use MaterialSwap\n" +
       " - For animators use AnimatorParameter\n\n" +
       "Additional compatible scripts may be available within this package.";
-
-    protected override void OnEnable()
-    {
-      base.OnEnable();
-
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-    }
-
-    protected override void RenderInspectorGUI()
-    {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
-      EditorGUILayout.Space(20);
-
-      base.RenderInspectorGUI();
-    }
   }
 }

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using UnityEditor;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
 namespace VRCTools.World.Editor.SynchronizedValues
@@ -21,10 +20,8 @@ namespace VRCTools.World.Editor.SynchronizedValues
   using Value = SynchronizedString;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedStringEditor : AbstractSynchronizedEventEmitterEditor
+  public class SynchronizedStringEditor : AbstractSynchronizedValueEditor
   {
-    private SerializedProperty _defaultValue;
-
     protected override string HelpText =>
       "Provides a synchronized string value with event capabilities.\n\n" +
       "You may use this component to create animations or material properties which may be changed on the fly " +
@@ -33,21 +30,5 @@ namespace VRCTools.World.Editor.SynchronizedValues
       "scripts or one of the scripts provided by this package: \n\n" +
       " - For labels use LocalStringLabel\n" +
       "Additional compatible scripts may be available within this package.";
-
-    protected override void OnEnable()
-    {
-      base.OnEnable();
-
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-    }
-
-    protected override void RenderInspectorGUI()
-    {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
-      EditorGUILayout.Space(20);
-
-      base.RenderInspectorGUI();
-    }
   }
 }

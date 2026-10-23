@@ -16,6 +16,7 @@ using System;
 using UdonSharp;
 using UnityEditor;
 using UnityEngine;
+using VRC.SDKBase;
 using VRCTools.World.Utils;
 using VRCTools.World.Values;
 
@@ -23,6 +24,8 @@ namespace VRCTools.World.Editor.Utils
 {
   public static class ValueEditorUtility
   {
+    private const string StateLabel = "Current State";
+
     public static void DrawSourceProperty(
       GUIContent label,
       SerializedProperty sourceProperty,
@@ -153,6 +156,25 @@ namespace VRCTools.World.Editor.Utils
       }
 
       return "invalid";
+    }
+
+    public static void DrawRuntimeValue(object value)
+    {
+      EditorGUI.BeginDisabledGroup(true);
+      switch (value)
+      {
+        case null: EditorGUILayout.LabelField(StateLabel, "null"); break;
+        case bool b: EditorGUILayout.Toggle(StateLabel, b); break;
+        case int i: EditorGUILayout.IntField(StateLabel, i); break;
+        case float f: EditorGUILayout.FloatField(StateLabel, f); break;
+        case string s: EditorGUILayout.TextField(StateLabel, s); break;
+        case Color c: EditorGUILayout.ColorField(StateLabel, c); break;
+        case Vector3 v: EditorGUILayout.Vector3Field(StateLabel, v); break;
+        case VRCUrl url: EditorGUILayout.TextField(StateLabel, url.Get()); break;
+        case Texture2D tex: EditorGUILayout.ObjectField(StateLabel, tex, typeof(Texture2D), false); break;
+        default: EditorGUILayout.LabelField(StateLabel, value.ToString()); break;
+      }
+      EditorGUI.EndDisabledGroup();
     }
   }
 }

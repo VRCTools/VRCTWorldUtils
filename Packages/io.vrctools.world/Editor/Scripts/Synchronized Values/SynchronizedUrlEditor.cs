@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using UnityEditor;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
 namespace VRCTools.World.Editor.SynchronizedValues
@@ -21,31 +20,13 @@ namespace VRCTools.World.Editor.SynchronizedValues
   using Value = SynchronizedUrl;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedUrlEditor : AbstractSynchronizedEventEmitterEditor
+  public class SynchronizedUrlEditor : AbstractSynchronizedValueEditor
   {
-    private SerializedProperty _defaultValue;
-
     protected override string HelpText =>
       "Provides a synchronized URL value with event capabilities.\n\n" +
       "You may use this component to create objects which may be updated on the fly within an instance of this " +
       "world.\n\n" +
       "Please note that this script is useless on its own. You will need to combine it with either custom " +
       "scripts or one of the scripts provided by this package.";
-
-    protected override void OnEnable()
-    {
-      base.OnEnable();
-
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-    }
-
-    protected override void RenderInspectorGUI()
-    {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
-      EditorGUILayout.Space(20);
-
-      base.RenderInspectorGUI();
-    }
   }
 }

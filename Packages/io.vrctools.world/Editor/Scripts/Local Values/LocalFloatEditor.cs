@@ -53,9 +53,9 @@ namespace VRCTools.World.Editor.LocalValues
       this._minimalUpdateDifference = this.serializedObject.FindProperty(nameof(Value.minimalUpdateDifference));
     }
 
-    protected override void RenderInspectorGUI()
+    protected override void RenderValueProperties()
     {
-      this.RenderDefaults();
+      base.RenderValueProperties();
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Restrictions", EditorStyles.boldLabel);
@@ -84,9 +84,6 @@ namespace VRCTools.World.Editor.LocalValues
             MessageType.Error);
       }
       EditorGUI.EndDisabledGroup();
-
-      EditorGUILayout.Space(20);
-      this.RenderAdvancedFoldoutGUI();
     }
   }
 }

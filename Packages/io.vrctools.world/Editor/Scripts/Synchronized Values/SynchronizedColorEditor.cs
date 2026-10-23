@@ -14,7 +14,6 @@
 
 using UnityEditor;
 using UnityEngine;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
 namespace VRCTools.World.Editor.SynchronizedValues
@@ -22,9 +21,8 @@ namespace VRCTools.World.Editor.SynchronizedValues
   using Value = SynchronizedColor;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedColorEditor : AbstractSynchronizedEventEmitterEditor
+  public class SynchronizedColorEditor : AbstractSynchronizedValueEditor
   {
-    private SerializedProperty _defaultValue;
     private SerializedProperty _permitAlpha;
     private SerializedProperty _permitHDR;
 
@@ -43,20 +41,14 @@ namespace VRCTools.World.Editor.SynchronizedValues
     {
       base.OnEnable();
 
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
       this._permitAlpha = this.serializedObject.FindProperty(nameof(Value.permitAlpha));
       this._permitHDR = this.serializedObject.FindProperty(nameof(Value.permitHDR));
     }
 
-    protected override void RenderInspectorGUI()
+    protected override void RenderValueProperties()
     {
-      var permitAlpha = this._permitAlpha.boolValue;
-      var permitHDR = this._permitHDR.boolValue;
-
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"),
-        this._defaultValue.colorValue, true, permitAlpha,
-        permitHDR);
+      base.RenderValueProperties();
+      EditorGUILayout.Space(20);
 
       this._colorTypeFoldout = EditorGUILayout.Foldout(this._colorTypeFoldout, "Color Type");
       if (this._colorTypeFoldout)
@@ -68,10 +60,17 @@ namespace VRCTools.World.Editor.SynchronizedValues
         }
         EditorGUI.indentLevel--;
       }
+    }
 
-      EditorGUILayout.Space(20);
+    protected override void RenderDefaults()
+    {
+      var permitAlpha = this._permitAlpha.boolValue;
+      var permitHDR = this._permitHDR.boolValue;
 
-      base.RenderInspectorGUI();
+      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
+      this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"),
+        this._defaultValue.colorValue, true, permitAlpha,
+        permitHDR);
     }
   }
 }

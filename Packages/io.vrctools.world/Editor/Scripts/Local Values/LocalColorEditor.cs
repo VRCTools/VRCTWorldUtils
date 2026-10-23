@@ -45,7 +45,7 @@ namespace VRCTools.World.Editor.LocalValues
       this._permitHDR = this.serializedObject.FindProperty(nameof(Value.permitHDR));
     }
 
-    protected override void RenderInspectorGUI()
+    protected override void RenderDefaults()
     {
       var permitAlpha = this._permitAlpha.boolValue;
       var permitHDR = this._permitHDR.boolValue;
@@ -54,6 +54,12 @@ namespace VRCTools.World.Editor.LocalValues
       this._defaultValue.colorValue = EditorGUILayout.ColorField(new GUIContent("Default Value"),
         this._defaultValue.colorValue, true, permitAlpha,
         permitHDR);
+    }
+
+    protected override void RenderValueProperties()
+    {
+      base.RenderValueProperties();
+      EditorGUILayout.Space(20);
 
       this._colorTypeFoldout = EditorGUILayout.Foldout(this._colorTypeFoldout, "Color Type");
       if (!this._colorTypeFoldout) return;
@@ -64,9 +70,6 @@ namespace VRCTools.World.Editor.LocalValues
         EditorGUILayout.PropertyField(this._permitHDR);
       }
       EditorGUI.indentLevel--;
-
-      EditorGUILayout.Space(20);
-      this.RenderAdvancedFoldoutGUI();
     }
   }
 }

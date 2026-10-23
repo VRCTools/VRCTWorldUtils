@@ -14,7 +14,6 @@
 
 using UnityEditor;
 using UnityEngine;
-using VRCTools.World.Editor.Abstractions;
 using VRCTools.World.SynchronizedValues;
 
 namespace VRCTools.World.Editor.SynchronizedValues
@@ -22,9 +21,8 @@ namespace VRCTools.World.Editor.SynchronizedValues
   using Value = SynchronizedFloat;
 
   [CustomEditor(typeof(Value))]
-  public class SynchronizedFloatEditor : AbstractSynchronizedEventEmitterEditor
+  public class SynchronizedFloatEditor : AbstractSynchronizedValueEditor
   {
-    private SerializedProperty _defaultValue;
     private SerializedProperty _minimalUpdateDifference;
 
     private SerializedProperty _preventNuisanceUpdates;
@@ -47,8 +45,6 @@ namespace VRCTools.World.Editor.SynchronizedValues
     {
       base.OnEnable();
 
-      this._defaultValue = this.serializedObject.FindProperty(nameof(Value.defaultValue));
-
       this._restrictValue = this.serializedObject.FindProperty(nameof(Value.restrictValue));
       this._restrictedMinimumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMinimumValue));
       this._restrictedMaximumValue = this.serializedObject.FindProperty(nameof(Value.restrictedMaximumValue));
@@ -57,15 +53,14 @@ namespace VRCTools.World.Editor.SynchronizedValues
       this._minimalUpdateDifference = this.serializedObject.FindProperty(nameof(Value.minimalUpdateDifference));
     }
 
-    protected override void RenderInspectorGUI()
+    protected override void RenderValueProperties()
     {
-      EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
-      EditorGUILayout.PropertyField(this._defaultValue);
+      base.RenderValueProperties();
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Restrictions", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._restrictValue);
-      GUI.enabled = this._restrictValue.boolValue;
+      EditorGUI.BeginDisabledGroup(!this._restrictValue.boolValue);
       {
         EditorGUILayout.PropertyField(this._restrictedMinimumValue, new GUIContent("Minimum Value"));
         EditorGUILayout.PropertyField(this._restrictedMaximumValue, new GUIContent("Maximum Value"));
@@ -74,12 +69,12 @@ namespace VRCTools.World.Editor.SynchronizedValues
           EditorGUILayout.HelpBox("Minimum value cannot exceed maximum value - Restriction will be ignored",
             MessageType.Error);
       }
-      GUI.enabled = true;
+      EditorGUI.EndDisabledGroup();
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("Update Behaviour", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._preventNuisanceUpdates);
-      GUI.enabled = this._preventNuisanceUpdates.boolValue;
+      EditorGUI.BeginDisabledGroup(!this._preventNuisanceUpdates.boolValue);
       {
         EditorGUILayout.PropertyField(this._minimalUpdateDifference);
 
@@ -88,10 +83,7 @@ namespace VRCTools.World.Editor.SynchronizedValues
             $"Minimum update difference cannot be less than {Mathf.Epsilon} - Minimum will be clamped",
             MessageType.Error);
       }
-      GUI.enabled = true;
-      EditorGUILayout.Space(20);
-
-      base.RenderInspectorGUI();
+      EditorGUI.EndDisabledGroup();
     }
   }
 }

@@ -12,16 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using UdonSharp;
+using UdonSharpEditor;
 using UnityEditor;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.World.Editor.Abstractions;
+using VRCTools.World.Editor.Utils;
 
 namespace VRCTools.World.Editor.LocalValues
 {
   public abstract class AbstractLocalValueEditor : AbstractEventEmitterEditor
   {
     protected virtual string _defaultValuePropertyName => "defaultValue";
+    protected virtual string _stateVariableName => "_state";
 
     protected SerializedProperty _defaultValue;
 
@@ -33,18 +37,54 @@ namespace VRCTools.World.Editor.LocalValues
       this._defaultValue = this.serializedObject.FindProperty(this._defaultValuePropertyName);
     }
 
+    public override bool RequiresConstantRepaint()
+    {
+      return Application.isPlaying && this._stateVariableName != null;
+    }
+
     protected override void RenderInspectorGUI()
     {
-      this.RenderDefaults();
+      this.RenderValueProperties();
       EditorGUILayout.Space(20);
 
       base.RenderInspectorGUI();
+
+      if (!Application.isPlaying || this._stateVariableName == null)
+      {
+        return;
+      }
+
+      this.DrawRuntimeValue();
+    }
+
+    protected virtual void RenderValueProperties()
+    {
+     this.RenderDefaults();
     }
 
     protected virtual void RenderDefaults()
     {
       EditorGUILayout.LabelField("Defaults", EditorStyles.boldLabel);
       EditorGUILayout.PropertyField(this._defaultValue);
+    }
+
+    protected virtual void DrawRuntimeValue()
+    {
+      var behaviour = this.target as UdonSharpBehaviour;
+      if (behaviour == null)
+      {
+        return;
+      }
+
+      var udon = UdonSharpEditorUtility.GetBackingUdonBehaviour(behaviour);
+      if (udon == null || !udon.TryGetProgramVariable(this._stateVariableName, out var state))
+      {
+        return;
+      }
+
+      EditorGUILayout.Space(20);
+      EditorGUILayout.LabelField("Debug", EditorStyles.boldLabel);
+      ValueEditorUtility.DrawRuntimeValue(state);
     }
   }
 }
