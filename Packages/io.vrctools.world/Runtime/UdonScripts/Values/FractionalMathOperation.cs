@@ -16,9 +16,9 @@ namespace VRCTools.World.Values
 {
   public enum FractionalMathOperation
   {
-    ADD,
-    SUBTRACT,
-    MULTIPLY,
-    DIVIDE
+    Add,
+    Subtract,
+    Multiply,
+    Divide
   }
 }

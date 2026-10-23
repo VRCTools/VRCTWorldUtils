@@ -71,12 +71,12 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL: return ValueSource.LOCAL;
-        case ValueKind.SYNCHRONIZED: return ValueSource.SYNCHRONIZED;
+        case ValueKind.Local: return ValueSource.Local;
+        case ValueKind.Synchronized: return ValueSource.Synchronized;
       }
 
       Debug.LogError($"Received unknown value type {kind}");
-      return ValueSource.STATIC;
+      return ValueSource.Static;
     }
 
     public static bool IsValid(ValueSource type, object localValue, object synchronizedValue)
@@ -85,10 +85,10 @@ namespace VRCTools.World.Utils
 
       switch (type)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           valid = Utilities.IsValid(localValue);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           valid = Utilities.IsValid(synchronizedValue);
           break;
       }
@@ -106,9 +106,9 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           return true;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           return synchronizedValue.IsLocallyOwned();
         default:
           Debug.LogError($"Received unknown value type {kind}");
@@ -119,7 +119,7 @@ namespace VRCTools.World.Utils
     public static bool IsLocallyOwned(ValueSource source,
       UdonSharpBehaviour synchronizedValue)
     {
-      if (source == ValueSource.SYNCHRONIZED)
+      if (source == ValueSource.Synchronized)
       {
         return synchronizedValue.IsLocallyOwned();
       }
@@ -136,10 +136,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalBoolean.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedBoolean.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -165,10 +165,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -189,10 +189,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }
@@ -202,10 +202,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue._Toggle();
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue._Toggle();
           break;
       }
@@ -220,10 +220,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalColor.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedColor.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -249,10 +249,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -273,10 +273,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }
@@ -291,10 +291,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalFloat.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedFloat.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -320,10 +320,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -344,10 +344,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }
@@ -362,10 +362,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalInt.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedInt.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -391,10 +391,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -411,10 +411,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }
@@ -429,10 +429,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalString.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedString.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -458,10 +458,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -482,10 +482,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }
@@ -500,10 +500,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalUrl.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedUrl.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -529,10 +529,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -553,10 +553,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           staticValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }
@@ -571,10 +571,10 @@ namespace VRCTools.World.Utils
     {
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           localValue._RegisterHandler(LocalVector3.EVENT_STATE_UPDATED, handler, eventName);
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           synchronizedValue._RegisterHandler(SynchronizedVector3.EVENT_STATE_UPDATED, handler, eventName);
           break;
       }
@@ -600,10 +600,10 @@ namespace VRCTools.World.Utils
 
       switch (source)
       {
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           state = localValue.State;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           state = synchronizedValue.State;
           break;
       }
@@ -624,10 +624,10 @@ namespace VRCTools.World.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           localValue.State = value;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           synchronizedValue.State = value;
           break;
       }

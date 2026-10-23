@@ -16,10 +16,10 @@ namespace VRCTools.World.Values
 {
   public enum IntegralMathOperation
   {
-    ADD,
-    SUBTRACT,
-    MULTIPLY,
-    DIVIDE,
-    REM
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+    Rem
   }
 }

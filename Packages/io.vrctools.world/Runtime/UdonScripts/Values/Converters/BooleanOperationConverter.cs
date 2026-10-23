@@ -77,25 +77,25 @@ namespace VRCTools.World.Values.Converters
       var newValue = false;
       switch (this.operation)
       {
-        case BooleanOperation.NOT:
+        case BooleanOperation.Not:
           newValue = !alpha;
           break;
-        case BooleanOperation.AND:
+        case BooleanOperation.And:
           newValue = alpha && beta;
           break;
-        case BooleanOperation.OR:
+        case BooleanOperation.Or:
           newValue = alpha || beta;
           break;
-        case BooleanOperation.XOR:
+        case BooleanOperation.Xor:
           newValue = alpha ^ beta;
           break;
-        case BooleanOperation.NAND:
+        case BooleanOperation.Nand:
           newValue = !(alpha || beta);
           break;
-        case BooleanOperation.NOR:
+        case BooleanOperation.Nor:
           newValue = !(alpha || beta);
           break;
-        case BooleanOperation.XNOR:
+        case BooleanOperation.Xnor:
           newValue = !(alpha ^ beta);
           break;
       }

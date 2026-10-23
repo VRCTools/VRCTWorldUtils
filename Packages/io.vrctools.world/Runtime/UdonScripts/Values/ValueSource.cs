@@ -16,8 +16,8 @@ namespace VRCTools.World.Values
 {
   public enum ValueSource
   {
-    STATIC = 0,
-    LOCAL = 1,
-    SYNCHRONIZED = 2
+    Static = 0,
+    Local = 1,
+    Synchronized = 2
   }
 }

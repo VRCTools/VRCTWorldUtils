@@ -70,16 +70,16 @@ namespace VRCTools.World.Values.Converters
       int result;
       switch (this.operation)
       {
-        case IntegralMathOperation.ADD:
+        case IntegralMathOperation.Add:
           result = a + b;
           break;
-        case IntegralMathOperation.SUBTRACT:
+        case IntegralMathOperation.Subtract:
           result = a - b;
           break;
-        case IntegralMathOperation.MULTIPLY:
+        case IntegralMathOperation.Multiply:
           result = a * b;
           break;
-        case IntegralMathOperation.DIVIDE:
+        case IntegralMathOperation.Divide:
           if (b == 0)
           {
             UdonDebug.Error(this, "Division by zero is not permitted - Value remains unchanged");
@@ -88,7 +88,7 @@ namespace VRCTools.World.Values.Converters
 
           result = a / b;
           break;
-        case IntegralMathOperation.REM:
+        case IntegralMathOperation.Rem:
           if (b == 0)
           {
             UdonDebug.Error(this, "Remainder by zero is not permitted - Value remains unchanged");

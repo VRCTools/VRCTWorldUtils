@@ -91,16 +91,16 @@ namespace VRCTools.World.Editor.Values.Converters
       formula += " ";
       switch (operation)
       {
-        case FractionalMathOperation.ADD:
+        case FractionalMathOperation.Add:
           formula += "+";
           break;
-        case FractionalMathOperation.SUBTRACT:
+        case FractionalMathOperation.Subtract:
           formula += "-";
           break;
-        case FractionalMathOperation.MULTIPLY:
+        case FractionalMathOperation.Multiply:
           formula += "*";
           break;
-        case FractionalMathOperation.DIVIDE:
+        case FractionalMathOperation.Divide:
           formula += "/";
           break;
         default:

@@ -16,7 +16,7 @@ namespace VRCTools.World.Values
 {
   public enum ValueKind
   {
-    LOCAL,
-    SYNCHRONIZED
+    Local,
+    Synchronized
   }
 }

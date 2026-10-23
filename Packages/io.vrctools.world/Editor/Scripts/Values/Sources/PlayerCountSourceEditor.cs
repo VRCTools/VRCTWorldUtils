@@ -42,7 +42,7 @@ namespace VRCTools.World.Editor.Values.Sources
       var selectedTarget = (ValueKind)this._output.enumValueIndex;
       var selectedMode = (PlayerCountMode)this._mode.enumValueIndex;
 
-      if (selectedMode != PlayerCountMode.Current && selectedTarget != ValueKind.SYNCHRONIZED)
+      if (selectedMode != PlayerCountMode.Current && selectedTarget != ValueKind.Synchronized)
       {
         EditorGUILayout.Space(10);
         EditorGUILayout.HelpBox(

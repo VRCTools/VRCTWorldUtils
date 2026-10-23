@@ -16,16 +16,16 @@ namespace VRCTools.World.Player
 {
   public static class PlayerType
   {
-    public const int NONE = 0;
-    public const int LOCAL = 1;
-    public const int REMOTE = 2;
-    public const int ALL = 3;
+    public const int None = 0;
+    public const int Local = 1;
+    public const int Remote = 2;
+    public const int All = 3;
 
     public static bool HasFlag(int value, int mask)
     {
-      if (mask == ALL) return value != 0;
+      if (mask == All) return value != 0;
 
-      if (mask == NONE) return value == 0;
+      if (mask == None) return value == 0;
 
       return (value & mask) != 0;
     }

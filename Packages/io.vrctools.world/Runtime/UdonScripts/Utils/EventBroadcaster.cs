@@ -61,13 +61,13 @@ namespace VRCTools.World.Utils
 
         switch (this.delayMode)
         {
-          case DelayMode.NONE:
+          case DelayMode.None:
             behaviour.SendCustomEvent(eventName);
             break;
-          case DelayMode.FRAMES:
+          case DelayMode.Frames:
             behaviour.SendCustomEventDelayedFrames(eventName, this.delayFrames, this.delayTiming);
             break;
-          case DelayMode.SECONDS:
+          case DelayMode.Seconds:
             behaviour.SendCustomEventDelayedSeconds(eventName, this.delaySeconds, this.delayTiming);
             break;
           default:

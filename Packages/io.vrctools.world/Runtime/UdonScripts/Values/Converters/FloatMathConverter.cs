@@ -73,16 +73,16 @@ namespace VRCTools.World.Values.Converters
       float result;
       switch (this.operation)
       {
-        case FractionalMathOperation.ADD:
+        case FractionalMathOperation.Add:
           result = a + b;
           break;
-        case FractionalMathOperation.SUBTRACT:
+        case FractionalMathOperation.Subtract:
           result = a - b;
           break;
-        case FractionalMathOperation.MULTIPLY:
+        case FractionalMathOperation.Multiply:
           result = a * b;
           break;
-        case FractionalMathOperation.DIVIDE:
+        case FractionalMathOperation.Divide:
           result = a / b;
           break;
         default:

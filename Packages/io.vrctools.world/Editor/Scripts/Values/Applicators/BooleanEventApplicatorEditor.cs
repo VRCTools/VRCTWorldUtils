@@ -97,11 +97,11 @@ namespace VRCTools.World.Editor.Values.Applicators
       var delayMode = (DelayMode)this._delayMode.enumValueIndex;
       switch (delayMode)
       {
-        case DelayMode.NONE: return;
-        case DelayMode.FRAMES:
+        case DelayMode.None: return;
+        case DelayMode.Frames:
           EditorGUILayout.PropertyField(this._delayFrames);
           break;
-        case DelayMode.SECONDS:
+        case DelayMode.Seconds:
           EditorGUILayout.PropertyField(this._delaySeconds);
           break;
         default:

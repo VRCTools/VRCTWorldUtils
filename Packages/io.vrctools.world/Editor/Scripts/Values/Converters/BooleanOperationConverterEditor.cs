@@ -78,7 +78,7 @@ namespace VRCTools.World.Editor.Values.Converters
         "Component value is invalid or unset - Value will be substituted by false");
 
       var operation = (BooleanOperation)this._operation.enumValueIndex;
-      if (operation == BooleanOperation.NOT) return;
+      if (operation == BooleanOperation.Not) return;
       EditorGUILayout.Space(20);
 
       EditorGUILayout.LabelField("B", EditorStyles.boldLabel);

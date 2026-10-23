@@ -114,16 +114,16 @@ namespace VRCTools.World.Values.Applicators
 
       switch (this.positionOperation)
       {
-        case FractionalMathOperation.ADD:
+        case FractionalMathOperation.Add:
           position += value;
           break;
-        case FractionalMathOperation.SUBTRACT:
+        case FractionalMathOperation.Subtract:
           position -= value;
           break;
-        case FractionalMathOperation.MULTIPLY:
+        case FractionalMathOperation.Multiply:
           position.Scale(value);
           break;
-        case FractionalMathOperation.DIVIDE:
+        case FractionalMathOperation.Divide:
           position.x /= value.x;
           position.y /= value.y;
           position.z /= value.z;
@@ -157,16 +157,16 @@ namespace VRCTools.World.Values.Applicators
 
       switch (this.rotationOperation)
       {
-        case FractionalMathOperation.ADD:
+        case FractionalMathOperation.Add:
           rotation += value;
           break;
-        case FractionalMathOperation.SUBTRACT:
+        case FractionalMathOperation.Subtract:
           rotation -= value;
           break;
-        case FractionalMathOperation.MULTIPLY:
+        case FractionalMathOperation.Multiply:
           rotation.Scale(value);
           break;
-        case FractionalMathOperation.DIVIDE:
+        case FractionalMathOperation.Divide:
           rotation.x /= value.x;
           rotation.y /= value.y;
           rotation.z /= value.z;
@@ -199,16 +199,16 @@ namespace VRCTools.World.Values.Applicators
 
       switch (this.scaleOperation)
       {
-        case FractionalMathOperation.ADD:
+        case FractionalMathOperation.Add:
           scale += value;
           break;
-        case FractionalMathOperation.SUBTRACT:
+        case FractionalMathOperation.Subtract:
           scale -= value;
           break;
-        case FractionalMathOperation.MULTIPLY:
+        case FractionalMathOperation.Multiply:
           scale.Scale(value);
           break;
-        case FractionalMathOperation.DIVIDE:
+        case FractionalMathOperation.Divide:
           scale.x /= value.x;
           scale.y /= value.y;
           scale.z /= value.z;

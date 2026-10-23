@@ -40,7 +40,7 @@ namespace VRCTools.World.Player
     public UdonSharpBehaviour[] exitBehaviours;
     public string[] exitBehaviorEventNames;
 
-    [PlayerType] public int acceptedPlayerTypes = PlayerType.ALL;
+    [PlayerType] public int acceptedPlayerTypes = PlayerType.All;
 
     public override int EventCount => EVENT_COUNT;
 
@@ -59,7 +59,7 @@ namespace VRCTools.World.Player
     [MustCallBase]
     public override void OnPlayerTriggerEnter(VRCPlayerApi player)
     {
-      var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
+      var playerType = player.isLocal ? PlayerType.Local : PlayerType.Remote;
       if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
 
       this.LastPlayer = player;
@@ -79,7 +79,7 @@ namespace VRCTools.World.Player
     [MustCallBase]
     public override void OnPlayerTriggerExit(VRCPlayerApi player)
     {
-      var playerType = player.isLocal ? PlayerType.LOCAL : PlayerType.REMOTE;
+      var playerType = player.isLocal ? PlayerType.Local : PlayerType.Remote;
       if (!PlayerType.HasFlag(playerType, this.acceptedPlayerTypes)) return;
 
       this.LastPlayer = player;

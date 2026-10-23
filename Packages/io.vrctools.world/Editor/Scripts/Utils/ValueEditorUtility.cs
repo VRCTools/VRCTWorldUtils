@@ -37,19 +37,19 @@ namespace VRCTools.World.Editor.Utils
       SerializedProperty property = null;
       switch (s)
       {
-        case ValueSource.STATIC:
+        case ValueSource.Static:
           property = staticProperty;
           break;
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           property = localProperty;
           break;
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           property = synchronizedProperty;
           break;
       }
 
       EditorGUILayout.PropertyField(property, label);
-      if (s != ValueSource.STATIC && !ValueUtility.IsValid(s, localProperty.objectReferenceValue,
+      if (s != ValueSource.Static && !ValueUtility.IsValid(s, localProperty.objectReferenceValue,
             synchronizedProperty.objectReferenceValue))
         EditorGUILayout.HelpBox(unsetErrorMessage, MessageType.Error);
     }
@@ -67,10 +67,10 @@ namespace VRCTools.World.Editor.Utils
       SerializedProperty property = null;
       switch (s)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           property = localProperty;
           break;
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           property = synchronizedProperty;
           break;
       }
@@ -87,9 +87,9 @@ namespace VRCTools.World.Editor.Utils
     {
       switch (kind)
       {
-        case ValueKind.LOCAL:
+        case ValueKind.Local:
           return GetObjectDisplayName(localValue);
-        case ValueKind.SYNCHRONIZED:
+        case ValueKind.Synchronized:
           return GetObjectDisplayName(synchronizedValue);
         default:
           throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -113,11 +113,11 @@ namespace VRCTools.World.Editor.Utils
     {
       switch (source)
       {
-        case ValueSource.STATIC:
+        case ValueSource.Static:
           return staticValue;
-        case ValueSource.LOCAL:
+        case ValueSource.Local:
           return GetObjectDisplayName(localValue);
-        case ValueSource.SYNCHRONIZED:
+        case ValueSource.Synchronized:
           return GetObjectDisplayName(synchronizedValue);
         default:
           throw new ArgumentOutOfRangeException(nameof(source), source, null);

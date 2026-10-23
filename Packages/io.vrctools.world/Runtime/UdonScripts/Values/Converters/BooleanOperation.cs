@@ -16,12 +16,12 @@ namespace VRCTools.World.Values.Converters
 {
   public enum BooleanOperation
   {
-    NOT = 0,
-    AND = 1,
-    OR = 2,
-    XOR = 3,
-    NAND = 4,
-    NOR = 5,
-    XNOR = 6
+    Not = 0,
+    And = 1,
+    Or = 2,
+    Xor = 3,
+    Nand = 4,
+    Nor = 5,
+    Xnor = 6
   }
 }

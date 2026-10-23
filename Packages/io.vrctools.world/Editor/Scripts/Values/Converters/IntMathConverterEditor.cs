@@ -85,19 +85,19 @@ namespace VRCTools.World.Editor.Values.Converters
       formula += " ";
       switch (operation)
       {
-        case IntegralMathOperation.ADD:
+        case IntegralMathOperation.Add:
           formula += "+";
           break;
-        case IntegralMathOperation.SUBTRACT:
+        case IntegralMathOperation.Subtract:
           formula += "-";
           break;
-        case IntegralMathOperation.MULTIPLY:
+        case IntegralMathOperation.Multiply:
           formula += "*";
           break;
-        case IntegralMathOperation.DIVIDE:
+        case IntegralMathOperation.Divide:
           formula += "/";
           break;
-        case IntegralMathOperation.REM:
+        case IntegralMathOperation.Rem:
           formula += "%";
           break;
         default:
