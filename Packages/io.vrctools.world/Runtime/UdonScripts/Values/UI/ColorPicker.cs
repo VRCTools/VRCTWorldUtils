@@ -33,7 +33,7 @@ namespace VRCTools.World.Values.UI
   [AddComponentMenu("Values/UI/Color Picker")]
   public class ColorPicker : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalColor localValue;
     public SynchronizedColor synchronizedValue;
 

@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Float Comparison Converter")]
   public class FloatComparisonConverter : UdonSharpBehaviour
   {
-    public ValueType output;
+    public ValueKind output;
     public LocalBoolean localOutput;
     public SynchronizedBoolean synchronizedOutput;
 

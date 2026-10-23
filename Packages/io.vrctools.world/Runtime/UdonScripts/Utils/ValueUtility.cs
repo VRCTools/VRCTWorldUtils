@@ -20,7 +20,6 @@ using VRCTools.Common.Utils;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Values;
-using ValueType = VRCTools.World.Values.ValueType;
 
 namespace VRCTools.World.Utils
 {
@@ -68,15 +67,15 @@ namespace VRCTools.World.Utils
       return Mathf.RoundToInt(Remap((float)value, from1, to1, from2, to2));
     }
 
-    public static ValueSource ToSource(ValueType type)
+    public static ValueSource ToSource(ValueKind kind)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL: return ValueSource.LOCAL;
-        case ValueType.SYNCHRONIZED: return ValueSource.SYNCHRONIZED;
+        case ValueKind.LOCAL: return ValueSource.LOCAL;
+        case ValueKind.SYNCHRONIZED: return ValueSource.SYNCHRONIZED;
       }
 
-      Debug.LogError($"Received unknown value type {type}");
+      Debug.LogError($"Received unknown value type {kind}");
       return ValueSource.STATIC;
     }
 
@@ -97,22 +96,22 @@ namespace VRCTools.World.Utils
       return valid;
     }
 
-    public static bool IsValid(ValueType type, object localValue, object synchronizedValue)
+    public static bool IsValid(ValueKind kind, object localValue, object synchronizedValue)
     {
-      return IsValid(ToSource(type), localValue, synchronizedValue);
+      return IsValid(ToSource(kind), localValue, synchronizedValue);
     }
 
-    public static bool IsLocallyOwned(ValueType type,
+    public static bool IsLocallyOwned(ValueKind kind,
       UdonSharpBehaviour synchronizedValue)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           return true;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           return synchronizedValue.IsLocallyOwned();
         default:
-          Debug.LogError($"Received unknown value type {type}");
+          Debug.LogError($"Received unknown value type {kind}");
           return true;
       }
     }
@@ -147,13 +146,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalBoolean localValue,
       SynchronizedBoolean synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static bool GetValue(
@@ -177,36 +176,36 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static bool GetValue(ValueType type, LocalBoolean localValue, SynchronizedBoolean synchronizedValue)
+    public static bool GetValue(ValueKind kind, LocalBoolean localValue, SynchronizedBoolean synchronizedValue)
     {
-      return GetValue(ToSource(type), false, localValue, synchronizedValue);
+      return GetValue(ToSource(kind), false, localValue, synchronizedValue);
     }
 
     public static void SetValue(
-      ValueType type,
+      ValueKind kind,
       LocalBoolean localValue,
       SynchronizedBoolean synchronizedValue,
       bool value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }
     }
 
-    public static void ToggleValue(ValueType type, LocalBoolean localValue, SynchronizedBoolean synchronizedValue)
+    public static void ToggleValue(ValueKind kind, LocalBoolean localValue, SynchronizedBoolean synchronizedValue)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue._Toggle();
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue._Toggle();
           break;
       }
@@ -231,13 +230,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalColor localValue,
       SynchronizedColor synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static Color GetValue(
@@ -261,23 +260,23 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static Color GetValue(ValueType type, LocalColor localValue, SynchronizedColor synchronizedValue)
+    public static Color GetValue(ValueKind kind, LocalColor localValue, SynchronizedColor synchronizedValue)
     {
-      return GetValue(ToSource(type), Color.black, localValue, synchronizedValue);
+      return GetValue(ToSource(kind), Color.black, localValue, synchronizedValue);
     }
 
     public static void SetValue(
-      ValueType type,
+      ValueKind kind,
       LocalColor localValue,
       SynchronizedColor synchronizedValue,
       Color value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }
@@ -302,13 +301,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalFloat localValue,
       SynchronizedFloat synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static float GetValue(
@@ -332,23 +331,23 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static float GetValue(ValueType type, LocalFloat localValue, SynchronizedFloat synchronizedValue)
+    public static float GetValue(ValueKind kind, LocalFloat localValue, SynchronizedFloat synchronizedValue)
     {
-      return GetValue(ToSource(type), 0f, localValue, synchronizedValue);
+      return GetValue(ToSource(kind), 0f, localValue, synchronizedValue);
     }
 
     public static void SetValue(
-      ValueType type,
+      ValueKind kind,
       LocalFloat localValue,
       SynchronizedFloat synchronizedValue,
       float value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }
@@ -373,13 +372,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalInt localValue,
       SynchronizedInt synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static int GetValue(
@@ -403,19 +402,19 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static int GetValue(ValueType type, LocalInt localValue, SynchronizedInt synchronizedValue)
+    public static int GetValue(ValueKind kind, LocalInt localValue, SynchronizedInt synchronizedValue)
     {
-      return GetValue(ToSource(type), 0, localValue, synchronizedValue);
+      return GetValue(ToSource(kind), 0, localValue, synchronizedValue);
     }
 
-    public static void SetValue(ValueType type, LocalInt localValue, SynchronizedInt synchronizedValue, int value)
+    public static void SetValue(ValueKind kind, LocalInt localValue, SynchronizedInt synchronizedValue, int value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }
@@ -440,13 +439,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalString localValue,
       SynchronizedString synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static string GetValue(
@@ -470,23 +469,23 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static string GetValue(ValueType type, LocalString localValue, SynchronizedString synchronizedValue)
+    public static string GetValue(ValueKind kind, LocalString localValue, SynchronizedString synchronizedValue)
     {
-      return GetValue(ToSource(type), string.Empty, localValue, synchronizedValue);
+      return GetValue(ToSource(kind), string.Empty, localValue, synchronizedValue);
     }
 
     public static void SetValue(
-      ValueType type,
+      ValueKind kind,
       LocalString localValue,
       SynchronizedString synchronizedValue,
       string value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }
@@ -511,13 +510,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalUrl localValue,
       SynchronizedUrl synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static VRCUrl GetValue(
@@ -541,23 +540,23 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static VRCUrl GetValue(ValueType type, LocalUrl staticValue, SynchronizedUrl synchronizedValue)
+    public static VRCUrl GetValue(ValueKind kind, LocalUrl staticValue, SynchronizedUrl synchronizedValue)
     {
-      return GetValue(ToSource(type), VRCUrl.Empty, staticValue, synchronizedValue);
+      return GetValue(ToSource(kind), VRCUrl.Empty, staticValue, synchronizedValue);
     }
 
     public static void SetValue(
-      ValueType type,
+      ValueKind kind,
       LocalUrl staticValue,
       SynchronizedUrl synchronizedValue,
       VRCUrl value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           staticValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }
@@ -582,13 +581,13 @@ namespace VRCTools.World.Utils
     }
 
     public static void RegisterUpdateHandler(
-      ValueType type,
+      ValueKind kind,
       LocalVector3 localValue,
       SynchronizedVector3 synchronizedValue,
       UdonSharpBehaviour handler,
       string eventName)
     {
-      RegisterUpdateHandler(ToSource(type), localValue, synchronizedValue, handler, eventName);
+      RegisterUpdateHandler(ToSource(kind), localValue, synchronizedValue, handler, eventName);
     }
 
     public static Vector3 GetValue(
@@ -612,23 +611,23 @@ namespace VRCTools.World.Utils
       return state;
     }
 
-    public static Vector3 GetValue(ValueType type, LocalVector3 localValue, SynchronizedVector3 synchronizedValue)
+    public static Vector3 GetValue(ValueKind kind, LocalVector3 localValue, SynchronizedVector3 synchronizedValue)
     {
-      return GetValue(ToSource(type), Vector3.zero, localValue, synchronizedValue);
+      return GetValue(ToSource(kind), Vector3.zero, localValue, synchronizedValue);
     }
 
     public static void SetValue(
-      ValueType type,
+      ValueKind kind,
       LocalVector3 localValue,
       SynchronizedVector3 synchronizedValue,
       Vector3 value)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           localValue.State = value;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           synchronizedValue.State = value;
           break;
       }

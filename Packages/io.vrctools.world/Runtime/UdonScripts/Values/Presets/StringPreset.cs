@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Presets
   [AddComponentMenu("Values/Presets/String Preset")]
   public class StringPreset : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalString localTarget;
     public SynchronizedString synchronizedTarget;
 

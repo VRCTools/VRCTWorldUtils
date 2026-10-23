@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Presets
   [AddComponentMenu("Values/Presets/Color Preset")]
   public class ColorPreset : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
 

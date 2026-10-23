@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.UI
   [AddComponentMenu("Values/UI/Value Toggle")]
   public class ValueToggle : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 

@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Presets
   [AddComponentMenu("Values/Presets/URL Preset")]
   public class UrlPreset : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalUrl localTarget;
     public SynchronizedUrl synchronizedTarget;
 

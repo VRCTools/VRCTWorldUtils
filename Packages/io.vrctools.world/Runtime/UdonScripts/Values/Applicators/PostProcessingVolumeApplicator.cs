@@ -32,7 +32,7 @@ namespace VRCTools.World.Values.Applicators
   {
     public PostProcessVolume volume;
 
-    public ValueType weight;
+    public ValueKind weight;
     public LocalFloat localWeight;
     public SynchronizedFloat synchronizedWeight;
 

@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Presets
   [AddComponentMenu("Values/Presets/Float Preset")]
   public class FloatPreset : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalFloat localTarget;
     public SynchronizedFloat synchronizedTarget;
 

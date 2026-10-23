@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Presets
   [AddComponentMenu("Values/Presets/Vector3 Preset")]
   public class Vector3Preset : UdonSharpBehaviour
   {
-    public ValueType type;
+    public ValueKind kind;
     public LocalVector3 localTarget;
     public SynchronizedVector3 synchronizedTarget;
 
@@ -38,7 +38,7 @@ namespace VRCTools.World.Values.Presets
 
     private void Start()
     {
-      if (!ValueUtility.IsValid(this.type, this.localTarget, this.synchronizedTarget))
+      if (!ValueUtility.IsValid(this.kind, this.localTarget, this.synchronizedTarget))
       {
         UdonDebug.Error(this, "Value target is invalid - Disabled");
         this.enabled = false;
@@ -48,7 +48,7 @@ namespace VRCTools.World.Values.Presets
     [CustomEvent]
     public void _Apply()
     {
-      ValueUtility.SetValue(this.type, this.localTarget, this.synchronizedTarget, this.preset);
+      ValueUtility.SetValue(this.kind, this.localTarget, this.synchronizedTarget, this.preset);
     }
   }
 }

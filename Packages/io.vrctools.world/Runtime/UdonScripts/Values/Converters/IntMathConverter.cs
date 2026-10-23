@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Int Math Converter")]
   public class IntMathConverter : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalInt localTarget;
     public SynchronizedInt synchronizedTarget;
 

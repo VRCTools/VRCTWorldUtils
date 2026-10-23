@@ -31,7 +31,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Vector3 Component Converter")]
   public class Vector3ComponentConverter : UdonSharpBehaviour
   {
-    public ValueType output;
+    public ValueKind output;
     public LocalVector3 localOutput;
     public SynchronizedVector3 synchronizedOutput;
 

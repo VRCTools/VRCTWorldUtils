@@ -27,7 +27,7 @@ namespace VRCTools.World.Values.Applicators
   [AddComponentMenu("Values/Applicators/Object Toggle Applicator")]
   public class ObjectToggleApplicator : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 

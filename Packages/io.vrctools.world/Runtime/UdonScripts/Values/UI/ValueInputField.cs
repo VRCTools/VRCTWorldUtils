@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.UI
   [AddComponentMenu("Values/UI/Value Input Field")]
   public class ValueInputField : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalString localValue;
     public SynchronizedString synchronizedValue;
 

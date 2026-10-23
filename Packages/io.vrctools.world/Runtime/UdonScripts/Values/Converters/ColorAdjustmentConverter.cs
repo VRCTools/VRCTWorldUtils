@@ -26,11 +26,11 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Color Adjustment Converter")]
   public class ColorAdjustmentConverter : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalColor localSource;
     public SynchronizedColor synchronizedSource;
 
-    public ValueType target;
+    public ValueKind target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
 

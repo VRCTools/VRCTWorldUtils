@@ -28,7 +28,7 @@ namespace VRCTools.World.Values.Applicators
   [AddComponentMenu("Values/Applicators/Boolean Event Applicator")]
   public class BooleanEventApplicator : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 

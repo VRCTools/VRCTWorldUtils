@@ -29,13 +29,13 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Gradient Converter")]
   public class GradientConverter : UdonSharpBehaviour
   {
-    public ValueType input;
+    public ValueKind input;
     public LocalFloat localInput;
     public SynchronizedFloat synchronizedInput;
 
     public Gradient gradient;
 
-    public ValueType output;
+    public ValueKind output;
     public LocalColor localOutput;
     public SynchronizedColor synchronizedOutput;
 

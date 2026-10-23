@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.UI
   [AddComponentMenu("Values/UI/Value URL Label")]
   public class ValueUrlLabel : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalUrl localValue;
     public SynchronizedUrl synchronizedValue;
     private string _template;

@@ -31,7 +31,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Float Curve Converter")]
   public class FloatCurveConverter : UdonSharpBehaviour
   {
-    public ValueType input;
+    public ValueKind input;
     public LocalFloat localInput;
     public SynchronizedFloat synchronizedInput;
 
@@ -39,7 +39,7 @@ namespace VRCTools.World.Values.Converters
       new Keyframe(0, 0),
       new Keyframe(1, 1));
 
-    public ValueType output;
+    public ValueKind output;
     public LocalFloat localOutput;
     public SynchronizedFloat synchronizedOutput;
 

@@ -31,18 +31,18 @@ namespace VRCTools.World.Values.Applicators
   {
     public TransformSpace positionTransformSpace = TransformSpace.Local;
     public FractionalMathOperation positionOperation;
-    public ValueType positionModifier;
+    public ValueKind positionModifier;
     public LocalVector3 localPositionModifier;
     public SynchronizedVector3 synchronizedPositionModifier;
 
     public TransformSpace rotationTransformSpace = TransformSpace.Local;
     public FractionalMathOperation rotationOperation;
-    public ValueType rotationModifier;
+    public ValueKind rotationModifier;
     public LocalVector3 localRotationModifier;
     public SynchronizedVector3 synchronizedRotationModifier;
 
     public FractionalMathOperation scaleOperation;
-    public ValueType scaleModifier;
+    public ValueKind scaleModifier;
     public LocalVector3 localScaleModifier;
     public SynchronizedVector3 synchronizedScaleModifier;
 

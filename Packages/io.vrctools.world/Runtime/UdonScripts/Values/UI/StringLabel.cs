@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.UI
   [AddComponentMenu("Values/UI/String Label")]
   public class StringLabel : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalString localValue;
     public SynchronizedString synchronizedValue;
 

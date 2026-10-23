@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Color Component Converter")]
   public class ColorComponentConverter : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
 

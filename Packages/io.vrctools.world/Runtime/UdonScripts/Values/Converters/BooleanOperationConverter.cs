@@ -27,7 +27,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Boolean Operation Converter")]
   public class BooleanOperationConverter : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalBoolean localTarget;
     public SynchronizedBoolean synchronizedTarget;
 

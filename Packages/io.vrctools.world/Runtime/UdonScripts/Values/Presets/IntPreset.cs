@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Presets
   [AddComponentMenu("Values/Presets/Int Preset")]
   public class IntPreset : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalInt localTarget;
     public SynchronizedInt synchronizedTarget;
 

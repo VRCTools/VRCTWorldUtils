@@ -30,7 +30,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Float Math Converter")]
   public class FloatMathConverter : UdonSharpBehaviour
   {
-    public ValueType target;
+    public ValueKind target;
     public LocalFloat localTarget;
     public SynchronizedFloat synchronizedTarget;
 

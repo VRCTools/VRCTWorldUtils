@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.Sources
   [AddComponentMenu("Values/Sources/Player Count Source")]
   public class PlayerCountSource : UdonSharpBehaviour
   {
-    public ValueType output;
+    public ValueKind output;
     public LocalInt localOutput;
     public SynchronizedInt synchronizedOutput;
 

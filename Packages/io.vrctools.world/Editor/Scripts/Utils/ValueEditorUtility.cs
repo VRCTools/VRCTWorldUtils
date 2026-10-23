@@ -18,7 +18,6 @@ using UnityEditor;
 using UnityEngine;
 using VRCTools.World.Utils;
 using VRCTools.World.Values;
-using ValueType = VRCTools.World.Values.ValueType;
 
 namespace VRCTools.World.Editor.Utils
 {
@@ -63,15 +62,15 @@ namespace VRCTools.World.Editor.Utils
       string unsetErrorMessage)
     {
       EditorGUILayout.PropertyField(sourceProperty, new GUIContent("Type"));
-      var s = (ValueType)sourceProperty.enumValueIndex;
+      var s = (ValueKind)sourceProperty.enumValueIndex;
 
       SerializedProperty property = null;
       switch (s)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           property = localProperty;
           break;
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           property = synchronizedProperty;
           break;
       }
@@ -82,18 +81,18 @@ namespace VRCTools.World.Editor.Utils
     }
 
     public static string GetTargetDisplayValue(
-      ValueType type,
+      ValueKind kind,
       SerializedProperty localValue,
       SerializedProperty synchronizedValue)
     {
-      switch (type)
+      switch (kind)
       {
-        case ValueType.LOCAL:
+        case ValueKind.LOCAL:
           return GetObjectDisplayName(localValue);
-        case ValueType.SYNCHRONIZED:
+        case ValueKind.SYNCHRONIZED:
           return GetObjectDisplayName(synchronizedValue);
         default:
-          throw new ArgumentOutOfRangeException(nameof(type), type, null);
+          throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
       }
     }
 
@@ -102,7 +101,7 @@ namespace VRCTools.World.Editor.Utils
       SerializedProperty localValue,
       SerializedProperty synchronizedValue)
     {
-      var typeValue = (ValueType)type.enumValueIndex;
+      var typeValue = (ValueKind)type.enumValueIndex;
       return GetTargetDisplayValue(typeValue, localValue, synchronizedValue);
     }
 

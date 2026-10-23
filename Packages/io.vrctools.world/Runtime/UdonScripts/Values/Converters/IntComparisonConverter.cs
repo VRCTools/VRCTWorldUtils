@@ -29,7 +29,7 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Int Comparison Converter")]
   public class IntComparisonConverter : UdonSharpBehaviour
   {
-    public ValueType output;
+    public ValueKind output;
     public LocalBoolean localOutput;
     public SynchronizedBoolean synchronizedOutput;
 

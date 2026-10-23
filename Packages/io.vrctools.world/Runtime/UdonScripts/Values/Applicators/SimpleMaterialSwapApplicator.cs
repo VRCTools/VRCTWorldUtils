@@ -27,7 +27,7 @@ namespace VRCTools.World.Values.Applicators
   [AddComponentMenu("Values/Applicators/Simple Material Swap Applicator")]
   public class SimpleMaterialSwapApplicator : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 

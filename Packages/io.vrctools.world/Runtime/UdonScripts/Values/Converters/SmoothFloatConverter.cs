@@ -30,11 +30,11 @@ namespace VRCTools.World.Values.Converters
   [AddComponentMenu("Values/Converters/Smooth Float Converter")]
   public class SmoothFloatConverter : UdonSharpBehaviour
   {
-    public ValueType source;
+    public ValueKind source;
     public LocalFloat localSource;
     public SynchronizedFloat synchronizedSource;
 
-    public ValueType target;
+    public ValueKind target;
     public LocalFloat localTarget;
     public SynchronizedFloat synchronizedTarget;
 
