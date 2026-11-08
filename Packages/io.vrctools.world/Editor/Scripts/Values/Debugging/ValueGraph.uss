@@ -5,3 +5,32 @@ GridBackground {
   --spacing: 20;
   --thick-lines: 10;
 }
+
+.node.kind-source #title,
+.node.kind-preset #title {
+  background-color: #2E5A3A;
+}
+
+.node.kind-local-value #title {
+  background-color: #2B4A6F;
+}
+
+.node.kind-persisted-value #title {
+  background-color: #3B3F78;
+}
+
+.node.kind-synchronized-value #title {
+  background-color: #1F5C66;
+}
+
+.node.kind-converter #title {
+  background-color: #6B4A1F;
+}
+
+.node.kind-applicator #title {
+  background-color: #6E2F2F;
+}
+
+.node.kind-ui #title {
+  background-color: #5A3A6B;
+}

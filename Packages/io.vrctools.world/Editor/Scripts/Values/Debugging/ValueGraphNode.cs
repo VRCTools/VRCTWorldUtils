@@ -18,6 +18,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using VRC.SDKBase;
 using VRCTools.World.Attributes;
 using VRCTools.World.Values;
 
@@ -28,12 +29,25 @@ namespace VRCTools.World.Editor.Values.Debugging
     public const string InputPortName = "Source";
     public const string OutputPortName = "State";
 
+    private static readonly Dictionary<Type, Color> TypeColors = new()
+    {
+      { typeof(bool), new Color(0.85f, 0.35f, 0.35f) },
+      { typeof(int), new Color(0.35f, 0.75f, 0.85f) },
+      { typeof(float), new Color(0.55f, 0.85f, 0.35f) },
+      { typeof(string), new Color(0.90f, 0.55f, 0.85f) },
+      { typeof(Color), new Color(0.95f, 0.80f, 0.30f) },
+      { typeof(Vector3), new Color(0.95f, 0.60f, 0.25f) },
+      { typeof(VRCUrl), new Color(0.60f, 0.55f, 0.95f) },
+      { typeof(Texture2D), new Color(0.75f, 0.75f, 0.75f) },
+    };
+
     public MonoBehaviour Component { get; }
     public ValueComponentKind Kind { get; }
 
     private readonly Dictionary<string, Port> _ports = new();
 
-    public bool IsValue => this.Kind is ValueComponentKind.LocalValue or ValueComponentKind.PersistedValue or ValueComponentKind.SynchronizedValue;
+    public bool IsValue => this.Kind is ValueComponentKind.LocalValue or ValueComponentKind.PersistedValue
+      or ValueComponentKind.SynchronizedValue;
 
     public Port this[string portName] => this._ports.GetValueOrDefault(ObjectNames.NicifyVariableName(portName));
 
@@ -46,6 +60,8 @@ namespace VRCTools.World.Editor.Values.Debugging
       this.Kind = kind;
 
       this.title = $"{component.gameObject.name} ({ObjectNames.NicifyVariableName(component.GetType().Name)})";
+      this.AddToClassList(
+        $"kind-{ObjectNames.NicifyVariableName(kind.ToString()).Replace(' ', '-').ToLowerInvariant()}");
 
       if (this.IsValue)
       {
@@ -94,6 +110,12 @@ namespace VRCTools.World.Editor.Values.Debugging
     {
       var port = this.InstantiatePort(Orientation.Horizontal, direction, capacity, type);
       port.portName = name;
+
+      var stateType = type.GetProperty("State")?.PropertyType;
+      if (stateType != null && TypeColors.TryGetValue(stateType, out var color))
+      {
+        port.portColor = color;
+      }
 
       var container = direction == Direction.Input ? this.inputContainer : this.outputContainer;
       container.Add(port);
