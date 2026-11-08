@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Event;
+using VRCTools.World.Attributes;
 using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues
@@ -25,6 +26,7 @@ namespace VRCTools.World.LocalValues
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Local Int")]
+  [ValueComponentKind(ValueComponentKind.LocalValue)]
   public class LocalInt : AbstractEventEmitter
   {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;

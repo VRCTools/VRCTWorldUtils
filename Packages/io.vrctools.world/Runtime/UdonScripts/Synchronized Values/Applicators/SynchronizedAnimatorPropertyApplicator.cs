@@ -17,22 +17,28 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues.Applicators
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Animator Property Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class SynchronizedAnimatorPropertyApplicator : UdonSharpBehaviour
   {
     public Animator target;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedBoolean[] synchronizedBooleans;
     public string[] synchronizedBooleanParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedFloat[] synchronizedFloats;
     public string[] synchronizedFloatParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedInt[] synchronizedInts;
     public string[] synchronizedIntParameters;
 

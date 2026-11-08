@@ -18,6 +18,7 @@ using VRC.SDK3.Persistence;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.Values;
 
@@ -25,6 +26,7 @@ namespace VRCTools.World.PersistedValues
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Persisted Values/Persisted String")]
+  [ValueComponentKind(ValueComponentKind.PersistedValue)]
   public class PersistedString : LocalString
   {
     public new const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;

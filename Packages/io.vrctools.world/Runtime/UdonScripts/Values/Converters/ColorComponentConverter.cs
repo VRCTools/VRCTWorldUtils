@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -27,27 +28,43 @@ namespace VRCTools.World.Values.Converters
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Converters/Color Component Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class ColorComponentConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localRedValue),
+      synchronizedFieldName: nameof(synchronizedRedValue))]
     public ValueSource redSource;
     public float staticRedValue = 1f;
     public LocalFloat localRedValue;
     public SynchronizedFloat synchronizedRedValue;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localGreenValue),
+      synchronizedFieldName: nameof(synchronizedGreenValue))]
     public ValueSource greenSource;
     public float staticGreenValue = 1f;
     public LocalFloat localGreenValue;
     public SynchronizedFloat synchronizedGreenValue;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localBlueValue),
+      synchronizedFieldName: nameof(synchronizedBlueValue))]
     public ValueSource blueSource;
     public float staticBlueValue = 1f;
     public LocalFloat localBlueValue;
     public SynchronizedFloat synchronizedBlueValue;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localAlphaValue),
+      synchronizedFieldName: nameof(synchronizedAlphaValue))]
     public ValueSource alphaSource;
     public float staticAlphaValue = 1f;
     public LocalFloat localAlphaValue;

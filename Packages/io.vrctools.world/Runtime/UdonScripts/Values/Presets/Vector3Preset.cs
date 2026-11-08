@@ -17,6 +17,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -28,8 +29,12 @@ namespace VRCTools.World.Values.Presets
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Presets/Vector3 Preset")]
+  [ValueComponentKind(ValueComponentKind.Preset)]
   public class Vector3Preset : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind kind;
     public LocalVector3 localTarget;
     public SynchronizedVector3 synchronizedTarget;

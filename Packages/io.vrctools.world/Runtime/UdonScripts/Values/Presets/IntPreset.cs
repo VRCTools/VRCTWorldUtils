@@ -17,6 +17,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -28,8 +29,12 @@ namespace VRCTools.World.Values.Presets
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Presets/Int Preset")]
+  [ValueComponentKind(ValueComponentKind.Preset)]
   public class IntPreset : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind target;
     public LocalInt localTarget;
     public SynchronizedInt synchronizedTarget;

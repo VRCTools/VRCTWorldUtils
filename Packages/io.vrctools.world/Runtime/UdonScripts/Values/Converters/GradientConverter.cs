@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -27,14 +28,21 @@ namespace VRCTools.World.Values.Converters
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Gradient Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class GradientConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localInput),
+      synchronizedFieldName: nameof(synchronizedInput))]
     public ValueKind input;
     public LocalFloat localInput;
     public SynchronizedFloat synchronizedInput;
 
     public Gradient gradient;
 
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localOutput),
+      synchronizedFieldName: nameof(synchronizedOutput))]
     public ValueKind output;
     public LocalColor localOutput;
     public SynchronizedColor synchronizedOutput;

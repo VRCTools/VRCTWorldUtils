@@ -18,6 +18,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -27,8 +28,12 @@ namespace VRCTools.World.Values.UI
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
   [AddComponentMenu("Values/UI/Value URL Label")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class ValueUrlLabel : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localValue),
+      synchronizedFieldName: nameof(synchronizedValue))]
     public ValueKind source;
     public LocalUrl localValue;
     public SynchronizedUrl synchronizedValue;

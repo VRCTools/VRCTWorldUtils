@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -24,12 +25,19 @@ namespace VRCTools.World.Values.Converters
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Values/Converters/Color Adjustment Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class ColorAdjustmentConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localSource),
+      synchronizedFieldName: nameof(synchronizedSource))]
     public ValueKind source;
     public LocalColor localSource;
     public SynchronizedColor synchronizedSource;
 
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind target;
     public LocalColor localTarget;
     public SynchronizedColor synchronizedTarget;

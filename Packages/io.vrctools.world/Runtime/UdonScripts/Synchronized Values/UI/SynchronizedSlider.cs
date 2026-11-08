@@ -19,16 +19,21 @@ using UnityEngine.UI;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues.UI
 {
   [RequireComponent(typeof(Slider))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Slider")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class SynchronizedSlider : UdonSharpBehaviour
   {
-    [FormerlySerializedAs("value")] public SynchronizedFloat synchronizedValue;
+    [FormerlySerializedAs("value")] // Added 21.10.2026
+    [ValueBinding(ValueBindingType.Bidirectional)]
+    public SynchronizedFloat synchronizedValue;
 
     public bool enableMapping;
     public int mappingLowerBound;

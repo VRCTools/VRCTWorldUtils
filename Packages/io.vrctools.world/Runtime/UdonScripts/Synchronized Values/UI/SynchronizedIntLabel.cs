@@ -18,15 +18,19 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues.UI
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Int Label")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class SynchronizedIntLabel : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedInt synchronizedValue;
 
     public bool enableMapping;

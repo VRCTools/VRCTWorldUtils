@@ -18,6 +18,7 @@ using VRC.SDKBase;
 using VRC.Udon;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -29,8 +30,12 @@ namespace VRCTools.World.Values.Converters
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Float Curve Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class FloatCurveConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localInput),
+      synchronizedFieldName: nameof(synchronizedInput))]
     public ValueKind input;
     public LocalFloat localInput;
     public SynchronizedFloat synchronizedInput;
@@ -39,6 +44,9 @@ namespace VRCTools.World.Values.Converters
       new Keyframe(0, 0),
       new Keyframe(1, 1));
 
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localOutput),
+      synchronizedFieldName: nameof(synchronizedOutput))]
     public ValueKind output;
     public LocalFloat localOutput;
     public SynchronizedFloat synchronizedOutput;

@@ -17,6 +17,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -28,19 +29,29 @@ namespace VRCTools.World.Values.Converters
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Int Math Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class IntMathConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind target;
     public LocalInt localTarget;
     public SynchronizedInt synchronizedTarget;
 
     public IntegralMathOperation operation;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localValueA),
+      synchronizedFieldName: nameof(synchronizedValueA))]
     public ValueSource sourceA;
     public int staticValueA = 1;
     public LocalInt localValueA;
     public SynchronizedInt synchronizedValueA;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localValueB),
+      synchronizedFieldName: nameof(synchronizedValueB))]
     public ValueSource sourceB;
     public int staticValueB = 1;
     public LocalInt localValueB;

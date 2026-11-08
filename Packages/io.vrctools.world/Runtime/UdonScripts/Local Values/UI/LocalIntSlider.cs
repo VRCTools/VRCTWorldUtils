@@ -18,15 +18,19 @@ using UnityEngine.UI;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.UI
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(Slider))]
   [AddComponentMenu("Local Values/UI/Local Int Slider")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class LocalIntSlider : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Bidirectional)]
     public LocalInt localValue;
 
     public bool enableMapping;

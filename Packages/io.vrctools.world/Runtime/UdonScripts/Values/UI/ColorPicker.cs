@@ -18,6 +18,7 @@ using UnityEngine.UI;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Internal;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
@@ -31,8 +32,12 @@ namespace VRCTools.World.Values.UI
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/UI/Color Picker")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class ColorPicker : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Bidirectional,
+      localFieldName: nameof(localValue),
+      synchronizedFieldName: nameof(synchronizedValue))]
     public ValueKind source;
     public LocalColor localValue;
     public SynchronizedColor synchronizedValue;

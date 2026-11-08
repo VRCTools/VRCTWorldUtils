@@ -18,15 +18,19 @@ using UnityEngine.UI;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues.UI
 {
   [RequireComponent(typeof(Slider))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Int Slider")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class SynchronizedIntSlider : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Bidirectional)]
     public SynchronizedInt synchronizedValue;
 
     public bool enableMapping;

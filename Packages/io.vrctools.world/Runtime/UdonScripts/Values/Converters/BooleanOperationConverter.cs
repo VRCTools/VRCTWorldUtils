@@ -17,6 +17,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -25,20 +26,33 @@ namespace VRCTools.World.Values.Converters
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Boolean Operation Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class BooleanOperationConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind target;
+
     public LocalBoolean localTarget;
     public SynchronizedBoolean synchronizedTarget;
 
     public BooleanOperation operation;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localAlphaValue),
+      synchronizedFieldName: nameof(synchronizedAlphaValue))]
     public ValueSource sourceAlpha;
+
     public bool staticAlphaValue;
     public LocalBoolean localAlphaValue;
     public SynchronizedBoolean synchronizedAlphaValue;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localBetaValue),
+      synchronizedFieldName: nameof(synchronizedBetaValue))]
     public ValueSource sourceBeta;
+
     public bool staticBetaValue;
     public LocalBoolean localBetaValue;
     public SynchronizedBoolean synchronizedBetaValue;

@@ -17,6 +17,8 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Sources
 {
@@ -25,8 +27,10 @@ namespace VRCTools.World.LocalValues.Sources
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Sources/Player Platform Source")]
+  [ValueComponentKind(ValueComponentKind.Source)]
   public class PlayerPlatformTypeSource : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output)]
     public LocalBoolean localOutput;
 
     public PlayerPlatformType platformType = PlayerPlatformType.VR;

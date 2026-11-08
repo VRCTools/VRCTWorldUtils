@@ -18,6 +18,7 @@ using VRC.SDKBase;
 using VRC.Udon.Common.Enums;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -26,9 +27,13 @@ namespace VRCTools.World.Values.Applicators
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Applicators/Boolean Event Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class BooleanEventApplicator : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input, localFieldName: nameof(localValue),
+      synchronizedFieldName: nameof(synchronizedValue))]
     public ValueKind source;
+
     public LocalBoolean localValue;
     public SynchronizedBoolean synchronizedValue;
 

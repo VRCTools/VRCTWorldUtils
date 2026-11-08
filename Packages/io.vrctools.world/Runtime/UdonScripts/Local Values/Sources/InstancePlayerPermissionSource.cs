@@ -16,6 +16,8 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Sources
 {
@@ -25,8 +27,10 @@ namespace VRCTools.World.LocalValues.Sources
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Sources/Instance Player Permission Source")]
+  [ValueComponentKind(ValueComponentKind.Source)]
   public class InstancePlayerPermissionSource : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output)]
     public LocalBoolean localOutput;
 
     public InstancePlayerPermissionType permissionType = InstancePlayerPermissionType.Owner;

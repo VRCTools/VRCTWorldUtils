@@ -18,13 +18,16 @@ using UnityEngine.Serialization;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 using VRCTools.World.Values.Applicators;
 
 namespace VRCTools.World.LocalValues.Applicators
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Applicators/Local Material Property Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class LocalMaterialPropertyApplicator : UdonSharpBehaviour
   {
     public MaterialPropertyTarget target;
@@ -32,21 +35,27 @@ namespace VRCTools.World.LocalValues.Applicators
 
     [FormerlySerializedAs("material")] public Material targetMaterial;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalBoolean[] localBooleans;
     public string[] localBooleanParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalColor[] localColors;
     public string[] localColorParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalFloat[] localFloats;
     public string[] localFloatParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalInt[] localInts;
     public string[] localIntParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalTexture2D[] localTextures;
     public string[] localTextureParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalVector3[] localVectors;
     public string[] localVectorParameters;
 

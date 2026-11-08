@@ -18,6 +18,7 @@ using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
 using VRCTools.Event;
+using VRCTools.World.Attributes;
 using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues
@@ -27,6 +28,7 @@ namespace VRCTools.World.SynchronizedValues
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
   [AddComponentMenu("Synchronized Values/Synchronized URL")]
+  [ValueComponentKind(ValueComponentKind.SynchronizedValue)]
   public class SynchronizedUrl : AbstractSynchronizedEventEmitter
   {
     public const int EVENT_STATE_UPDATED = ValueEvents.STANDARD_STATE_UPDATED;

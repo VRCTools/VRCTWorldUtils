@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -27,22 +28,35 @@ namespace VRCTools.World.Values.Applicators
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Applicators/Transform Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class TransformApplicator : UdonSharpBehaviour
   {
     public TransformSpace positionTransformSpace = TransformSpace.Local;
     public FractionalMathOperation positionOperation;
+
+    [ValueBinding(ValueBindingType.Input, localFieldName: nameof(localPositionModifier),
+      synchronizedFieldName: nameof(synchronizedPositionModifier))]
     public ValueKind positionModifier;
+
     public LocalVector3 localPositionModifier;
     public SynchronizedVector3 synchronizedPositionModifier;
 
     public TransformSpace rotationTransformSpace = TransformSpace.Local;
     public FractionalMathOperation rotationOperation;
+
+    [ValueBinding(ValueBindingType.Input, localFieldName: nameof(localRotationModifier),
+      synchronizedFieldName: nameof(synchronizedRotationModifier))]
     public ValueKind rotationModifier;
+
     public LocalVector3 localRotationModifier;
     public SynchronizedVector3 synchronizedRotationModifier;
 
     public FractionalMathOperation scaleOperation;
+
+    [ValueBinding(ValueBindingType.Input, localFieldName: nameof(localScaleModifier),
+      synchronizedFieldName: nameof(synchronizedScaleModifier))]
     public ValueKind scaleModifier;
+
     public LocalVector3 localScaleModifier;
     public SynchronizedVector3 synchronizedScaleModifier;
 

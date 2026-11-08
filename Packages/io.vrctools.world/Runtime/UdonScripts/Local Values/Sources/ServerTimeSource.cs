@@ -17,6 +17,8 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Sources
 {
@@ -25,8 +27,10 @@ namespace VRCTools.World.LocalValues.Sources
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Sources/Server Time Source")]
+  [ValueComponentKind(ValueComponentKind.Source)]
   public class ServerTimeSource : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output)]
     public LocalFloat localOutput;
 
     private void Start()

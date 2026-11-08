@@ -18,6 +18,7 @@ using VRC.SDKBase;
 using VRC.Udon;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -29,22 +30,35 @@ namespace VRCTools.World.Values.Converters
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Vector3 Component Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class Vector3ComponentConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localOutput),
+      synchronizedFieldName: nameof(synchronizedOutput))]
     public ValueKind output;
     public LocalVector3 localOutput;
     public SynchronizedVector3 synchronizedOutput;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localA),
+      synchronizedFieldName: nameof(synchronizedA))]
     public ValueSource a;
     public float staticA;
     public LocalFloat localA;
     public SynchronizedFloat synchronizedA;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localB),
+      synchronizedFieldName: nameof(synchronizedB))]
     public ValueSource b;
     public float staticB;
     public LocalFloat localB;
     public SynchronizedFloat synchronizedB;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localC),
+      synchronizedFieldName: nameof(synchronizedC))]
     public ValueSource c;
     public float staticC;
     public LocalFloat localC;

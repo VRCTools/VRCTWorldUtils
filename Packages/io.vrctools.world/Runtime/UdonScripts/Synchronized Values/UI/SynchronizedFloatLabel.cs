@@ -18,15 +18,19 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.SynchronizedValues.UI
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
   [AddComponentMenu("Synchronized Values/UI/Synchronized Float Label")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class SynchronizedFloatLabel : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedFloat synchronizedValue;
 
     public bool enableMapping;

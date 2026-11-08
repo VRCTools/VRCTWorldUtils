@@ -18,7 +18,9 @@ using UnityEngine.Serialization;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 using VRCTools.World.Values.Applicators;
 
 namespace VRCTools.World.SynchronizedValues.Applicators
@@ -32,6 +34,7 @@ namespace VRCTools.World.SynchronizedValues.Applicators
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Applicators/Synchronized Material Property Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class SynchronizedMaterialPropertyApplicator : UdonSharpBehaviour
   {
     public MaterialPropertyTarget target;
@@ -40,18 +43,23 @@ namespace VRCTools.World.SynchronizedValues.Applicators
 
     public Renderer targetRenderer;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedBoolean[] synchronizedBooleans;
     public string[] synchronizedBooleanParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedColor[] synchronizedColors;
     public string[] synchronizedColorParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedFloat[] synchronizedFloats;
     public string[] synchronizedFloatParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedInt[] synchronizedInts;
     public string[] synchronizedIntParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedVector3[] synchronizedVectors;
     public string[] synchronizedVectorParameters;
 

@@ -16,6 +16,7 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -27,8 +28,12 @@ namespace VRCTools.World.Values.Sources
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Sources/Player Count Source")]
+  [ValueComponentKind(ValueComponentKind.Source)]
   public class PlayerCountSource : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localOutput),
+      synchronizedFieldName: nameof(synchronizedOutput))]
     public ValueKind output;
     public LocalInt localOutput;
     public SynchronizedInt synchronizedOutput;

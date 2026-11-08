@@ -17,6 +17,7 @@ using UdonSharp;
 using UnityEngine;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -28,19 +29,29 @@ namespace VRCTools.World.Values.Converters
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Converters/Float Math Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class FloatMathConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output,
+      localFieldName: nameof(localTarget),
+      synchronizedFieldName: nameof(synchronizedTarget))]
     public ValueKind target;
     public LocalFloat localTarget;
     public SynchronizedFloat synchronizedTarget;
 
     public FractionalMathOperation operation;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localValueA),
+      synchronizedFieldName: nameof(synchronizedValueA))]
     public ValueSource sourceA;
     public float staticValueA = 1f;
     public LocalFloat localValueA;
     public SynchronizedFloat synchronizedValueA;
 
+    [ValueBinding(ValueBindingType.Input,
+      localFieldName: nameof(localValueB),
+      synchronizedFieldName: nameof(synchronizedValueB))]
     public ValueSource sourceB;
     public float staticValueB = 1f;
     public LocalFloat localValueB;

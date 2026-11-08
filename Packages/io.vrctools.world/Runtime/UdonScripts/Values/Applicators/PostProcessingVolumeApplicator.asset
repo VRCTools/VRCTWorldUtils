@@ -116,7 +116,7 @@ MonoBehaviour:
       Data: 6|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: VRCTools.World.Values.ValueType, VRCTools.World
+      Data: VRCTools.World.Values.ValueKind, VRCTools.World
     - Name: 
       Entry: 8
       Data: 

@@ -18,6 +18,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -27,8 +28,12 @@ namespace VRCTools.World.Values.UI
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TMP_InputField))]
   [AddComponentMenu("Values/UI/Value Input Field")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class ValueInputField : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Bidirectional,
+      localFieldName: nameof(localValue),
+      synchronizedFieldName: nameof(synchronizedValue))]
     public ValueKind source;
     public LocalString localValue;
     public SynchronizedString synchronizedValue;

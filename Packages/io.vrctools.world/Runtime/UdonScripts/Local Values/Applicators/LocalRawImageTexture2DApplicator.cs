@@ -18,14 +18,18 @@ using UnityEngine.UI;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Applicators
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(RawImage))]
   [AddComponentMenu("Local Values/Applicators/Local Raw Image Texture2D Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class LocalRawImageTexture2DApplicator : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input)]
     public LocalTexture2D localValue;
 
     private RawImage _image;

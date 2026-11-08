@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using VRC.SDKBase;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.LocalValues;
 using VRCTools.World.SynchronizedValues;
 using VRCTools.World.Utils;
@@ -28,11 +29,15 @@ namespace VRCTools.World.Values.Applicators
   /// </summary>
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Values/Applicators/Post Processing Volume Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class PostProcessingVolumeApplicator : UdonSharpBehaviour
   {
     public PostProcessVolume volume;
 
+    [ValueBinding(ValueBindingType.Input, localFieldName: nameof(localWeight),
+      synchronizedFieldName: nameof(synchronizedWeight))]
     public ValueKind weight;
+
     public LocalFloat localWeight;
     public SynchronizedFloat synchronizedWeight;
 

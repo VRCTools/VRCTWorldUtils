@@ -17,22 +17,28 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Applicators
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Applicators/Local Animator Property Applicator")]
+  [ValueComponentKind(ValueComponentKind.Applicator)]
   public class LocalAnimatorPropertyApplicator : UdonSharpBehaviour
   {
     public Animator target;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalBoolean[] localBooleans;
     public string[] localBooleanParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalFloat[] localFloats;
     public string[] localFloatParameters;
 
+    [ValueBinding(ValueBindingType.Input)]
     public LocalInt[] localInts;
     public string[] localIntParameters;
 

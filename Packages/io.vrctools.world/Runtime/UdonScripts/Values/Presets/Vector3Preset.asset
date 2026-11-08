@@ -50,19 +50,19 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: type
+      Data: kind
     - Name: $v
       Entry: 7
       Data: 2|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: type
+      Data: kind
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: VRCTools.World.Values.ValueType, VRCTools.World
+      Data: VRCTools.World.Values.ValueKind, VRCTools.World
     - Name: 
       Entry: 8
       Data: 

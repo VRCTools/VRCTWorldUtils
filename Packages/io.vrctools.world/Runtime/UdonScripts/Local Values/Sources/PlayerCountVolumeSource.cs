@@ -17,6 +17,8 @@ using UnityEngine;
 using VRC.SDK3.Data;
 using VRC.SDKBase;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Sources
 {
@@ -26,8 +28,10 @@ namespace VRCTools.World.LocalValues.Sources
   [RequireComponent(typeof(Collider))]
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Local Values/Sources/Player Count Volume Source")]
+  [ValueComponentKind(ValueComponentKind.Source)]
   public class PlayerCountVolumeSource : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Output)]
     public LocalInt localOutput;
 
     private DataList _playerList = new DataList();

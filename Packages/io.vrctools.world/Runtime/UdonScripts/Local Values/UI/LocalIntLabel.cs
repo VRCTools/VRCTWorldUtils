@@ -18,15 +18,19 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.Utils;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.UI
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [RequireComponent(typeof(TextMeshProUGUI))]
   [AddComponentMenu("Local Values/UI/Local Int Label")]
+  [ValueComponentKind(ValueComponentKind.UI)]
   public class LocalIntLabel : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input)]
     public LocalInt localValue;
 
     public bool enableMapping;

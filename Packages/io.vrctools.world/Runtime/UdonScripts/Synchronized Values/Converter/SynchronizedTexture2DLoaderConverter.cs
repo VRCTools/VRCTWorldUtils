@@ -19,16 +19,21 @@ using VRC.SDKBase;
 using VRC.Udon.Common.Interfaces;
 using VRCTools.Common.Attributes;
 using VRCTools.Common.Utils;
+using VRCTools.World.Attributes;
 using VRCTools.World.SynchronizedValues;
+using VRCTools.World.Values;
 
 namespace VRCTools.World.LocalValues.Converters
 {
   [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
   [AddComponentMenu("Synchronized Values/Converter/Synchronized Texture2D Loader Converter")]
+  [ValueComponentKind(ValueComponentKind.Converter)]
   public class SynchronizedTexture2DLoaderConverter : UdonSharpBehaviour
   {
+    [ValueBinding(ValueBindingType.Input)]
     public SynchronizedUrl synchronizedUrl;
 
+    [ValueBinding(ValueBindingType.Output)]
     public LocalTexture2D localTexture2D;
 
     public Texture2D defaultTexture;
